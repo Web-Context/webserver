@@ -11,8 +11,9 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.ge.monitoring.agent.restserver.internal.http.HttpRequest;
-import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpError;
+import com.ge.monitoring.agent.restserver.internal.server.RestServer;
 import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpMethod;
+import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpStatus;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -42,10 +43,16 @@ import com.sun.net.httpserver.HttpHandler;
 @SuppressWarnings("restriction")
 public class RestHandler implements HttpHandler {
 
+	protected RestServer server;
+
+	public RestHandler(RestServer server) {
+		this.server = server;
+	}
+
 	public void handle(HttpExchange httpExchange) throws IOException {
 
 		RestResponse response = new RestResponse();
-		HttpError errCode = HttpError.OK;
+		HttpStatus errCode = HttpStatus.OK;
 
 		Map<String, Set<String>> parameters = extractParameters(httpExchange);
 		HttpRequest request = new HttpRequest(httpExchange, parameters);
@@ -113,9 +120,9 @@ public class RestHandler implements HttpHandler {
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError get(HttpRequest request, RestResponse response)
+	public HttpStatus get(HttpRequest request, RestResponse response)
 			throws IOException {
-		return HttpError.OK;
+		return HttpStatus.OK;
 
 	}
 
@@ -129,9 +136,9 @@ public class RestHandler implements HttpHandler {
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError post(HttpRequest request, RestResponse response)
+	public HttpStatus post(HttpRequest request, RestResponse response)
 			throws IOException {
-		return HttpError.OK;
+		return HttpStatus.OK;
 
 	}
 
@@ -145,9 +152,9 @@ public class RestHandler implements HttpHandler {
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError put(HttpRequest request, RestResponse response)
+	public HttpStatus put(HttpRequest request, RestResponse response)
 			throws IOException {
-		return HttpError.OK;
+		return HttpStatus.OK;
 
 	}
 
@@ -161,9 +168,9 @@ public class RestHandler implements HttpHandler {
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError delete(HttpRequest request, RestResponse response)
+	public HttpStatus delete(HttpRequest request, RestResponse response)
 			throws IOException {
-		return HttpError.OK;
+		return HttpStatus.OK;
 
 	}
 
@@ -177,8 +184,8 @@ public class RestHandler implements HttpHandler {
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	private HttpError head(HttpRequest request, RestResponse response) {
-		return HttpError.OK;
+	private HttpStatus head(HttpRequest request, RestResponse response) {
+		return HttpStatus.OK;
 	}
 
 	/**
@@ -191,7 +198,7 @@ public class RestHandler implements HttpHandler {
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	private HttpError options(HttpRequest request, RestResponse response) {
-		return HttpError.OK;
+	private HttpStatus options(HttpRequest request, RestResponse response) {
+		return HttpStatus.OK;
 	}
 }
