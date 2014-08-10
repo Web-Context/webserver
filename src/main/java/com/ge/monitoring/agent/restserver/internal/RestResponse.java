@@ -1,7 +1,8 @@
-package com.ge.monitoring.agent.restserver;
+package com.ge.monitoring.agent.restserver.internal;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -12,7 +13,7 @@ import com.google.gson.GsonBuilder;
  * answer.
  * 
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
- *
+ * 
  */
 public class RestResponse {
 
@@ -23,13 +24,13 @@ public class RestResponse {
 			.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
 			.setPrettyPrinting().setVersion(1.0).create();
 
-	private List<Object> data;
+	private Map<String, Object> data;
 
 	/**
 	 * Default constructor. Initialize the Data list.
 	 */
 	public RestResponse() {
-		data = new ArrayList<Object>();
+		data = new HashMap<String, Object>();
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class RestResponse {
 	 * 
 	 * @return
 	 */
-	public List<Object> getData() {
+	public Map<String,Object> getData() {
 		return data;
 	}
 
@@ -46,8 +47,8 @@ public class RestResponse {
 	 * 
 	 * @param data
 	 */
-	public void addData(Object data) {
-		this.data.add(data);
+	public void add(String key,Object value) {
+		this.data.put(key, value);
 	}
 
 	/**

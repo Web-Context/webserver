@@ -1,15 +1,17 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver;
+package com.ge.monitoring.agent.restserver.internal;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.ge.monitoring.agent.restserver.RestServer.HttpError;
-import com.ge.monitoring.agent.restserver.RestServer.HttpMethod;
+import com.ge.monitoring.agent.restserver.internal.RestServer.HttpError;
+import com.ge.monitoring.agent.restserver.internal.RestServer.HttpMethod;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -34,7 +36,7 @@ import com.sun.net.httpserver.HttpHandler;
  * </ul>
  * 
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
- *
+ * 
  */
 @SuppressWarnings("restriction")
 public class RestHandler implements HttpHandler {
@@ -44,20 +46,21 @@ public class RestHandler implements HttpHandler {
 		RestResponse response = new RestResponse();
 		HttpError errCode = HttpError.OK;
 
-		Map<String, String> parameters = extractParameters(httpExchange);
+		Map<String, Set<String>> parameters = extractParameters(httpExchange);
+		HttpRequest request = new HttpRequest(httpExchange, parameters);
 
 		if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
-			errCode = get(httpExchange, response);
+			errCode = get(request, response);
 		} else if (httpExchange.getRequestMethod().equals(HttpMethod.POST)) {
-			errCode = post(httpExchange, response);
+			errCode = post(request, response);
 		} else if (httpExchange.getRequestMethod().equals(HttpMethod.PUT)) {
-			errCode = put(httpExchange, response);
+			errCode = put(request, response);
 		} else if (httpExchange.getRequestMethod().equals(HttpMethod.DELETE)) {
-			errCode = delete(httpExchange, response);
+			errCode = delete(request, response);
 		} else if (httpExchange.getRequestMethod().equals(HttpMethod.OPTIONS)) {
-			errCode = options(httpExchange, response);
+			errCode = options(request, response);
 		} else if (httpExchange.getRequestMethod().equals(HttpMethod.HEAD)) {
-			errCode = head(httpExchange, response);
+			errCode = head(request, response);
 		}
 
 		String strResponse = response.toJson();
@@ -74,20 +77,28 @@ public class RestHandler implements HttpHandler {
 	 * @param httpExchange
 	 * @return
 	 */
-	private Map<String, String> extractParameters(HttpExchange httpExchange) {
-		String query = httpExchange.getRequestURI().getQuery();
-		Map<String, String> httpParameters = new HashMap<String, String>();
+	private Map<String, Set<String>> extractParameters(HttpExchange httpExchange) {
+		Map<String, Set<String>> httpParameters = new HashMap<String, Set<String>>();
+		String query;
+		if ((query = httpExchange.getRequestURI().getQuery()) != null) {
 
-		String[] parameters = query.split("&");
-		for (String parameter : parameters) {
-			if (parameter.contains("=")) {
-				String[] values = parameter.split("=");
-				httpParameters.put(values[0], values[1]);
-			} else {
-				httpParameters.put(parameter, null);
+			String[] parameters = query.split("&");
+			for (String parameter : parameters) {
+				if (parameter.contains("=")) {
+					String[] values = parameter.split("=");
+					if (!httpParameters.containsKey(values[0])) {
+						Set<String> listValues = new CopyOnWriteArraySet<String>();
+						listValues.add(values[1]);
+						httpParameters.put(values[0], listValues);
+					} else {
+						httpParameters.get(values[0]).add(values[1]);
+					}
+				} else {
+					httpParameters.put(parameter, null);
+				}
 			}
-		}
 
+		}
 		return httpParameters;
 	}
 
@@ -95,13 +106,13 @@ public class RestHandler implements HttpHandler {
 	 * Need to override this method to perform HTTP GET request processing.
 	 * 
 	 * @param he
-	 *            The {@link HttpExchange} object containing basic object from
+	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError get(HttpExchange he, RestResponse response)
+	public HttpError get(HttpRequest request, RestResponse response)
 			throws IOException {
 		return HttpError.OK;
 
@@ -111,13 +122,13 @@ public class RestHandler implements HttpHandler {
 	 * Need to override this method to perform HTTP POST request processing.
 	 * 
 	 * @param he
-	 *            The {@link HttpExchange} object containing basic object from
+	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError post(HttpExchange he, RestResponse response)
+	public HttpError post(HttpRequest request, RestResponse response)
 			throws IOException {
 		return HttpError.OK;
 
@@ -127,13 +138,13 @@ public class RestHandler implements HttpHandler {
 	 * Need to override this method to perform HTTP PUT request processing.
 	 * 
 	 * @param he
-	 *            The {@link HttpExchange} object containing basic object from
+	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError put(HttpExchange he, RestResponse response)
+	public HttpError put(HttpRequest request, RestResponse response)
 			throws IOException {
 		return HttpError.OK;
 
@@ -143,13 +154,13 @@ public class RestHandler implements HttpHandler {
 	 * Need to override this method to perform HTTP DELETE request processing.
 	 * 
 	 * @param he
-	 *            The {@link HttpExchange} object containing basic object from
+	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpError delete(HttpExchange he, RestResponse response)
+	public HttpError delete(HttpRequest request, RestResponse response)
 			throws IOException {
 		return HttpError.OK;
 
@@ -159,13 +170,13 @@ public class RestHandler implements HttpHandler {
 	 * Need to override this method to perform HTTP HEAD request processing.
 	 * 
 	 * @param he
-	 *            The {@link HttpExchange} object containing basic object from
+	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	private HttpError head(HttpExchange t, RestResponse response) {
+	private HttpError head(HttpRequest request, RestResponse response) {
 		return HttpError.OK;
 	}
 
@@ -173,13 +184,13 @@ public class RestHandler implements HttpHandler {
 	 * Need to override this method to perform HTTP OPTIONS request processing.
 	 * 
 	 * @param he
-	 *            The {@link HttpExchange} object containing basic object from
+	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
 	 *            the RestResponse to perform response write.
 	 * @throws IOException
 	 */
-	private HttpError options(HttpExchange t, RestResponse response) {
+	private HttpError options(HttpRequest request, RestResponse response) {
 		return HttpError.OK;
 	}
 }

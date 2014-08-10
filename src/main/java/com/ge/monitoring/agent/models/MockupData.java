@@ -25,6 +25,15 @@ public class MockupData {
 		this.value = value;
 	}
 
+	public MockupData(String title, int i) {
+		this(i);
+		this.title=title;
+	}
+	public MockupData(String title, String version, int i) {
+		this(title, i);
+		this.version = version;
+	}
+
 	public String getTitle() {
 		return title;
 	}
