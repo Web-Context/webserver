@@ -9,10 +9,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.ge.monitoring.agent.models.MockupData;
-import com.ge.monitoring.agent.restserver.internal.HttpRequest;
-import com.ge.monitoring.agent.restserver.internal.RestHandler;
-import com.ge.monitoring.agent.restserver.internal.RestResponse;
-import com.ge.monitoring.agent.restserver.internal.RestServer.HttpError;
+import com.ge.monitoring.agent.restserver.internal.http.HttpRequest;
+import com.ge.monitoring.agent.restserver.internal.rest.RestHandler;
+import com.ge.monitoring.agent.restserver.internal.rest.RestResponse;
+import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpError;
 
 /**
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>

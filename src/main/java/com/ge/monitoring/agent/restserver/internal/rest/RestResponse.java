@@ -1,4 +1,4 @@
-package com.ge.monitoring.agent.restserver.internal;
+package com.ge.monitoring.agent.restserver.internal.rest;
 
 import java.util.HashMap;
 import java.util.List;

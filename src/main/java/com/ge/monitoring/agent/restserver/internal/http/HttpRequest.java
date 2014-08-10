@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver.internal;
+package com.ge.monitoring.agent.restserver.internal.http;
 
 import java.util.Map;
 import java.util.Set;

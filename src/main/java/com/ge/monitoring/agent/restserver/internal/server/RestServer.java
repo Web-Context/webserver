@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver.internal;
+package com.ge.monitoring.agent.restserver.internal.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import org.apache.log4j.Logger;
 
 import com.ge.monitoring.agent.restserver.MeasuresRestHandler;
+import com.ge.monitoring.agent.restserver.internal.rest.RestHandler;
 import com.sun.net.httpserver.HttpServer;
 
 /**

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver.internal;
+package com.ge.monitoring.agent.restserver.internal.rest;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,8 +10,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.ge.monitoring.agent.restserver.internal.RestServer.HttpError;
-import com.ge.monitoring.agent.restserver.internal.RestServer.HttpMethod;
+import com.ge.monitoring.agent.restserver.internal.http.HttpRequest;
+import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpError;
+import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpMethod;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
