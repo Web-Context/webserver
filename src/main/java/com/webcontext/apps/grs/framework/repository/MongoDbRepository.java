@@ -15,6 +15,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
+import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
 
 /**
  * This class is a lightweight implementation for a Data Repository accessing to
@@ -75,15 +76,31 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 	 * @see com.webcontext.apps.grs.repository.IMongoDbRepository#find()
 	 */
 	@Override
-	public List<T> find() {
+	public List<T> find() throws NullMongoDBConnection {
 		if (connection == null) {
-			return null;
+			throw new NullMongoDBConnection("MongoDBConnection object is null");
 		}
 		DBCollection collection = connection.getDb().getCollection(
 				collectionName);
 		DBCursor cursor = collection.find();
 
 		return buildListFromCursor(cursor);
+	}
+
+	/**
+	 * Count number of entities into the corresponding collection.
+	 * 
+	 * @return the number of entities in the Repository specific collection.
+	 */
+	public long count() throws NullMongoDBConnection {
+		if (connection == null) {
+			throw new NullMongoDBConnection("MongoDBConnection object is null");
+		}
+		DBCollection collection = connection.getDb().getCollection(
+				collectionName);
+		DBCursor cursor = collection.find();
+
+		return cursor.count();
 	}
 
 	/*
@@ -94,10 +111,10 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 	 * String)
 	 */
 	@Override
-	public List<T> find(String filter) {
+	public List<T> find(String filter) throws NullMongoDBConnection {
 
 		if (connection == null) {
-			return null;
+			throw new NullMongoDBConnection("MongoDBConnection object is null");
 		}
 		DBCollection collection = connection.getDb().getCollection(
 				collectionName);
@@ -133,7 +150,11 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 	 * @see com.webcontext.apps.grs.repository.IMongoDbRepository#save(T)
 	 */
 	@Override
-	public WriteResult save(T item) {
+	public WriteResult save(T item) throws NullMongoDBConnection {
+		if (connection == null) {
+			throw new NullMongoDBConnection("MongoDBConnection object is null");
+
+		}
 		DBCollection collection = connection.getDb().getCollection(
 				collectionName);
 
@@ -147,7 +168,10 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 	 * @see com.webcontext.apps.grs.repository.IMongoDbRepository#remove(T)
 	 */
 	@Override
-	public void remove(T item) {
+	public void remove(T item) throws NullMongoDBConnection {
+		if (connection == null) {
+			throw new NullMongoDBConnection("MongoDBConnection object is null");
+		}
 		DBCollection collection = connection.getDb().getCollection(
 				collectionName);
 		collection.remove(convertFromObject(item));
@@ -196,7 +220,6 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 	 */
 	public abstract BasicDBObject serialize(T item);
 
-	
 	/**
 	 * Set the connection to mongodb database.
 	 */

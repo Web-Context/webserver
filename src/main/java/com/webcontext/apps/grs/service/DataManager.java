@@ -7,9 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.webcontext.apps.grs.framework.model.MDBEntity;
 import com.webcontext.apps.grs.framework.repository.IMongoDbRepository;
 import com.webcontext.apps.grs.framework.repository.MongoDBConnection;
+import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
 
 /**
  * Data manager is a MongoDB Repository Service, providing easy access to data.
@@ -19,6 +22,8 @@ import com.webcontext.apps.grs.framework.repository.MongoDBConnection;
  */
 public class DataManager {
 
+	private static final Logger LOGGER = Logger.getLogger(DataManager.class);
+
 	/**
 	 * internal instance.
 	 */
@@ -27,6 +32,7 @@ public class DataManager {
 	/**
 	 * Map of MongoDB repositories.
 	 */
+	@SuppressWarnings("rawtypes")
 	private Map<Class<? extends MDBEntity>, IMongoDbRepository> repositories = new HashMap<Class<? extends MDBEntity>, IMongoDbRepository>();
 
 	/**
@@ -67,7 +73,7 @@ public class DataManager {
 	public void register(Class<? extends MDBEntity> entity,
 			Class<? extends IMongoDbRepository> repository)
 			throws InstantiationException, IllegalAccessException {
-		IMongoDbRepository repo = repository.newInstance();
+		IMongoDbRepository<?> repo = repository.newInstance();
 		repo.setConnection(connection);
 		repositories.put(entity, repo);
 	}
@@ -87,12 +93,46 @@ public class DataManager {
 	 *            data page size
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<MDBEntity> find(Class<? extends MDBEntity> entity, String filter) {
 
-		IMongoDbRepository repository = repositories.get(entity);
+		IMongoDbRepository<MDBEntity> repository = repositories.get(entity);
 
-		List<MDBEntity> measures = repository.find(filter);
+		List<MDBEntity> measures = null;
+		try {
+			measures = repository.find(filter);
+		} catch (NullMongoDBConnection e) {
+			LOGGER.error(
+					"Unalble to retrieve data for " + entity.getCanonicalName(),
+					e);
+		}
 		return measures;
+	}
+
+	/**
+	 * Retrieve an entity on the specific collection (already declared in the
+	 * repository implementation)
+	 * 
+	 * @param entity
+	 *            the entity to retrieve
+	 * @param id
+	 *            the unique identifier for the searched entity.
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<MDBEntity> findById(Class<? extends MDBEntity> entity, String id) {
+		IMongoDbRepository<MDBEntity> repository = repositories.get(entity);
+
+		List<MDBEntity> entities = null;
+		try {
+			entities = repository.find(String.format("{ \"id\":\"%s\"}", id));
+		} catch (NullMongoDBConnection e) {
+			LOGGER.error(
+					"Unalble to retrieve data for " + entity.getCanonicalName(),
+					e);
+		}
+		return entities;
+
 	}
 
 	/**
@@ -108,6 +148,54 @@ public class DataManager {
 			String filter) {
 		return DataManager.getInstance().find(entity, filter);
 
+	}
+
+	/**
+	 * retrieve the number of entries on the corresponding collection.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public long count(Class<? extends MDBEntity> entity) {
+		IMongoDbRepository<MDBEntity> repository = repositories.get(entity);
+		long count = -1;
+		try {
+			count = repository.count();
+		} catch (NullMongoDBConnection e) {
+			LOGGER.error(
+					"Unalble to retrieve data for " + entity.getCanonicalName(),
+					e);
+		}
+		return count;
+	}
+
+	/**
+	 * static helper to retrieve number of entities in a collection.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public static long countEntities(Class<? extends MDBEntity> entity) {
+		return DataManager.getInstance().count(entity);
+	}
+
+	/**
+	 * Save an entity to Collection.
+	 * 
+	 * @param entity
+	 *            to be saved.
+	 */
+	@SuppressWarnings("unchecked")
+	public void save(MDBEntity entity) {
+		IMongoDbRepository<MDBEntity> repository = repositories.get(entity
+				.getClass());
+		try {
+			repository.save(entity);
+		} catch (NullMongoDBConnection e) {
+			LOGGER.error("Unalble to retrieve data for "
+					+ entity.getClass().getCanonicalName(), e);
+		}
 	}
 
 }

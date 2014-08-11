@@ -36,5 +36,5 @@ public class GameRepository extends MongoDbRepository<Game> {
 		object = (BasicDBObject) JSON.parse(gson.toJson(item).toString());
 		return object;
 	}
-
+	
 }

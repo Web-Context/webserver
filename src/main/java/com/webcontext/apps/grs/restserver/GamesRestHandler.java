@@ -3,7 +3,6 @@
  */
 package com.webcontext.apps.grs.restserver;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -48,10 +47,10 @@ public class GamesRestHandler extends RestHandler {
 			title = (String) request.getParameter("title", String.class,
 					"no-title");
 
-			platform = (String) request.getParameter("version", String.class,
+			platform = (String) request.getParameter("platform", String.class,
 					"1.0");
 
-			nb = (Integer) request.getParameter("nb", Integer.class, "0");
+			nb = (Integer) request.getParameter("nb", Integer.class, "10");
 
 			LOGGER.debug(String.format(
 					"Parameters title=%s, version=%s, nb=%d", title, platform,
@@ -77,22 +76,4 @@ public class GamesRestHandler extends RestHandler {
 		}
 	}
 
-	public static void main(String[] args) {
-
-		RestServer server;
-		int port = 0;
-		String stopKey = "";
-		try {
-			port = RestServer.getIntArg(args, "port", 8888);
-			stopKey = RestServer.getStringArg(args, "StopKey", "STOP");
-			server = new RestServer(port, stopKey);
-			server.addContext("/rest/instruments", new GamesRestHandler(server));
-			server.start();
-		} catch (IOException | InterruptedException e) {
-			LOGGER.error("Unable to start the internal Rest HTTP Server component on port "
-					+ port + ". Reason : " + e.getLocalizedMessage());
-		}
-		LOGGER.info("End of processing request in Server on port " + port);
-		System.exit(0);
-	}
 }

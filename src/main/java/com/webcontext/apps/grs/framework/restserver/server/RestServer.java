@@ -5,11 +5,13 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.reflections.Reflections;
 
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
@@ -235,17 +237,17 @@ public class RestServer {
 	 * @throws IOException
 	 */
 	private void initServer(int port) throws IOException {
-		
+
 		// CReate the server
 		server = HttpServer.create(new InetSocketAddress(port), 0);
-		
+
 		// initialize its ThreadPool to serve RestHandler
 		server.setExecutor(new ThreadPoolExecutor(CORE_POOL_SIZE,
 				MAX_CORE_POOL_SIZE, HEARBEAT_FREQUENCY, TimeUnit.MILLISECONDS,
 				new ArrayBlockingQueue<Runnable>(POOL_QUEUE_SIZE)));
 		// Add the internal Administrative Handler.
 		server.createContext("/rest/admin", new AdminHandler(this));
-		
+
 		LOGGER.info("Server has just been initialized on port " + port);
 	}
 
@@ -253,9 +255,15 @@ public class RestServer {
 	 * Start the Rest HTTP server after initialization.
 	 * 
 	 * @throws InterruptedException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
-	public void start() throws InterruptedException {
+	public void start() throws InterruptedException, InstantiationException,
+			IllegalAccessException {
 		if (server != null) {
+
+			boostrapServer();
+
 			server.start();
 			LOGGER.info(String.format("Server '%s' on port %d started",
 					getServerName(), port));
@@ -270,6 +278,25 @@ public class RestServer {
 			}
 			LOGGER.info("Server has stopped");
 		}
+	}
+
+	/**
+	 * Detect Class inheriting from IBootstrap to perform their processing and
+	 * initialize what have to be initialized.
+	 * 
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	private void boostrapServer() throws InstantiationException,
+			IllegalAccessException {
+		Reflections reflections = new Reflections("com.webcontext.apps");
+		Set<Class<?>> classes = reflections
+				.getTypesAnnotatedWith(Bootstrap.class);
+		for (Class<?> classe : classes) {
+			IBootstrap bootStrapped = (IBootstrap)classe.newInstance();
+			bootStrapped.initialized();
+		}
+
 	}
 
 	/**
