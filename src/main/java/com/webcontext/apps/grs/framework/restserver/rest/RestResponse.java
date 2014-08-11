@@ -1,4 +1,4 @@
-package com.ge.monitoring.agent.restserver.internal.rest;
+package com.webcontext.apps.grs.framework.restserver.rest;
 
 import java.util.HashMap;
 import java.util.List;

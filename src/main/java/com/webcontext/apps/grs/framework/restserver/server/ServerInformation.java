@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver.internal.server;
+package com.webcontext.apps.grs.framework.restserver.server;
 
 import java.net.URI;
 import java.util.Date;

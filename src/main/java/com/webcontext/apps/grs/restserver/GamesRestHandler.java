@@ -1,33 +1,34 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver;
+package com.webcontext.apps.grs.restserver;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.ge.monitoring.agent.models.MockupData;
-import com.ge.monitoring.agent.restserver.internal.http.HttpRequest;
-import com.ge.monitoring.agent.restserver.internal.rest.RestHandler;
-import com.ge.monitoring.agent.restserver.internal.rest.RestResponse;
-import com.ge.monitoring.agent.restserver.internal.server.RestServer;
-import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpStatus;
+import com.webcontext.apps.grs.framework.model.MDBEntity;
+import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
+import com.webcontext.apps.grs.framework.restserver.rest.RestHandler;
+import com.webcontext.apps.grs.framework.restserver.rest.RestResponse;
+import com.webcontext.apps.grs.framework.restserver.server.RestServer;
+import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
+import com.webcontext.apps.grs.models.Game;
+import com.webcontext.apps.grs.service.DataManager;
 
 /**
  * This is a sample implementation of this RestServer. It provides JSON document
- * on some basic request.
+ * on some basic request over a videogames database.
  * 
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
  * 
  */
-public class MeasuresRestHandler extends RestHandler {
+public class GamesRestHandler extends RestHandler {
 	private static final Logger LOGGER = Logger
-			.getLogger(MeasuresRestHandler.class);
+			.getLogger(GamesRestHandler.class);
 
-	public MeasuresRestHandler(RestServer server) {
+	public GamesRestHandler(RestServer server) {
 		super(server);
 	}
 
@@ -41,28 +42,29 @@ public class MeasuresRestHandler extends RestHandler {
 		// String title = (String) request.getParameter("title",
 		// "no-title").toArray()[0];
 
-		String title = null, version = null;
+		String title = null, platform = null;
 		int nb = 0;
 		try {
 			title = (String) request.getParameter("title", String.class,
 					"no-title");
 
-			version = (String) request.getParameter("version", "1.0").toArray()[0];
-			nb = Integer.parseInt((String) request.getParameter("nb", "0")
-					.toArray()[0]);
+			platform = (String) request.getParameter("version", String.class,
+					"1.0");
+
+			nb = (Integer) request.getParameter("nb", Integer.class, "0");
 
 			LOGGER.debug(String.format(
-					"Parameters title=%s, version=%s, nb=%d", title, version,
+					"Parameters title=%s, version=%s, nb=%d", title, platform,
 					nb));
 
-			if (nb != 0 && title != null && version != null) {
-				List<MockupData> measures = new ArrayList<MockupData>();
-				for (int i = 0; i < nb; i++) {
-					measures.add(new MockupData(title, version, (int) (Math
-							.random() * 10000)));
-				}
-				response.add("measures", measures);
-				LOGGER.debug(String.format("created nb=%d objects", nb));
+			if (nb != 0 && title != null && platform != null) {
+				String filter = String
+						.format("{\"platform\":\"%s\", \"title\":\"%s\", \"parameters\":{\"offset\":\"%d\",\"pageSize\":\"%d\"}}",
+								platform, title, 0, nb);
+				List<MDBEntity> games = DataManager.findAll(Game.class, filter);
+				response.add("games", games);
+				LOGGER.debug(String.format("retrieve nb=%d objects",
+						games.size()));
 				return HttpStatus.OK;
 			} else {
 				response.add("error", "Unable to retrieve data");
@@ -84,8 +86,7 @@ public class MeasuresRestHandler extends RestHandler {
 			port = RestServer.getIntArg(args, "port", 8888);
 			stopKey = RestServer.getStringArg(args, "StopKey", "STOP");
 			server = new RestServer(port, stopKey);
-			server.addContext("/rest/instruments", new MeasuresRestHandler(
-					server));
+			server.addContext("/rest/instruments", new GamesRestHandler(server));
 			server.start();
 		} catch (IOException | InterruptedException e) {
 			LOGGER.error("Unable to start the internal Rest HTTP Server component on port "

@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ge.monitoring.agent</groupId>
-	<artifactId>restserver</artifactId>
+	<groupId>com.webcontext.apps.mgdbgames</groupId>
+	<artifactId>gamerestserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Java SE Internal REST server</name>
+	<name>Games REST Server</name>
 
 
 	<dependencies>
@@ -18,6 +18,20 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.11.4</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -37,4 +51,9 @@
 			</plugin>
 		</plugins>
 	</build>
+	<organization>
+		<name>web-context</name>
+		<url>http://www.web-context.com/</url>
+	</organization>
+	<description>This is an embedded  restServer connected to a MongoDB database to manage VideoGames files.</description>
 </project>

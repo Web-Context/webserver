@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver.internal.server;
+package com.webcontext.apps.grs.framework.restserver.server;
 
 import java.io.IOException;
 
-import com.ge.monitoring.agent.restserver.internal.http.HttpRequest;
-import com.ge.monitoring.agent.restserver.internal.rest.RestHandler;
-import com.ge.monitoring.agent.restserver.internal.rest.RestResponse;
-import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpStatus;
+import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
+import com.webcontext.apps.grs.framework.restserver.rest.RestHandler;
+import com.webcontext.apps.grs.framework.restserver.rest.RestResponse;
+import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
 
 /**
  * This is the internal ADMIN handler to perform some administrative task on

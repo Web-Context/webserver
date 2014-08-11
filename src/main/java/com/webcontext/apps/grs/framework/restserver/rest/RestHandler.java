@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ge.monitoring.agent.restserver.internal.rest;
+package com.webcontext.apps.grs.framework.restserver.rest;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.ge.monitoring.agent.restserver.internal.http.HttpRequest;
-import com.ge.monitoring.agent.restserver.internal.server.RestServer;
-import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpMethod;
-import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpStatus;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
+import com.webcontext.apps.grs.framework.restserver.server.RestServer;
+import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpMethod;
+import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
 
 /**
  * The RestHandler class is a specific Handler to perform processing of HTTP

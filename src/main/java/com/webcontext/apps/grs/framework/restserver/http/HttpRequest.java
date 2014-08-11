@@ -1,4 +1,4 @@
-package com.ge.monitoring.agent.restserver.internal.http;
+package com.webcontext.apps.grs.framework.restserver.http;
 
 import java.util.Map;
 import java.util.Set;
@@ -114,8 +114,28 @@ public class HttpRequest {
 			IllegalAccessException {
 		Object value = null;
 		if (parameters.containsKey(name)) {
-			value = castClass
+			switch(castClass.getName()){
+				case "java.lang.Integer":
+					value = new Integer((String)getParameter(name, defaultValue).toArray()[0]);
+					break;
+				case "java.lang.Float":
+					value = new Float((String)getParameter(name, defaultValue).toArray()[0]);
+					break;
+					
+				case "java.lang.Boolean":
+					value = new Boolean((String)getParameter(name, defaultValue).toArray()[0]);
+					break;
+					
+				case "java.lang.Double":
+					value = new Double((String)getParameter(name, defaultValue).toArray()[0]);
+					break;
+					
+				case "java.lang.String":
+					value = castClass
 					.cast(getParameter(name, defaultValue).toArray()[0]);
+				break;
+				
+			}
 		}
 		return value;
 	}

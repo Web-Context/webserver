@@ -1,4 +1,4 @@
-package com.ge.monitoring.agent.restserver.internal.server;
+package com.webcontext.apps.grs.framework.restserver.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.ge.monitoring.agent.restserver.internal.rest.RestHandler;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import com.webcontext.apps.grs.framework.restserver.rest.RestHandler;
 
 /**
  * Internal HTTP server on a specific port (default is 8888).
@@ -30,7 +30,7 @@ import com.sun.net.httpserver.HttpServer;
  * 
  * <pre>
  * server = new RestServer(port, stopKey);
- * server.addContext(&quot;/rest/instruments&quot;, new MeasuresRestHandler(server));
+ * server.addContext(&quot;/rest/instruments&quot;, new GamesRestHandler(server));
  * server.start();
  * </pre>
  * <p>
@@ -43,21 +43,49 @@ import com.sun.net.httpserver.HttpServer;
 
 @SuppressWarnings("restriction")
 public class RestServer {
-	private static final int HEARBEAT_FREQUENCY = 5000;
-
+	/**
+	 * Internal Logger.
+	 */
 	private static final Logger LOGGER = Logger.getLogger(RestServer.class);
 
-	private boolean authentication = true;
+	/**
+	 * Internal concurrent thread pool queue to server Handler.
+	 */
+	private static final int POOL_QUEUE_SIZE = 50;
+	/**
+	 * Number of parallel processing threads.
+	 */
+	private static final int CORE_POOL_SIZE = 2;
+	/**
+	 * max number of parallel processing threads where thread pool queue riched
+	 * its max.
+	 */
+	private static final int MAX_CORE_POOL_SIZE = 4;
+
+	/**
+	 * HeartBeat frequency for the server to detect if administrative stop is
+	 * required.
+	 */
+	private static final int HEARBEAT_FREQUENCY = 5000;
+
+	/**
+	 * boolean flag to activate authentication on administrative and all request
+	 * in the RestServer. By default, set to false.
+	 */
+	private boolean authentication = false;
 
 	/**
 	 * HeartBeat flag to manager stop of the server.
 	 */
 	private long heartBeat = 1;
 
+	/**
+	 * This is the internal Server Statistics information object.
+	 */
 	private ServerInformation info = new ServerInformation(new Date());
 
 	/**
-	 * Internal HTTP method
+	 * Internal HTTP method This Enum implements all known HTTP methods.
 	 * 
 	 * @author Frédéric Delorme<frederic.delorme@serphydose.com>
 	 * 
@@ -176,7 +204,8 @@ public class RestServer {
 
 	/**
 	 * Initialize the Rest HTTP Server on the specified <code>port</code> à
-	 * construction time.
+	 * construction time. In that case, the default stop key is
+	 * <code>STOP</code>.
 	 * 
 	 * @param port
 	 * @throws IOException
@@ -186,6 +215,14 @@ public class RestServer {
 		initServer(port);
 	}
 
+	/**
+	 * Initialize the server with a specific port,a nd a specific magic Stop
+	 * key.
+	 * 
+	 * @param port
+	 * @param stopKey
+	 * @throws IOException
+	 */
 	public RestServer(int port, String stopKey) throws IOException {
 		this(port);
 		this.stopkey = stopKey;
@@ -198,10 +235,17 @@ public class RestServer {
 	 * @throws IOException
 	 */
 	private void initServer(int port) throws IOException {
+		
+		// CReate the server
 		server = HttpServer.create(new InetSocketAddress(port), 0);
-		server.setExecutor(new ThreadPoolExecutor(2, 4, HEARBEAT_FREQUENCY,
-				TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50)));
+		
+		// initialize its ThreadPool to serve RestHandler
+		server.setExecutor(new ThreadPoolExecutor(CORE_POOL_SIZE,
+				MAX_CORE_POOL_SIZE, HEARBEAT_FREQUENCY, TimeUnit.MILLISECONDS,
+				new ArrayBlockingQueue<Runnable>(POOL_QUEUE_SIZE)));
+		// Add the internal Administrative Handler.
 		server.createContext("/rest/admin", new AdminHandler(this));
+		
 		LOGGER.info("Server has just been initialized on port " + port);
 	}
 
