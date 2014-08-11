@@ -139,5 +139,45 @@ This small piece of code will serve the ```localhost:8888/rest/foo```  with a js
 	{ "title": "[title from URL]" }
 	```   	
 
+# Administration
 
-To continued ...   	
+The server can be called on the localhost:[port]/rest/admin to perform some administratiove operation like:
+
+## Usage Statistics
+
+* ``localhost:[port]/rest/admin?command=info``  return a json structure containing some basic usage statistics and information
+
+	```
+	{
+	  "info": {
+	    "StartDate": "Aug 11, 2014 11:38:25 AM",
+	    "LastRequest": "Aug 11, 2014 11:38:31 AM",
+	    "RequestCounter": 1,
+	    "SuccessfulRequestCounter": 1,
+	    "ErrorRequestCounter": 0,
+	    "LastURI": "/rest/instruments?title\u003dtest\u0026nb\u003d6",
+	    "LastErrorURI": null
+	  }
+	} 
+	```  
+
+where :
+
+* **StartsDate** is the date of last start of the server,
+* **LastRequest** is the date where and URL was called on the server (``/admin`` url are excluded from statistics),
+* **RequestCounter** is a request ... counter :),
+* **SuccessfullRequestCounter** show how many request drives to HTTP status 200 (HttpStatus.OK),
+* **ErrorRequestCounter** show number of request driving to Error status (not HTTP 200 code),
+* **LastURI** is the last served URI,
+* **LastErrorURI** is the last URI called driven to an HTTP error code (not 200).
+
+
+> **Information**
+>
+> Calling this url ``localhost:[port]/rest/admin`` with a ``POST`` method drive to the same result.
+
+
+## Stop server
+
+* ``localhost:[port]/rest/admin?command=stop`` drive to ask stopping the RestHTTP server.
+* 
