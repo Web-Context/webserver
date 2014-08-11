@@ -14,7 +14,7 @@ import com.webcontext.apps.grs.framework.model.MDBEntity;
  * @author 212391884
  *
  */
-public class Game implements MDBEntity{
+public class Game extends MDBEntity{
 
 
 	public String id, title;

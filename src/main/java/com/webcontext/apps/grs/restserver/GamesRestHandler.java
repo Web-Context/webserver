@@ -58,8 +58,8 @@ public class GamesRestHandler extends RestHandler {
 
 			if (nb != 0 && title != null && platform != null) {
 				String filter = String
-						.format("{\"platform\":\"%s\", \"title\":\"%s\", \"parameters\":{\"offset\":\"%d\",\"pageSize\":\"%d\"}}",
-								platform, title, 0, nb);
+						.format("{\"title\":\"%s\", \"parameters\":{\"offset\":\"%d\",\"pageSize\":\"%d\"}}",
+								title, 0, nb);
 				List<MDBEntity> games = DataManager.findAll(Game.class, filter);
 				response.add("games", games);
 				LOGGER.debug(String.format("retrieve nb=%d objects",

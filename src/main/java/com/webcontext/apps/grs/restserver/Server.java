@@ -8,6 +8,9 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.framework.restserver.server.RestServer;
+import com.webcontext.apps.grs.models.Game;
+import com.webcontext.apps.grs.repository.GameRepository;
+import com.webcontext.apps.grs.service.DataManager;
 
 /**
  * This is the start class for our server.
@@ -29,6 +32,9 @@ public class Server {
 			port = RestServer.getIntArg(args, "port", 8888);
 			stopKey = RestServer.getStringArg(args, "StopKey", "STOP");
 			server = new RestServer(port, stopKey);
+			DataManager.getInstance().register(Game.class, GameRepository.class);
+			
+			
 			server.addContext("/rest/games", new GamesRestHandler(server));
 			server.start();
 		} catch (IOException | InterruptedException | InstantiationException | IllegalAccessException e) {

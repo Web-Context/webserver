@@ -12,7 +12,7 @@ import com.webcontext.apps.grs.models.Game;
  * @author 212391884
  *
  */
-public class GameRepository extends MongoDbRepository<Game> {
+public class GameRepository extends MongoDbRepository<Game>{
 
 	/**
 	 * Default constructor for default connection.

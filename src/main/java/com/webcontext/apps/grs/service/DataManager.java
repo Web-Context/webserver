@@ -70,8 +70,7 @@ public class DataManager {
 	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("rawtypes")
-	public void register(Class<? extends MDBEntity> entity,
-			Class<? extends IMongoDbRepository> repository)
+	public void register(Class<? extends MDBEntity> entity,	Class<? extends IMongoDbRepository> repository)
 			throws InstantiationException, IllegalAccessException {
 		IMongoDbRepository<?> repo = repository.newInstance();
 		repo.setConnection(connection);
