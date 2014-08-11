@@ -1,12 +1,10 @@
-/**
- * 
- */
 package com.ge.monitoring.agent.restserver.internal.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -14,10 +12,30 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import com.ge.monitoring.agent.restserver.internal.rest.RestHandler;
+import com.sun.net.httpserver.BasicAuthenticator;
+import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 
 /**
  * Internal HTTP server on a specific port (default is 8888).
+ * <p>
+ * the rest Server component is a small and dependency reduced HTTP server,
+ * serving JSON document. Based only on the HttpServer implementation from Java
+ * SE 7, and the GSon library it brings to developer some basic features like
+ * Rest request handling with simple Implementation.
+ * </p>
+ * <p>
+ * a basic usage can be
+ * </p>
+ * 
+ * <pre>
+ * server = new RestServer(port, stopKey);
+ * server.addContext(&quot;/rest/instruments&quot;, new MeasuresRestHandler(server));
+ * server.start();
+ * </pre>
+ * <p>
+ * see {@link README.md} for more information.
+ * </p>
  * 
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
  * 
@@ -25,8 +43,18 @@ import com.sun.net.httpserver.HttpServer;
 
 @SuppressWarnings("restriction")
 public class RestServer {
+	private static final int HEARBEAT_FREQUENCY = 5000;
+
 	private static final Logger LOGGER = Logger.getLogger(RestServer.class);
+
+	private boolean authentication = true;
+
+	/**
+	 * HeartBeat flag to manager stop of the server.
+	 */
 	private long heartBeat = 1;
+
+	private ServerInformation info = new ServerInformation(new Date());
 
 	/**
 	 * Internal HTTP method
@@ -39,8 +67,68 @@ public class RestServer {
 	}
 
 	/**
-	 * list of HTTP implemented ERROR code.
+	 * list of HTTP implemented ERROR code. Only some of those are declared into
+	 * this implementation. Please visit http://tools.ietf.org/html/rfc7231 for
+	 * details.
 	 * 
+	 * <table>
+	 * <tr>
+	 * <th>Code</th>
+	 * <th>Message</th>
+	 * </tr>
+	 * <tbody>
+	 * <tr>
+	 * <td>200</td>
+	 * <td>OK</td>
+	 * </tr>
+	 * <tr>
+	 * <td>201</td>
+	 * <td>CREATED</td>
+	 * </tr>
+	 * <tr>
+	 * <td>202</td>
+	 * <td>ACCEPTED</td>
+	 * </tr>
+	 * <tr>
+	 * <td>301</td>
+	 * <td>MOVE_PERMANENTLY</td>
+	 * </tr>
+	 * <tr>
+	 * <td>302</td>
+	 * <td>MOVE_TEMPORARILY</td>
+	 * </tr>
+	 * <tr>
+	 * <td>400</td>
+	 * <td>BAD_REQUEST</td>
+	 * </tr>
+	 * <tr>
+	 * <td>401</td>
+	 * <td>UNAUTHORIZED</td>
+	 * </tr>
+	 * <tr>
+	 * <td>402</td>
+	 * <td>PAYMENT_REQUIRED</td>
+	 * </tr>
+	 * <tr>
+	 * <td>403</td>
+	 * <td>FORBIDDEN</td>
+	 * </tr>
+	 * <tr>
+	 * <td>404</td>
+	 * <td>NOT_FOUND</td>
+	 * </tr>
+	 * <tr>
+	 * <td>418</td>
+	 * <td>I_AM_A_TEAPOT</td>
+	 * </tr>
+	 * <tr>
+	 * <td>500</td>
+	 * <td>INTERNAL_ERROR</td>
+	 * </tr>
+	 * </tbody>
+	 * </table>
+	 * 
+	 * @see http://tools.ietf.org/html/rfc7231
 	 * @author Frédéric Delorme<frederic.delorme@serphydose.com>
 	 * 
 	 */
@@ -62,7 +150,7 @@ public class RestServer {
 	}
 
 	/**
-	 * Sun SE Http Server
+	 * The internal instance of the Sun Http Server.
 	 */
 	private HttpServer server = null;
 	/**
@@ -70,6 +158,10 @@ public class RestServer {
 	 */
 	private int port = 8888;
 
+	/**
+	 * Magic keyword to stop server on the <code>/rest/admin</code> URI.
+	 */
+	@SuppressWarnings("unused")
 	private String stopkey = "";
 
 	/**
@@ -107,8 +199,8 @@ public class RestServer {
 	 */
 	private void initServer(int port) throws IOException {
 		server = HttpServer.create(new InetSocketAddress(port), 0);
-		server.setExecutor(new ThreadPoolExecutor(2, 4, 1000,
-				TimeUnit.MILLISECONDS, new ArrayBlockingQueue(50)));
+		server.setExecutor(new ThreadPoolExecutor(2, 4, HEARBEAT_FREQUENCY,
+				TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50)));
 		server.createContext("/rest/admin", new AdminHandler(this));
 		LOGGER.info("Server has just been initialized on port " + port);
 	}
@@ -124,7 +216,7 @@ public class RestServer {
 			LOGGER.info(String.format("Server '%s' on port %d started",
 					getServerName(), port));
 			while (heartBeat != -1) {
-				Thread.sleep(1000);
+				Thread.sleep(HEARBEAT_FREQUENCY);
 				LOGGER.debug(String.format("Rest Server heart beat is alive",
 						heartBeat));
 				if (heartBeat != -1) {
@@ -136,6 +228,14 @@ public class RestServer {
 		}
 	}
 
+	/**
+	 * Retrieve the Server name from different ways, according to the post from
+	 * "Thomas W" on stackoverflow.com .
+	 * 
+	 * @see http://stackoverflow.com/questions/7348711/20793241#20793241
+	 * 
+	 * @return
+	 */
 	private String getServerName() {
 		// try InetAddress.LocalHost first;
 		// NOTE -- InetAddress.getLocalHost().getHostName() will not work in
@@ -173,7 +273,16 @@ public class RestServer {
 	}
 
 	public void addContext(String restPath, RestHandler restHandler) {
-		server.createContext(restPath, restHandler);
+		HttpContext hc1 = server.createContext(restPath, restHandler);
+		if (authentication) {
+			hc1.setAuthenticator(new BasicAuthenticator("rest") {
+				@Override
+				public boolean checkCredentials(String user, String pwd) {
+					return user.equals("admin") && pwd.equals("password");
+				}
+			});
+		}
+
 	}
 
 	/**
@@ -191,27 +300,68 @@ public class RestServer {
 	 * @return value of the argument, or the fall back default value
 	 *         <code>defaultValue</code>.
 	 */
-	@SuppressWarnings("unused")
 	public static int getIntArg(String[] args, String argName, int defaultValue) {
 		String value = parseArgs(args, argName);
 		return (value != null ? Integer.parseInt(value) : defaultValue);
 	}
 
-	@SuppressWarnings("unused")
+	/**
+	 * retrieve a <code>String</code> parameter name <code>argName</code> from
+	 * the <code>args</code> list. if value is not set , return the
+	 * <code>defaultValue</code>.
+	 * 
+	 * @param args
+	 *            list of arguments from the Java main method.
+	 * @param argName
+	 *            argument name to search in the list
+	 * @param defaultValue
+	 *            the default value if <code>argName</code> value is not found
+	 *            in the <code>args</code> list.
+	 * @return value of the argument, or the fall back default value
+	 *         <code>defaultValue</code>.
+	 */
 	public static String getStringArg(String[] args, String argName,
 			String defaultValue) {
 		String value = parseArgs(args, argName);
 		return (value != null ? value : defaultValue);
 	}
 
-	@SuppressWarnings("unused")
+	/**
+	 * retrieve a <code>Boolean</code> parameter name <code>argName</code> from
+	 * the <code>args</code> list. if value is not set , return the
+	 * <code>defaultValue</code>.
+	 * 
+	 * @param args
+	 *            list of arguments from the Java main method.
+	 * @param argName
+	 *            argument name to search in the list
+	 * @param defaultValue
+	 *            the default value if <code>argName</code> value is not found
+	 *            in the <code>args</code> list.
+	 * @return value of the argument, or the fall back default value
+	 *         <code>defaultValue</code>.
+	 */
 	public static Boolean getBooleanArg(String[] args, String argName,
 			Boolean defaultValue) {
 		String value = parseArgs(args, argName);
 		return (value != null ? Boolean.parseBoolean(value) : defaultValue);
 	}
 
-	@SuppressWarnings("unused")
+	/**
+	 * retrieve a <code>Float</code> parameter name <code>argName</code> from
+	 * the <code>args</code> list. if value is not set , return the
+	 * <code>defaultValue</code>.
+	 * 
+	 * @param args
+	 *            list of arguments from the Java main method.
+	 * @param argName
+	 *            argument name to search in the list
+	 * @param defaultValue
+	 *            the default value if <code>argName</code> value is not found
+	 *            in the <code>args</code> list.
+	 * @return value of the argument, or the fall back default value
+	 *         <code>defaultValue</code>.
+	 */
 	public static Float getFloatArg(String[] args, String argName,
 			Float defaultValue) {
 		String value = parseArgs(args, argName);
@@ -219,8 +369,14 @@ public class RestServer {
 	}
 
 	/**
+	 * Parse all <code>args</code> items and retrieve the <code>argName</code>
+	 * value, if exists. Else return null.
+	 * 
 	 * @param args
+	 *            the String[] array containing arguments where to search for
+	 *            the <code>argName</code> value.
 	 * @param argName
+	 *            this is the name of the argument searched for.
 	 * @return
 	 */
 	private static String parseArgs(String[] args, String argName) {
@@ -234,4 +390,18 @@ public class RestServer {
 		return value;
 	}
 
+	/**
+	 * @return the info
+	 */
+	public ServerInformation getInfo() {
+		return info;
+	}
+
+	/**
+	 * @param info
+	 *            the info to set
+	 */
+	public void setInfo(ServerInformation info) {
+		this.info = info;
+	}
 }

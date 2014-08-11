@@ -5,6 +5,7 @@ package com.ge.monitoring.agent.restserver.internal.rest;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -42,36 +43,62 @@ import com.sun.net.httpserver.HttpHandler;
  */
 @SuppressWarnings("restriction")
 public class RestHandler implements HttpHandler {
-
+	/**
+	 * Linked RestServer serving this RestHandler.
+	 */
 	protected RestServer server;
 
+	/**
+	 * Initialize RestHandler with the managing server.
+	 * 
+	 * @param server
+	 */
 	public RestHandler(RestServer server) {
 		this.server = server;
 	}
 
+	/**
+	 * Process request. only GET, POST, pUT, DELETE, OPTIONS and HEAD are
+	 * implemented in this HTTP Request handler. Based on
+	 * <code>getRequestMethod()</code>, the right processing method is called.
+	 */
 	public void handle(HttpExchange httpExchange) throws IOException {
 
 		RestResponse response = new RestResponse();
 		HttpStatus errCode = HttpStatus.OK;
+		server.getInfo().setLastRequest(new Date());
+		server.getInfo().setRequestCounter(
+				server.getInfo().getRequestCounter() + 1);
 
 		Map<String, Set<String>> parameters = extractParameters(httpExchange);
 		HttpRequest request = new HttpRequest(httpExchange, parameters);
 
 		if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
 			errCode = get(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.POST)) {
+		} else if (httpExchange.getRequestMethod().equals(HttpMethod.POST.name())) {
 			errCode = post(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.PUT)) {
+		} else if (httpExchange.getRequestMethod().equals(HttpMethod.PUT.name())) {
 			errCode = put(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.DELETE)) {
+		} else if (httpExchange.getRequestMethod().equals(HttpMethod.DELETE.name())) {
 			errCode = delete(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.OPTIONS)) {
+		} else if (httpExchange.getRequestMethod().equals(HttpMethod.OPTIONS.name())) {
 			errCode = options(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.HEAD)) {
+		} else if (httpExchange.getRequestMethod().equals(HttpMethod.HEAD.name())) {
 			errCode = head(request, response);
 		}
-
+		// Build JSON response object.
 		String strResponse = response.toJson();
+
+		// some statistics on request processing.
+		if (errCode.equals(HttpStatus.OK)) {
+			server.getInfo().setSuccessfulRequestCounter(
+					server.getInfo().getSuccessfulRequestCounter() + 1);
+
+		} else {
+			server.getInfo().setErrorRequestCounter(
+					server.getInfo().getErrorRequestCounter() + 1);
+		}
+		// prepare and send response.
 		httpExchange.sendResponseHeaders(errCode.getCode(),
 				strResponse.length());
 		OutputStream osResp = httpExchange.getResponseBody();
@@ -80,7 +107,7 @@ public class RestHandler implements HttpHandler {
 	}
 
 	/**
-	 * Extract inline parameters to a map.
+	 * Extract the in line parameters to a map.
 	 * 
 	 * @param httpExchange
 	 * @return

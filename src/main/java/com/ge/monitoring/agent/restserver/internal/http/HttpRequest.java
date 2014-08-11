@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ge.monitoring.agent.restserver.internal.http;
 
 import java.util.Map;
@@ -11,7 +8,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 /**
- * Http Request object. contains all headers, parameters.
+ * Http Request object. contains all HTTP headers and HTTP request parameters.
  * 
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
  * 
@@ -79,15 +76,27 @@ public class HttpRequest {
 		return getParameter(name, "");
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Retrieve the <code>name</code> parameter on the {@link HttpRequest}. if
+	 * parameter is not set, return the <code>defaultValue</code>.
+	 * 
+	 * @param name
+	 *            Name of the parameter to retrieve from the URL
+	 * @param defaultValue
+	 *            the default value if parameter does not exists on URL. is
+	 *            null, no default value will be set.
+	 * @return
+	 */
 	public Set<String> getParameter(String name, String defaultValue) {
 
 		if (parameters.containsKey(name)) {
 			return parameters.get(name);
-		} else {
+		} else if (defaultValue != null) {
 			Set<String> defaultValues = new CopyOnWriteArraySet<>();
 			defaultValues.add(defaultValue);
 			return defaultValues;
+		} else {
+			return null;
 		}
 	}
 
@@ -100,11 +109,13 @@ public class HttpRequest {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public Object getParameter(String name, Class<?> castClass)
-			throws InstantiationException, IllegalAccessException {
+	public Object getParameter(String name, Class<?> castClass,
+			String defaultValue) throws InstantiationException,
+			IllegalAccessException {
 		Object value = null;
 		if (parameters.containsKey(name)) {
-			value = castClass.cast(parameters.get(name));
+			value = castClass
+					.cast(getParameter(name, defaultValue).toArray()[0]);
 		}
 		return value;
 	}

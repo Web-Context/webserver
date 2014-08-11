@@ -35,30 +35,42 @@ public class MeasuresRestHandler extends RestHandler {
 	@Override
 	public HttpStatus get(HttpRequest request, RestResponse response) {
 
-		String title = (String) request.getParameter("title", "no-title")
-				.toArray()[0];
-		String version = (String) request.getParameter("version", "1.0")
-				.toArray()[0];
-		int nb = Integer.parseInt((String) request.getParameter("nb", "0")
-				.toArray()[0]);
+		// String title = (String) request.getParameter("title",
+		// "no-title").toArray()[0];
 
-		LOGGER.debug(String.format("Parameters title=%s, version=%s, nb=%d",
-				title, version, nb));
+		String title=null, version=null;
+		int nb=0;
+		try {
+			title = (String) request.getParameter("title", String.class,
+					"no-title");
 
-		if (nb != 0 && title != null && version != null) {
-			List<MockupData> measures = new ArrayList<MockupData>();
-			for (int i = 0; i < nb; i++) {
-				measures.add(new MockupData(title, version, (int) (Math
-						.random() * 10000)));
+			version = (String) request.getParameter("version", "1.0")
+					.toArray()[0];
+			nb = Integer.parseInt((String) request.getParameter("nb", "0")
+					.toArray()[0]);
+
+			LOGGER.debug(String.format(
+					"Parameters title=%s, version=%s, nb=%d", title, version,
+					nb));
+
+			if (nb != 0 && title != null && version != null) {
+				List<MockupData> measures = new ArrayList<MockupData>();
+				for (int i = 0; i < nb; i++) {
+					measures.add(new MockupData(title, version, (int) (Math
+							.random() * 10000)));
+				}
+				response.add("measures", measures);
+				LOGGER.debug(String.format("created nb=%d objects", nb));
+				return HttpStatus.OK;
+			} else {
+				response.add("error", "Unable to retrieve data");
+				return HttpStatus.NOT_FOUNT;
 			}
-			response.add("measures", measures);
-			LOGGER.debug(String.format("created nb=%d objects", nb));
-			return HttpStatus.OK;
-		} else {
-			response.add("error", "Unable to retrieve data");
-			return HttpStatus.NOT_FOUNT;
+		} catch (InstantiationException e) {
+			return HttpStatus.INTERNAL_ERROR;
+		} catch (IllegalAccessException e) {
+			return HttpStatus.INTERNAL_ERROR;
 		}
-
 	}
 
 	public static void main(String[] args) {
@@ -70,13 +82,14 @@ public class MeasuresRestHandler extends RestHandler {
 			port = RestServer.getIntArg(args, "port", 8888);
 			stopKey = RestServer.getStringArg(args, "StopKey", "STOP");
 			server = new RestServer(port, stopKey);
-			server.addContext("/rest/instruments", new MeasuresRestHandler(server));
+			server.addContext("/rest/instruments", new MeasuresRestHandler(
+					server));
 			server.start();
 		} catch (IOException | InterruptedException e) {
 			LOGGER.error("Unable to start the internal Rest HTTP Server component on port "
 					+ port + ". Reason : " + e.getLocalizedMessage());
 		}
-		LOGGER.info("End of processing request in Server on port "+port);
+		LOGGER.info("End of processing request in Server on port " + port);
 		System.exit(0);
 	}
 }

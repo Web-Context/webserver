@@ -11,7 +11,10 @@ import com.ge.monitoring.agent.restserver.internal.rest.RestResponse;
 import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpStatus;
 
 /**
- * @author frederic
+ * This is the internal ADMIN handler to perform some administrative task on
+ * server like stopping it.
+ * 
+ * @author Frédéric Delorme<frederic.delorme@serphydose.com>
  * 
  */
 public class AdminHandler extends RestHandler {
@@ -20,12 +23,38 @@ public class AdminHandler extends RestHandler {
 		super(server);
 	}
 
+	/**
+	 * Ask to stop the server.
+	 */
 	@Override
 	public HttpStatus get(HttpRequest request, RestResponse response)
 			throws IOException {
-		if(request.getParameter("stop")!=null){
-			server.stop();
+		try {
+			if (request.getParameter("command", String.class, "no").equals(
+					"stop")) {
+				server.stop();
+				return HttpStatus.OK;
+			}
+			if (request.getParameter("command", String.class, "no").equals(
+					"info")) {
+				response.add("info", server.getInfo());
+				return HttpStatus.OK;
+			}
+		} catch (InstantiationException e) {
+			return HttpStatus.INTERNAL_ERROR;
+		} catch (IllegalAccessException e) {
+			return HttpStatus.INTERNAL_ERROR;
 		}
-		return HttpStatus.ACCEPTED;
+		return HttpStatus.BAD_REQUEST;
+	}
+
+	/**
+	 * return some basic internal informations.
+	 */
+	@Override
+	public HttpStatus post(HttpRequest request, RestResponse response)
+			throws IOException {
+		response.add("serverinfo", server.getInfo());
+		return HttpStatus.OK;
 	}
 }
