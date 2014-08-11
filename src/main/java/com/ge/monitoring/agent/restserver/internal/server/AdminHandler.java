@@ -49,6 +49,13 @@ public class AdminHandler extends RestHandler {
 	}
 
 	/**
+	 * Administrative operation call does not modify server information.
+	 */
+	@Override
+	protected void statistics(HttpStatus errCode, HttpRequest request) {
+	}
+
+	/**
 	 * return some basic internal informations.
 	 */
 	@Override

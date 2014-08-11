@@ -17,6 +17,9 @@ import com.ge.monitoring.agent.restserver.internal.server.RestServer;
 import com.ge.monitoring.agent.restserver.internal.server.RestServer.HttpStatus;
 
 /**
+ * This is a sample implementation of this RestServer. It provides JSON document
+ * on some basic request.
+ * 
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
  * 
  */
@@ -38,14 +41,13 @@ public class MeasuresRestHandler extends RestHandler {
 		// String title = (String) request.getParameter("title",
 		// "no-title").toArray()[0];
 
-		String title=null, version=null;
-		int nb=0;
+		String title = null, version = null;
+		int nb = 0;
 		try {
 			title = (String) request.getParameter("title", String.class,
 					"no-title");
 
-			version = (String) request.getParameter("version", "1.0")
-					.toArray()[0];
+			version = (String) request.getParameter("version", "1.0").toArray()[0];
 			nb = Integer.parseInt((String) request.getParameter("nb", "0")
 					.toArray()[0]);
 

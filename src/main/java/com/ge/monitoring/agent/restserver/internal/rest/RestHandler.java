@@ -65,13 +65,12 @@ public class RestHandler implements HttpHandler {
 	public void handle(HttpExchange httpExchange) throws IOException {
 
 		RestResponse response = new RestResponse();
-		HttpStatus errCode = HttpStatus.OK;
-		server.getInfo().setLastRequest(new Date());
-		server.getInfo().setRequestCounter(
-				server.getInfo().getRequestCounter() + 1);
+		HttpStatus errCode = HttpStatus.NOT_FOUNT;
+
 
 		Map<String, Set<String>> parameters = extractParameters(httpExchange);
 		HttpRequest request = new HttpRequest(httpExchange, parameters);
+
 
 		if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
 			errCode = get(request, response);
@@ -89,7 +88,24 @@ public class RestHandler implements HttpHandler {
 		// Build JSON response object.
 		String strResponse = response.toJson();
 
+
+		
+		statistics(errCode, request);
+		// prepare and send response.
+		httpExchange.sendResponseHeaders(errCode.getCode(),
+				strResponse.length());
+		OutputStream osResp = httpExchange.getResponseBody();
+		osResp.write(strResponse.getBytes());
+		osResp.close();
+	}
+
+	protected void statistics(HttpStatus errCode, HttpRequest request) {
 		// some statistics on request processing.
+		server.getInfo().setLastRequest(new Date());
+		server.getInfo().setRequestCounter(
+				server.getInfo().getRequestCounter() + 1);
+		server.getInfo().setLastURI(request.getHttpExchange().getRequestURI());
+
 		if (errCode.equals(HttpStatus.OK)) {
 			server.getInfo().setSuccessfulRequestCounter(
 					server.getInfo().getSuccessfulRequestCounter() + 1);
@@ -97,13 +113,8 @@ public class RestHandler implements HttpHandler {
 		} else {
 			server.getInfo().setErrorRequestCounter(
 					server.getInfo().getErrorRequestCounter() + 1);
+			server.getInfo().setLastErrorURI(request.getHttpExchange().getRequestURI());
 		}
-		// prepare and send response.
-		httpExchange.sendResponseHeaders(errCode.getCode(),
-				strResponse.length());
-		OutputStream osResp = httpExchange.getResponseBody();
-		osResp.write(strResponse.getBytes());
-		osResp.close();
 	}
 
 	/**

@@ -3,6 +3,7 @@
  */
 package com.ge.monitoring.agent.restserver.internal.server;
 
+import java.net.URI;
 import java.util.Date;
 
 /**
@@ -18,6 +19,9 @@ public class ServerInformation {
 	private long requestCounter;
 	private long successfulRequestCounter;
 	private long errorRequestCounter;
+
+	private URI lastURI;
+	private URI lastErrorURI;
 
 	/**
 	 * Default constructor initializing the start Date.
@@ -101,6 +105,38 @@ public class ServerInformation {
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	/**
+	 * @return the lastURI
+	 */
+	public URI getLastURI() {
+		return lastURI;
+	}
+
+	/**
+	 * @param lastURI
+	 *            the lastURI to set
+	 */
+	public void setLastURI(URI lastURI) {
+		this.lastURI = lastURI;
+	}
+
+	/**
+	 * @return the lastErrorURI
+	 */
+	public URI getLastErrorURI() {
+		return lastErrorURI;
+	}
+
+	/**
+	 * 
+	 * @param requestURI
+	 *            the lastErrorURI to set.
+	 */
+	public void setLastErrorURI(URI requestURI) {
+		this.lastErrorURI = requestURI;
+
 	}
 
 }
