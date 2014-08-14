@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.rest;
+package com.webcontext.apps.grs.framework.restserver.rest.handler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,9 +11,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import org.apache.log4j.Logger;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
+import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpMethod;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
@@ -42,7 +45,11 @@ import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus
  * 
  */
 @SuppressWarnings("restriction")
-public class RestHandler implements HttpHandler {
+public abstract class ResponseHandler<T> implements HttpHandler {
+
+	private static final Logger LOGGER = Logger
+			.getLogger(ResponseHandler.class);
+
 	/**
 	 * Linked RestServer serving this RestHandler.
 	 */
@@ -53,51 +60,63 @@ public class RestHandler implements HttpHandler {
 	 * 
 	 * @param server
 	 */
-	public RestHandler(RestServer server) {
+	public ResponseHandler(RestServer server) {
 		this.server = server;
 	}
 
+	public abstract T createResponse(); 
+	
 	/**
 	 * Process request. only GET, POST, pUT, DELETE, OPTIONS and HEAD are
 	 * implemented in this HTTP Request handler. Based on
 	 * <code>getRequestMethod()</code>, the right processing method is called.
 	 */
-	public void handle(HttpExchange httpExchange) throws IOException {
+	public void handle(HttpExchange httpExchange) {
 
-		RestResponse response = new RestResponse();
+		T response = createResponse();
 		HttpStatus errCode = HttpStatus.NOT_FOUNT;
-
-
-		Map<String, Set<String>> parameters = extractParameters(httpExchange);
-		HttpRequest request = new HttpRequest(httpExchange, parameters);
-
-
-		if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
-			errCode = get(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.POST.name())) {
-			errCode = post(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.PUT.name())) {
-			errCode = put(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.DELETE.name())) {
-			errCode = delete(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.OPTIONS.name())) {
-			errCode = options(request, response);
-		} else if (httpExchange.getRequestMethod().equals(HttpMethod.HEAD.name())) {
-			errCode = head(request, response);
-		}
-		// Build JSON response object.
-		String strResponse = response.toJson();
-
-
-		
-		statistics(errCode, request);
 		// prepare and send response.
-		httpExchange.sendResponseHeaders(errCode.getCode(),
-				strResponse.length());
-		OutputStream osResp = httpExchange.getResponseBody();
-		osResp.write(strResponse.getBytes());
-		osResp.close();
+		try {
+			Map<String, Set<String>> parameters = extractParameters(httpExchange);
+			HttpRequest request = new HttpRequest(httpExchange, parameters);
+
+			if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
+				errCode = get(request, response);
+			} else if (httpExchange.getRequestMethod().equals(
+					HttpMethod.POST.name())) {
+				errCode = post(request, response);
+			} else if (httpExchange.getRequestMethod().equals(
+					HttpMethod.PUT.name())) {
+				errCode = put(request, response);
+			} else if (httpExchange.getRequestMethod().equals(
+					HttpMethod.DELETE.name())) {
+				errCode = delete(request, response);
+			} else if (httpExchange.getRequestMethod().equals(
+					HttpMethod.OPTIONS.name())) {
+				errCode = options(request, response);
+			} else if (httpExchange.getRequestMethod().equals(
+					HttpMethod.HEAD.name())) {
+				errCode = head(request, response);
+			}
+			String strResponse = processResponse(response);
+
+			statistics(errCode, request);
+			httpExchange.getResponseHeaders();
+			httpExchange.sendResponseHeaders(errCode.getCode(),
+					strResponse.getBytes().length);
+			OutputStream osResp = httpExchange.getResponseBody();
+			osResp.write(strResponse.getBytes());
+			osResp.close();
+		} catch (IOException e) {
+			LOGGER.error("Error during retrieving data.", e);
+		}
 	}
+
+	/**
+	 * @param response
+	 * @return
+	 */
+	protected abstract String processResponse(T response);
 
 	protected void statistics(HttpStatus errCode, HttpRequest request) {
 		// some statistics on request processing.
@@ -113,7 +132,8 @@ public class RestHandler implements HttpHandler {
 		} else {
 			server.getInfo().setErrorRequestCounter(
 					server.getInfo().getErrorRequestCounter() + 1);
-			server.getInfo().setLastErrorURI(request.getHttpExchange().getRequestURI());
+			server.getInfo().setLastErrorURI(
+					request.getHttpExchange().getRequestURI());
 		}
 	}
 
@@ -155,10 +175,10 @@ public class RestHandler implements HttpHandler {
 	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
-	 *            the RestResponse to perform response write.
+	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpStatus get(HttpRequest request, RestResponse response)
+	public HttpStatus get(HttpRequest request, T response)
 			throws IOException {
 		return HttpStatus.OK;
 
@@ -171,10 +191,10 @@ public class RestHandler implements HttpHandler {
 	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
-	 *            the RestResponse to perform response write.
+	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpStatus post(HttpRequest request, RestResponse response)
+	public HttpStatus post(HttpRequest request, T response)
 			throws IOException {
 		return HttpStatus.OK;
 
@@ -187,10 +207,10 @@ public class RestHandler implements HttpHandler {
 	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
-	 *            the RestResponse to perform response write.
+	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpStatus put(HttpRequest request, RestResponse response)
+	public HttpStatus put(HttpRequest request, T response)
 			throws IOException {
 		return HttpStatus.OK;
 
@@ -203,10 +223,10 @@ public class RestHandler implements HttpHandler {
 	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
-	 *            the RestResponse to perform response write.
+	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpStatus delete(HttpRequest request, RestResponse response)
+	public HttpStatus delete(HttpRequest request, T response)
 			throws IOException {
 		return HttpStatus.OK;
 
@@ -219,10 +239,10 @@ public class RestHandler implements HttpHandler {
 	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
-	 *            the RestResponse to perform response write.
+	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	private HttpStatus head(HttpRequest request, RestResponse response) {
+	private HttpStatus head(HttpRequest request, T response) {
 		return HttpStatus.OK;
 	}
 
@@ -233,10 +253,10 @@ public class RestHandler implements HttpHandler {
 	 *            The {@link HttpRequest} object containing basic object from
 	 *            the request.
 	 * @param response
-	 *            the RestResponse to perform response write.
+	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	private HttpStatus options(HttpRequest request, RestResponse response) {
+	private HttpStatus options(HttpRequest request, T response) {
 		return HttpStatus.OK;
 	}
 }

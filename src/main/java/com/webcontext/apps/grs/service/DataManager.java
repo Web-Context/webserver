@@ -70,7 +70,8 @@ public class DataManager {
 	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("rawtypes")
-	public void register(Class<? extends MDBEntity> entity,	Class<? extends IMongoDbRepository> repository)
+	public void register(Class<? extends MDBEntity> entity,
+			Class<? extends IMongoDbRepository> repository)
 			throws InstantiationException, IllegalAccessException {
 		IMongoDbRepository<?> repo = repository.newInstance();
 		repo.setConnection(connection);
@@ -93,19 +94,20 @@ public class DataManager {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<MDBEntity> find(Class<? extends MDBEntity> entity, String filter) {
+	public List<MDBEntity> find(Class<? extends MDBEntity> entity,
+			String filter, int offset, int pageSize) {
 
 		IMongoDbRepository<MDBEntity> repository = repositories.get(entity);
 
-		List<MDBEntity> measures = null;
+		List<MDBEntity> list = null;
 		try {
-			measures = repository.find(filter);
+			list = repository.find(filter, offset, pageSize);
 		} catch (NullMongoDBConnection e) {
 			LOGGER.error(
 					"Unalble to retrieve data for " + entity.getCanonicalName(),
 					e);
 		}
-		return measures;
+		return list;
 	}
 
 	/**
@@ -145,7 +147,22 @@ public class DataManager {
 	 */
 	public static List<MDBEntity> findAll(Class<? extends MDBEntity> entity,
 			String filter) {
-		return DataManager.getInstance().find(entity, filter);
+		return DataManager.getInstance().find(entity, filter, 0, 0);
+
+	}
+
+	/**
+	 * static helper to access easily the find method.
+	 * 
+	 * @param version
+	 * @param title
+	 * @param offset
+	 * @param pageSize
+	 * @return
+	 */
+	public static List<MDBEntity> findAll(Class<? extends MDBEntity> entity,
+			String filter, int offset, int pageSize) {
+		return DataManager.getInstance().find(entity, filter, offset, pageSize);
 
 	}
 

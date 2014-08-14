@@ -112,7 +112,22 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 	 */
 	@Override
 	public List<T> find(String filter) throws NullMongoDBConnection {
+		BasicDBObject searchfilter = (BasicDBObject) JSON.parse(filter);
+		int offset = (searchfilter.containsField("parameters.offset")?searchfilter.getInt("parameters.offset"):0);
+		int pageSize = (searchfilter.containsField("parameters.pageSize")?searchfilter.getInt("parameters.pageSize"):0);
+		if(searchfilter.containsField("parameters")){
+			searchfilter.removeField("parameters");
+		}
+		return find(searchfilter.toString(),offset,pageSize);
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.webcontext.apps.grs.framework.repository.IMongoDbRepository#find(java.lang.String, int, int)
+	 */
+	@Override
+	public List<T> find(String filter, int offset, int pageSize)
+			throws NullMongoDBConnection {
 		if (connection == null) {
 			throw new NullMongoDBConnection("MongoDBConnection object is null");
 		}
@@ -120,6 +135,10 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 				collectionName);
 		BasicDBObject searchfilter = (BasicDBObject) JSON.parse(filter);
 		DBCursor cursor = collection.find(searchfilter);
+		if(offset != 0 && pageSize > 0){
+			cursor.skip(offset * pageSize);
+			cursor.limit(pageSize);
+		}
 		return buildListFromCursor(cursor);
 	}
 

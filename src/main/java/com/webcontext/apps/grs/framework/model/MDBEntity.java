@@ -3,6 +3,8 @@
  */
 package com.webcontext.apps.grs.framework.model;
 
+import java.util.Map;
+
 /**
  * A default entity manager.
  * 
@@ -11,13 +13,13 @@ package com.webcontext.apps.grs.framework.model;
  */
 public class MDBEntity {
 
-	public String _id;
+	public Map<String,String> _id;
 
 	public MDBEntity() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public MDBEntity(String _id) {
+	public MDBEntity(Map<String,String> _id) {
 		super();
 		this._id = _id;
 	}
@@ -25,7 +27,7 @@ public class MDBEntity {
 	/**
 	 * @return the _id
 	 */
-	public String get_id() {
+	public Map<String,String> get_id() {
 		return _id;
 	}
 
@@ -33,7 +35,7 @@ public class MDBEntity {
 	 * @param _id
 	 *            the _id to set
 	 */
-	public void set_id(String _id) {
+	public void set_id(Map<String,String> _id) {
 		this._id = _id;
 	}
 

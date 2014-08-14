@@ -6,8 +6,8 @@ package com.webcontext.apps.grs.framework.restserver.server;
 import java.io.IOException;
 
 import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.rest.RestHandler;
 import com.webcontext.apps.grs.framework.restserver.rest.RestResponse;
+import com.webcontext.apps.grs.framework.restserver.rest.handler.RestHandler;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
 
 /**
@@ -37,7 +37,7 @@ public class AdminHandler extends RestHandler {
 			}
 			if (request.getParameter("command", String.class, "no").equals(
 					"info")) {
-				response.add("info", server.getInfo());
+				response.addObject("info", server.getInfo());
 				return HttpStatus.OK;
 			}
 		} catch (InstantiationException e) {
@@ -61,7 +61,7 @@ public class AdminHandler extends RestHandler {
 	@Override
 	public HttpStatus post(HttpRequest request, RestResponse response)
 			throws IOException {
-		response.add("serverinfo", server.getInfo());
+		response.addObject("serverinfo", server.getInfo());
 		return HttpStatus.OK;
 	}
 }

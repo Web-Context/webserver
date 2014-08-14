@@ -16,7 +16,8 @@ import org.reflections.Reflections;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import com.webcontext.apps.grs.framework.restserver.rest.RestHandler;
+import com.webcontext.apps.grs.framework.restserver.rest.handler.RestHandler;
+import com.webcontext.apps.grs.framework.restserver.rest.handler.WebHandler;
 
 /**
  * Internal HTTP server on a specific port (default is 8888).
@@ -247,6 +248,7 @@ public class RestServer {
 				new ArrayBlockingQueue<Runnable>(POOL_QUEUE_SIZE)));
 		// Add the internal Administrative Handler.
 		server.createContext("/rest/admin", new AdminHandler(this));
+		addRessourceContext("/web", new WebHandler(this));
 
 		LOGGER.info("Server has just been initialized on port " + port);
 	}
@@ -293,7 +295,7 @@ public class RestServer {
 		Set<Class<?>> classes = reflections
 				.getTypesAnnotatedWith(Bootstrap.class);
 		for (Class<?> classe : classes) {
-			IBootstrap bootStrapped = (IBootstrap)classe.newInstance();
+			IBootstrap bootStrapped = (IBootstrap) classe.newInstance();
 			bootStrapped.initialized();
 		}
 
@@ -343,8 +345,21 @@ public class RestServer {
 		}
 	}
 
-	public void addContext(String restPath, RestHandler restHandler) {
+	public void addRestContext(String restPath, RestHandler restHandler) {
 		HttpContext hc1 = server.createContext(restPath, restHandler);
+		if (authentication) {
+			hc1.setAuthenticator(new BasicAuthenticator("rest") {
+				@Override
+				public boolean checkCredentials(String user, String pwd) {
+					return user.equals("admin") && pwd.equals("password");
+				}
+			});
+		}
+
+	}
+
+	public void addRessourceContext(String restPath, WebHandler webHandler) {
+		HttpContext hc1 = server.createContext(restPath, webHandler);
 		if (authentication) {
 			hc1.setAuthenticator(new BasicAuthenticator("rest") {
 				@Override

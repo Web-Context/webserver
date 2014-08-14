@@ -25,7 +25,7 @@ public class GameRepository extends MongoDbRepository<Game>{
 	@Override
 	public Game deserialize(BasicDBObject item) {
 		Game game = new Game();
-		game = gson.fromJson(JSON.serialize(item), Game.class);
+		game = gson.fromJson(item.toString(), Game.class);
 		return game;
 	}
 

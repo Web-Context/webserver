@@ -18,7 +18,7 @@ public interface IMongoDbRepository<T> {
 	 * Retrieve data from the defined collection.
 	 * 
 	 * @return
-	 * @throws NullMongoDBConnection 
+	 * @throws NullMongoDBConnection
 	 */
 	public abstract List<T> find() throws NullMongoDBConnection;
 
@@ -27,15 +27,28 @@ public interface IMongoDbRepository<T> {
 	 * 
 	 * @param filter
 	 * @return
-	 * @throws NullMongoDBConnection 
+	 * @throws NullMongoDBConnection
 	 */
 	public abstract List<T> find(String filter) throws NullMongoDBConnection;
+
+	/**
+	 * Retrieve data from a collection with particular filter and manage
+	 * pagination.
+	 * 
+	 * @param filter
+	 * @param offset
+	 * @param pageSize
+	 * @return
+	 * @throws NullMongoDBConnection
+	 */
+	public abstract List<T> find(String filter, int offset, int pageSize)
+			throws NullMongoDBConnection;
 
 	/**
 	 * return the number of record in a collection.
 	 * 
 	 * @return
-	 * @throws NullMongoDBConnection 
+	 * @throws NullMongoDBConnection
 	 */
 	public long count() throws NullMongoDBConnection;
 
@@ -44,14 +57,14 @@ public interface IMongoDbRepository<T> {
 	 * 
 	 * @param item
 	 * @return _id for the create object into the collection.
-	 * @throws NullMongoDBConnection 
+	 * @throws NullMongoDBConnection
 	 */
 	public abstract WriteResult save(T item) throws NullMongoDBConnection;
 
 	/**
 	 * 
 	 * @param item
-	 * @throws NullMongoDBConnection 
+	 * @throws NullMongoDBConnection
 	 */
 	public abstract void remove(T item) throws NullMongoDBConnection;
 

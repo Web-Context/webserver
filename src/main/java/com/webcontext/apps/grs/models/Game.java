@@ -226,4 +226,18 @@ public class Game extends MDBEntity{
 		this.platform = platform;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Game [id=" + id + ", title=" + title + ", cover=" + cover
+				+ ", tags=" + tags + ", platform=" + platform + ", rate="
+				+ rate + ", content=" + content + ", publicationDate="
+				+ publicationDate + ", editor=" + editor + ", developer="
+				+ developer + ", rated=" + rated + "]";
+	}
+
+	
+	
 }

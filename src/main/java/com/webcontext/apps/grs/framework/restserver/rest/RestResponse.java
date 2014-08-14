@@ -1,12 +1,12 @@
 package com.webcontext.apps.grs.framework.restserver.rest;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
 
 /**
  * Response builder object to perform JSON serialization of object on Rest
@@ -15,8 +15,11 @@ import com.google.gson.GsonBuilder;
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
  * 
  */
-public class RestResponse {
+public class RestResponse extends HttpResponse<Map<String,Object>> {
 
+	
+	
+	
 	/**
 	 * Serialize response object to JSON object.
 	 */
@@ -31,6 +34,7 @@ public class RestResponse {
 	 */
 	public RestResponse() {
 		data = new HashMap<String, Object>();
+		this.mimeType = "application/json";
 	}
 
 	/**
@@ -38,17 +42,8 @@ public class RestResponse {
 	 * 
 	 * @return
 	 */
-	public Map<String,Object> getData() {
+	public Map<String, Object> getData() {
 		return data;
-	}
-
-	/**
-	 * add a new Object to the data list.
-	 * 
-	 * @param data
-	 */
-	public void add(String key,Object value) {
-		this.data.put(key, value);
 	}
 
 	/**
@@ -57,7 +52,17 @@ public class RestResponse {
 	 * 
 	 * @return
 	 */
-	public String toJson() {
+	public String process() {
 		return gson.toJson(data);
+	}
+
+	@Override
+	public void add(Map<String, Object> data) {
+		this.data.putAll(data);
+
+	}
+
+	public void addObject(String key, Object value) {
+		this.data.put(key, value);
 	}
 }
