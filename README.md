@@ -103,7 +103,7 @@ To perform processing of one of the HTTP method on a specific URL, you must impl
 	server.addContext("/rest/foo", new FooRestHandler(server));
 	```
 
-Then, implements the corresponding method into the RestHandler. See bellow for a sample implementation serveing
+Then, implements the corresponding method into the RestHandler. See bellow for a sample implementation serving
 
 
 	```java
