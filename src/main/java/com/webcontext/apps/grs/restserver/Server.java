@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.framework.restserver.rest.handler.WebHandler;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer;
 import com.webcontext.apps.grs.models.Game;
 import com.webcontext.apps.grs.repository.GameRepository;

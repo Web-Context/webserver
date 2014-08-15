@@ -1,0 +1,38 @@
+{
+    "content": {
+        "en": "All it takes is the swipe of a finger. We connect with friends. We buy the latest gadgets and gear. We find out what's happening in the world. But with that same simple swipe, we cast an increasingly expansive shadow. With each connection, we leave a digital trail that tracks our every move and milestone, our every like and dislike. And it\u2019s not just people. Today, all major cities are networked. Urban infrastructures are monitored and controlled by complex operating systems.",
+        "fr": "Watch Dogs est un jeu d'action à la troisième personne sur Xbox 360. Dans un univers moderne et ouvert o\u00f9 tout est connect\u00e9 \u00e0 un syst\u00e8me de contr\u00f4le central appartenant \u00e0 des soci\u00e9t\u00e9s priv\u00e9es, le joueur incarne un groupe de hackeurs et d'assassins capables de manipuler et de pirater les syst\u00e8mes \u00e9lectroniques."
+    },
+    "cover": {
+        "big": "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL240_.jpg",
+        "full": "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL1500_.jpg",
+        "medium": "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL120_.jpg",
+        "mini": "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL80_.jpg"
+    },
+    "developer": "Ubisoft Montreal",
+    "editor": "Ubisoft",
+    "id": "000001",
+    "platform": [
+        "PS4",
+        "PS3",
+        "XONE",
+        "X360",
+        "PC",
+        "WiiU"
+    ],
+    "publicationDate": "2014-05-27 00:00:00",
+    "rate": {
+        "feeling": 18,
+        "gfx": 18,
+        "music": 16,
+        "sound": 15
+    },
+    "rated": "+18",
+    "tags": [
+        "gtalike",
+        "adventure",
+        "action",
+        "openworld"
+    ],
+    "title": "Watch Dogs"
+}

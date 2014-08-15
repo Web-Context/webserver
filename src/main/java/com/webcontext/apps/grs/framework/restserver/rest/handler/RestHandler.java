@@ -5,7 +5,7 @@ package com.webcontext.apps.grs.framework.restserver.rest.handler;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.framework.restserver.rest.RestResponse;
+import com.webcontext.apps.grs.framework.restserver.rest.response.RestResponse;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpMethod;
 

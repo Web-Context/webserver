@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.framework.model.MDBEntity;
 import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.rest.RestResponse;
 import com.webcontext.apps.grs.framework.restserver.rest.handler.RestHandler;
+import com.webcontext.apps.grs.framework.restserver.rest.response.RestResponse;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
 import com.webcontext.apps.grs.models.Game;
@@ -65,12 +65,15 @@ public class GamesRestHandler extends RestHandler {
 					platform, pageSize));
 
 			if (pageSize > 0 && title != null && platform != null) {
+
 				String filter = String
 				// {\"title\": {$in : [\"%s\"]},
 				// \"parameters\":{\"offset\":\"%d\",\"pageSize\":\"%d\"}}
 						.format("{" + subfilter(title, platform) + "}");
+
 				List<MDBEntity> games = DataManager.findAll(Game.class, filter,
 						offset, pageSize);
+
 				response.addObject("games", games);
 				LOGGER.debug(String.format("retrieve nb=%d objects",
 						games.size()));
@@ -106,7 +109,10 @@ public class GamesRestHandler extends RestHandler {
 			sb.append("\"title\": {$in : [\"").append(title).append("\"]}");
 		}
 		if (platform != null && !platform.equals("")) {
-			sb.append(",\"platform\": {$in : [\"").append(platform)
+			if(!sb.toString().equals("")){
+				sb.append(",");
+			}
+			sb.append("\"platform\": {$in : [\"").append(platform)
 					.append("\"]}");
 
 		}

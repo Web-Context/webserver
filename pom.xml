@@ -8,23 +8,34 @@
 
 
 	<dependencies>
+		<!-- Logger -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-
+		<!-- JSON serializer/deserializer -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
 		</dependency>
+		<!-- MongoDB database embedded edition -->
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>1.46.0</version>
+		</dependency>
+
+
+		<!-- MongoDB Java driver -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>2.11.4</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- Java introspection/Reflection library -->
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
@@ -80,6 +91,72 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>com.github.joelittlejohn.embedmongo</groupId>
+				<artifactId>embedmongo-maven-plugin</artifactId>
+				<version>0.1.12</version>
+				<executions>
+					<execution>
+						<id>start</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+						<configuration>
+							<port>37017</port>
+							<!-- optional, default 27017 -->
+
+							<randomPort>true</randomPort>
+							<!-- optional, default is false, if true allocates a random port and 
+								overrides embedmongo.port -->
+
+							<version>2.0.4</version>
+							<!-- optional, default 2.2.1 -->
+
+							<databaseDirectory>/tmp/mongotest</databaseDirectory>
+							<!-- optional, default is a new dir in java.io.tmpdir -->
+
+							<logging>file</logging>
+							<!-- optional (file|console|none), default console -->
+
+							<logFile>${project.build.directory}/myfile.log</logFile>
+							<!-- optional, can be used when logging=file, default is ./embedmongo.log -->
+
+							<logFileEncoding>utf-8</logFileEncoding>
+							<!-- optional, can be used when logging=file, default is utf-8 -->
+
+							<proxyHost>myproxy.company.com</proxyHost>
+							<!-- optional, default is none -->
+
+							<proxyPort>8080</proxyPort>
+							<!-- optional, default 80 -->
+
+							<proxyUser>joebloggs</proxyUser>
+							<!-- optional, default is none -->
+
+							<proxyPassword>pa55w0rd</proxyPassword>
+							<!-- optional, default is none -->
+
+							<bindIp>127.0.0.1</bindIp>
+							<!-- optional, default is to listen on all interfaces -->
+
+							<downloadPath>http://internal-mongo-repo/</downloadPath>
+							<!-- optional, default is http://fastdl.mongodb.org/ -->
+
+							<skip>false</skip>
+							<!-- optional, skips this plugin entirely, use on the command line 
+								like -Dembedmongo.skip -->
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 	<organization>

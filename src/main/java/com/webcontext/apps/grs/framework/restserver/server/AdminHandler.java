@@ -6,8 +6,8 @@ package com.webcontext.apps.grs.framework.restserver.server;
 import java.io.IOException;
 
 import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.rest.RestResponse;
 import com.webcontext.apps.grs.framework.restserver.rest.handler.RestHandler;
+import com.webcontext.apps.grs.framework.restserver.rest.response.RestResponse;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
 
 /**

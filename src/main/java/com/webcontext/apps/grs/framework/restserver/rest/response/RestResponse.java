@@ -1,4 +1,4 @@
-package com.webcontext.apps.grs.framework.restserver.rest;
+package com.webcontext.apps.grs.framework.restserver.rest.response;
 
 import java.util.HashMap;
 import java.util.Map;

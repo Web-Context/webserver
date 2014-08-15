@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.rest.handler;
+package com.webcontext.apps.grs.framework.restserver.rest.response;
 
 import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
 

@@ -271,8 +271,8 @@ public class RestServer {
 					getServerName(), port));
 			while (heartBeat != -1) {
 				Thread.sleep(HEARBEAT_FREQUENCY);
-				LOGGER.debug(String.format("Rest Server heart beat is alive",
-						heartBeat));
+				/*LOGGER.debug(String.format("Rest Server heart beat is alive",
+						heartBeat));*/
 				if (heartBeat != -1) {
 					heartBeat = 0;
 				}
