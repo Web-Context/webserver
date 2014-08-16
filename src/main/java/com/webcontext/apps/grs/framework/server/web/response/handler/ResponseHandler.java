@@ -76,12 +76,13 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 
 		T response = createResponse(httpExchange.getResponseBody());
 		HttpStatus errCode = HttpStatus.NOT_FOUNT;
+		OutputStream osResp =null;
 		// prepare and send response.
 		try {
 			Map<String, Set<String>> parameters = extractParameters(httpExchange);
 			HttpRequest request = new HttpRequest(httpExchange, parameters);
 			statistics(errCode, request);
-			httpExchange.setAttribute("Content-Type", response.getEncodage());
+			osResp = httpExchange.getResponseBody();
 
 			if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
 				errCode = get(request, response);
@@ -101,15 +102,35 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 					HttpMethod.HEAD.name())) {
 				errCode = head(request, response);
 			}
+			// compute response body
 			String strResponse = processResponse(response);
 
+			// Prepare Response Headers
+			httpExchange.getResponseHeaders().add("Content-Type",
+					response.getMimeType());
+			if (response.getEncodage() != null) {
+				httpExchange.getResponseHeaders().add("Encodage",
+						response.getEncodage());
+			}
 			httpExchange.sendResponseHeaders(errCode.getCode(),
 					strResponse.getBytes().length);
-			OutputStream osResp = httpExchange.getResponseBody();
+			
+			// Send response body (content)
 			osResp.write(strResponse.getBytes());
-			osResp.close();
+			
 		} catch (IOException e) {
 			LOGGER.error("Error during retrieving data.", e);
+		} finally{
+			// Close output stream response.
+			if(osResp != null) {
+				try {
+					osResp.close();
+				} catch (IOException e) {
+					LOGGER.error("Error during closing response output stream", e);
+				}
+			}
+
+
 		}
 	}
 

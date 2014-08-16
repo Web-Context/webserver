@@ -33,7 +33,7 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 	private Map<String, String> mimeTypes = new HashMap<>();
 
 	/**
-	 * CReate the basic Mime Types table.
+	 * Create the basic MIME Types table.
 	 * 
 	 * @param server
 	 */

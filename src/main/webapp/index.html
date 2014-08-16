@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
 <head>
 <meta charset="UTF-8">
 <title>GamesLibrary</title>
-<link rel="stylesheet" type="text/css" href="styles/screen.css" media="screen">
-<link rel="stylesheet" type="text/css" href="styles/print.css" media="print">
+<link rel="stylesheet" type="text/css" href="styles/screen.css"
+	media="screen">
+<link rel="stylesheet" type="text/css" href="styles/print.css"
+	media="print">
 <script type="text/javascript" src="scripts/angular.min.js"></script>
 </head>
 <body>
@@ -13,22 +15,23 @@
 		<nav>
 			<ul>
 				<li><a href="#/home" title="got to Library home page"><em>H</em>ome</a></li>
-				<li><a href="#/category/xone" accesskey="O" title="got to XOne Library">X<em>O</em>ne</a></li>
-				<li><a href="#/category/x360" accesskey="X" title="got to X360 Library"><em>X</em>360</a></li>
-				<li><a href="#/category/ps4" accesskey="4" title="got to PS4 Library">PS<em>4</em></a></li>
-				<li><a href="#/category/ps3" accesskey="3" title="got to PS3 Library">PS<em>3</em></a></li>
-				<li><a href="#/category/pc" accesskey="P" title="got to PC Library"><em>P</em>C</a></li>
+				<li ng-repeat="platform in platforms"><a
+					href="#/category/{{platform.code}}"
+					accesskey="{{platform.accesskey}}"
+					title="got to {{platform.name}} Library">{{platform.name | highLightAccessKey}}</a></li>
 			</ul>
 		</nav>
 	</header>
 	<section>
-		<article>
-		<h1>title</h1>
-		<div class="header">this is the header of the article.</div>
-		<div class="content">Thi is the content for the article.</div>
-		<div class="info">here are some useful info for the article</div>
+		<article ng-repeat="game in games">
+			<h1>{{game.title}}</h1>
+			<div class="header">{{game.header}}</div>
+			<div class="content">{{game.content}}</div>
+			<div class="info">{{game.editor}} / {{game.publisher}} / {{game.publicationDate}} </div>
 		</article>
 	</section>
-	<footer><p>(c) 2014 - Frédéric Delorme</p></footer>
+	<footer>
+		<p>(c) 2014 - Frédéric Delorme</p>
+	</footer>
 </body>
 </html>
