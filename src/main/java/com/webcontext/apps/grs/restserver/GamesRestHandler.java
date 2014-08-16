@@ -8,16 +8,16 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.framework.model.MDBEntity;
-import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.rest.handler.RestHandler;
-import com.webcontext.apps.grs.framework.restserver.rest.response.RestResponse;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
+import com.webcontext.apps.grs.framework.server.web.response.handler.RestHandler;
+import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
+import com.webcontext.apps.grs.framework.server.web.response.object.RestResponse;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpStatus;
 import com.webcontext.apps.grs.models.Game;
 import com.webcontext.apps.grs.service.DataManager;
 
 /**
- * This is a sample implementation of a RestHandler on this RestServer. It
+ * This is a sample implementation of a RestHandler on this GenericServer. It
  * provides JSON document on some basic request over a videogames database.
  * 
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
@@ -32,7 +32,7 @@ public class GamesRestHandler extends RestHandler {
 	 * 
 	 * @param server
 	 */
-	public GamesRestHandler(RestServer server) {
+	public GamesRestHandler(GenericServer server) {
 		super(server);
 	}
 

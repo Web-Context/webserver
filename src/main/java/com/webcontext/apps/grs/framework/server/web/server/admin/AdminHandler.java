@@ -1,14 +1,15 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.server;
+package com.webcontext.apps.grs.framework.server.web.server.admin;
 
 import java.io.IOException;
 
-import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.rest.handler.RestHandler;
-import com.webcontext.apps.grs.framework.restserver.rest.response.RestResponse;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
+import com.webcontext.apps.grs.framework.server.web.response.handler.RestHandler;
+import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
+import com.webcontext.apps.grs.framework.server.web.response.object.RestResponse;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpStatus;
 
 /**
  * This is the internal ADMIN handler to perform some administrative task on
@@ -19,7 +20,7 @@ import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus
  */
 public class AdminHandler extends RestHandler {
 
-	public AdminHandler(RestServer server) {
+	public AdminHandler(GenericServer server) {
 		super(server);
 	}
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.rest.handler;
+package com.webcontext.apps.grs.framework.server.web.response.handler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,11 +15,11 @@ import org.apache.log4j.Logger;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.http.IHttpResponse;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpMethod;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
+import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
+import com.webcontext.apps.grs.framework.server.web.response.object.IHttpResponse;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpMethod;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpStatus;
 
 /**
  * The RestHandler class is a specific Handler to perform processing of HTTP
@@ -52,16 +52,16 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 			.getLogger(ResponseHandler.class);
 
 	/**
-	 * Linked RestServer serving this RestHandler.
+	 * Linked GenericServer serving this RestHandler.
 	 */
-	protected RestServer server;
+	protected GenericServer server;
 
 	/**
 	 * Initialize RestHandler with the managing server.
 	 * 
 	 * @param server
 	 */
-	public ResponseHandler(RestServer server) {
+	public ResponseHandler(GenericServer server) {
 		this.server = server;
 	}
 

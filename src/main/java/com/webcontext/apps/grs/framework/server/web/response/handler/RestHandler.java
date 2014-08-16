@@ -1,15 +1,15 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.rest.handler;
+package com.webcontext.apps.grs.framework.server.web.response.handler;
 
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.framework.restserver.rest.response.RestResponse;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpMethod;
+import com.webcontext.apps.grs.framework.server.web.response.object.RestResponse;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpMethod;
 
 /**
  * The RestHandler class is a specific Handler to perform processing of HTTP
@@ -39,16 +39,16 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 	private static final Logger LOGGER = Logger.getLogger(RestHandler.class);
 
 	/**
-	 * Linked RestServer serving this RestHandler.
+	 * Linked GenericServer serving this RestHandler.
 	 */
-	protected RestServer server;
+	protected GenericServer server;
 
 	/**
 	 * Initialize RestHandler with the managing server.
 	 * 
 	 * @param server
 	 */
-	public RestHandler(RestServer server) {
+	public RestHandler(GenericServer server) {
 		super(server);
 	}
 

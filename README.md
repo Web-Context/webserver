@@ -1,6 +1,6 @@
 # README
 
-## RestServer
+## GenericServer
 
 the rest Server component is a small and dependency reduced HTTP server, serving JSON document. 
 Based only on the HttpServer implementation from Java SE 7, and the GSon library it brings to 
@@ -14,7 +14,7 @@ to start the server you can create a main function (if needed) instantiating the
 ```java
 	public static void main(String[] args) {
 	
-			RestServer server;
+			GenericServer server;
 
 			int port = 0;
 
@@ -22,12 +22,12 @@ to start the server you can create a main function (if needed) instantiating the
 
 			try {
 				// Retrieve from args from command line like listening port
-				port = RestServer.getIntArg(args, "port", 8888);
+				port = GenericServer.getIntArg(args, "port", 8888);
 				// and the magic keyword to stop server on receiving this one.
-				stopKey = RestServer.getStringArg(args, "StopKey", "STOP");
+				stopKey = GenericServer.getStringArg(args, "StopKey", "STOP");
 
 				// create the Rest Server
-				server = new RestServer(port, stopKey);
+				server = new GenericServer(port, stopKey);
 				// Add some specific Rest handler to process request
 				server.addContext("/rest/foo", new FooRestHandler(server));
 				// then start server.
@@ -48,10 +48,10 @@ A default RestHandler is listening the ``localhost:8888/rest/admin`` URL. if the
 
 
 
-first implements a RestHandler and add its instance to the RestServer:
+first implements a RestHandler and add its instance to the GenericServer:
 
 	``` java
-	public class MeasuresRestHandler extends RestHandler {
+	public class GamesRestHandler extends RestHandler {
 
 		@Override
 		public HttpStatus get(HttpRequest request, RestResponse response){
@@ -100,14 +100,14 @@ The ``get()``, ``post()``, ``put()``, ``delete()``, ``options()``, and ``head()`
 To perform processing of one of the HTTP method on a specific URL, you must implements a RestHandler linked to the "URL" and declare this into the server:
 
 	```java
-	server.addContext("/rest/foo", new FooRestHandler(server));
+	server.addContext("/rest/foo", new GamesRestHandler(server));
 	```
 
 Then, implements the corresponding method into the RestHandler. See bellow for a sample implementation serving
 
 
 	```java
-	public class FooRestHandler extends RestHandler {
+	public class GamesRestHandler extends RestHandler {
 		private static final Logger LOGGER = Logger
 			.getLogger(FooRestHandler.class);
 		@Override

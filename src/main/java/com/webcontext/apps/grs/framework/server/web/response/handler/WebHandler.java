@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.rest.handler;
+package com.webcontext.apps.grs.framework.server.web.response.handler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,15 +13,15 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.rest.response.WebResponse;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer;
-import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
+import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
+import com.webcontext.apps.grs.framework.server.web.response.object.WebResponse;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpStatus;
 
 /**
  * IMplemnattion for a minimalistic Web Server, adding <code>HTML</code>,
  * <code>CSS</code>, <code>Javascript</code> and image resources serving
- * capabilities to the RestServer.
+ * capabilities to the GenericServer.
  * 
  * @author Fréderic Delorme<frederic.delorme@web-context.com>
  * 
@@ -37,7 +37,7 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 	 * 
 	 * @param server
 	 */
-	public WebHandler(RestServer server) {
+	public WebHandler(GenericServer server) {
 		super(server);
 		mimeTypes.put("css", "text/css");
 		mimeTypes.put("html", "text/html");

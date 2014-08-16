@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.server;
+package com.webcontext.apps.grs.framework.server.web.server.admin;
 
 import java.net.URI;
 import java.util.Date;

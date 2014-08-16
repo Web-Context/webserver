@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.framework.restserver.server.RestServer;
+import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
 import com.webcontext.apps.grs.models.Game;
 import com.webcontext.apps.grs.repository.GameRepository;
 import com.webcontext.apps.grs.service.DataManager;
@@ -22,7 +22,7 @@ public class Server {
 
 	private static Logger LOGGER = Logger.getLogger(Server.class);
 
-	private static RestServer server;
+	private static GenericServer server;
 
 	public static void main(String[] args) {
 
@@ -30,9 +30,9 @@ public class Server {
 		String stopKey = "";
 		try {
 			// initialize server.
-			port = RestServer.getIntArg(args, "port", 8888);
-			stopKey = RestServer.getStringArg(args, "StopKey", "STOP");
-			server = new RestServer(port, stopKey);
+			port = GenericServer.getIntArg(args, "port", 8888);
+			stopKey = GenericServer.getStringArg(args, "StopKey", "STOP");
+			server = new GenericServer(port, stopKey);
 
 			// Add a new repository.
 			DataManager.getInstance()

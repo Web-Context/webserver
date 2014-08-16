@@ -1,4 +1,4 @@
-package com.webcontext.apps.grs.framework.restserver.server;
+package com.webcontext.apps.grs.framework.server.web.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -16,8 +16,12 @@ import org.reflections.Reflections;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import com.webcontext.apps.grs.framework.restserver.rest.handler.RestHandler;
-import com.webcontext.apps.grs.framework.restserver.rest.handler.WebHandler;
+import com.webcontext.apps.grs.framework.server.web.response.handler.RestHandler;
+import com.webcontext.apps.grs.framework.server.web.response.handler.WebHandler;
+import com.webcontext.apps.grs.framework.server.web.server.admin.AdminHandler;
+import com.webcontext.apps.grs.framework.server.web.server.admin.ServerInformation;
+import com.webcontext.apps.grs.framework.server.web.server.bootstrap.Bootstrap;
+import com.webcontext.apps.grs.framework.server.web.server.bootstrap.IBootstrap;
 
 /**
  * Internal HTTP server on a specific port (default is 8888).
@@ -32,7 +36,7 @@ import com.webcontext.apps.grs.framework.restserver.rest.handler.WebHandler;
  * </p>
  * 
  * <pre>
- * server = new RestServer(port, stopKey);
+ * server = new GenericServer(port, stopKey);
  * server.addContext(&quot;/rest/instruments&quot;, new GamesRestHandler(server));
  * server.start();
  * </pre>
@@ -45,11 +49,11 @@ import com.webcontext.apps.grs.framework.restserver.rest.handler.WebHandler;
  */
 
 @SuppressWarnings("restriction")
-public class RestServer {
+public class GenericServer {
 	/**
 	 * Internal Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(RestServer.class);
+	private static final Logger LOGGER = Logger.getLogger(GenericServer.class);
 
 	/**
 	 * Internal concurrent thread pool queue to server Handler.
@@ -73,7 +77,7 @@ public class RestServer {
 
 	/**
 	 * boolean flag to activate authentication on administrative and all request
-	 * in the RestServer. By default, set to false.
+	 * in the GenericServer. By default, set to false.
 	 */
 	private boolean authentication = false;
 
@@ -201,7 +205,7 @@ public class RestServer {
 	 * 
 	 * @throws IOException
 	 */
-	public RestServer() throws IOException {
+	public GenericServer() throws IOException {
 		initServer(this.port);
 	}
 
@@ -213,7 +217,7 @@ public class RestServer {
 	 * @param port
 	 * @throws IOException
 	 */
-	public RestServer(int port) throws IOException {
+	public GenericServer(int port) throws IOException {
 		this.port = port;
 		initServer(port);
 	}
@@ -226,7 +230,7 @@ public class RestServer {
 	 * @param stopKey
 	 * @throws IOException
 	 */
-	public RestServer(int port, String stopKey) throws IOException {
+	public GenericServer(int port, String stopKey) throws IOException {
 		this(port);
 		this.stopkey = stopKey;
 	}

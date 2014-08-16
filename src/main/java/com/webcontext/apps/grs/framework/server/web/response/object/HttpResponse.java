@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.http;
+package com.webcontext.apps.grs.framework.server.web.response.object;
 
 import java.io.OutputStream;
 
@@ -48,7 +48,7 @@ public abstract class HttpResponse<T> implements IHttpResponse {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.webcontext.apps.grs.framework.restserver.http.IHttpResponse#getEncodage
+	 * com.webcontext.apps.grs.framework.server.web.http.IHttpResponse#getEncodage
 	 * ()
 	 */
 	@Override
@@ -68,7 +68,7 @@ public abstract class HttpResponse<T> implements IHttpResponse {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.webcontext.apps.grs.framework.restserver.http.IHttpResponse#getMimeType
+	 * com.webcontext.apps.grs.framework.server.web.http.IHttpResponse#getMimeType
 	 * ()
 	 */
 	@Override

@@ -5,8 +5,8 @@ package com.webcontext.apps.grs.restserver;
 
 import com.webcontext.apps.grs.framework.repository.MongoDBConnection;
 import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
-import com.webcontext.apps.grs.framework.restserver.server.Bootstrap;
-import com.webcontext.apps.grs.framework.restserver.server.IBootstrap;
+import com.webcontext.apps.grs.framework.server.web.server.bootstrap.Bootstrap;
+import com.webcontext.apps.grs.framework.server.web.server.bootstrap.IBootstrap;
 import com.webcontext.apps.grs.models.Game;
 import com.webcontext.apps.grs.repository.GameRepository;
 import com.webcontext.apps.grs.service.DataManager;

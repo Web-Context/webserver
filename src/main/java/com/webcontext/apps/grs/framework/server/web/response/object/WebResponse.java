@@ -1,11 +1,9 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.restserver.rest.response;
+package com.webcontext.apps.grs.framework.server.web.response.object;
 
 import java.io.OutputStream;
-
-import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
 
 /**
  * A WebResponse object return by the WebHandler implementation.
@@ -24,7 +22,7 @@ public class WebResponse extends HttpResponse<String> {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.webcontext.apps.grs.framework.restserver.http.HttpResponse#process()
+	 * com.webcontext.apps.grs.framework.server.web.http.HttpResponse#process()
 	 */
 	@Override
 	public String process() {
