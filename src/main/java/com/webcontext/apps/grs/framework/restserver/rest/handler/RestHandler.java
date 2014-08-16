@@ -3,6 +3,8 @@
  */
 package com.webcontext.apps.grs.framework.restserver.rest.handler;
 
+import java.io.OutputStream;
+
 import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.framework.restserver.rest.response.RestResponse;
@@ -60,8 +62,8 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 	}
 
 	@Override
-	public RestResponse createResponse() {
-		return new RestResponse();
+	public RestResponse createResponse(OutputStream outputStream) {
+		return new RestResponse(outputStream);
 	}
 
 }

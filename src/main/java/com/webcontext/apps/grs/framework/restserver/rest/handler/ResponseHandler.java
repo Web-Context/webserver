@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.webcontext.apps.grs.framework.restserver.http.HttpRequest;
-import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
+import com.webcontext.apps.grs.framework.restserver.http.IHttpResponse;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpMethod;
 import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus;
@@ -45,7 +45,8 @@ import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus
  * 
  */
 @SuppressWarnings("restriction")
-public abstract class ResponseHandler<T> implements HttpHandler {
+public abstract class ResponseHandler<T extends IHttpResponse> implements
+		HttpHandler {
 
 	private static final Logger LOGGER = Logger
 			.getLogger(ResponseHandler.class);
@@ -64,8 +65,8 @@ public abstract class ResponseHandler<T> implements HttpHandler {
 		this.server = server;
 	}
 
-	public abstract T createResponse(); 
-	
+	public abstract T createResponse(OutputStream outputStream);
+
 	/**
 	 * Process request. only GET, POST, pUT, DELETE, OPTIONS and HEAD are
 	 * implemented in this HTTP Request handler. Based on
@@ -73,12 +74,14 @@ public abstract class ResponseHandler<T> implements HttpHandler {
 	 */
 	public void handle(HttpExchange httpExchange) {
 
-		T response = createResponse();
+		T response = createResponse(httpExchange.getResponseBody());
 		HttpStatus errCode = HttpStatus.NOT_FOUNT;
 		// prepare and send response.
 		try {
 			Map<String, Set<String>> parameters = extractParameters(httpExchange);
 			HttpRequest request = new HttpRequest(httpExchange, parameters);
+			statistics(errCode, request);
+			httpExchange.setAttribute("Content-Type", response.getEncodage());
 
 			if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
 				errCode = get(request, response);
@@ -100,8 +103,6 @@ public abstract class ResponseHandler<T> implements HttpHandler {
 			}
 			String strResponse = processResponse(response);
 
-			statistics(errCode, request);
-			httpExchange.getResponseHeaders();
 			httpExchange.sendResponseHeaders(errCode.getCode(),
 					strResponse.getBytes().length);
 			OutputStream osResp = httpExchange.getResponseBody();
@@ -178,8 +179,7 @@ public abstract class ResponseHandler<T> implements HttpHandler {
 	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpStatus get(HttpRequest request, T response)
-			throws IOException {
+	public HttpStatus get(HttpRequest request, T response) throws IOException {
 		return HttpStatus.OK;
 
 	}
@@ -194,8 +194,7 @@ public abstract class ResponseHandler<T> implements HttpHandler {
 	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpStatus post(HttpRequest request, T response)
-			throws IOException {
+	public HttpStatus post(HttpRequest request, T response) throws IOException {
 		return HttpStatus.OK;
 
 	}
@@ -210,8 +209,7 @@ public abstract class ResponseHandler<T> implements HttpHandler {
 	 *            the HttpResponse to perform response write.
 	 * @throws IOException
 	 */
-	public HttpStatus put(HttpRequest request, T response)
-			throws IOException {
+	public HttpStatus put(HttpRequest request, T response) throws IOException {
 		return HttpStatus.OK;
 
 	}

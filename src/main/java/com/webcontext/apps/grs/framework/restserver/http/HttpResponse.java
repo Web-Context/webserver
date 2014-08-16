@@ -3,27 +3,23 @@
  */
 package com.webcontext.apps.grs.framework.restserver.http;
 
+import java.io.OutputStream;
+
 /**
  * @author 212391884
- *
+ * 
  */
-public abstract class HttpResponse<T> {
+public abstract class HttpResponse<T> implements IHttpResponse {
 
 	protected String mimeType;
+	protected String encodage;
+	private OutputStream outputStream;
 
 	/**
-	 * @return the mimeType
+	 * @return the outputStream
 	 */
-	public String getMimeType() {
-		return mimeType;
-	}
-
-	/**
-	 * @param mimeType
-	 *            the mimeType to set
-	 */
-	public void setMimeType(String mimeType) {
-		this.mimeType = mimeType;
+	public OutputStream getOutputStream() {
+		return outputStream;
 	}
 
 	protected T data;
@@ -35,9 +31,57 @@ public abstract class HttpResponse<T> {
 		this.mimeType = "text/html";
 	}
 
+	/**
+	 * 
+	 */
+	public HttpResponse(OutputStream outputStream) {
+		this();
+		this.outputStream = outputStream;
+	}
+
 	public void add(String mimeType, T data) {
 		this.mimeType = mimeType;
 		this.data = data;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.webcontext.apps.grs.framework.restserver.http.IHttpResponse#getEncodage
+	 * ()
+	 */
+	@Override
+	public String getEncodage() {
+		return encodage;
+	}
+
+	/**
+	 * @param encodage
+	 *            the encodage to set
+	 */
+	public void setEncodage(String encodage) {
+		this.encodage = encodage;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.webcontext.apps.grs.framework.restserver.http.IHttpResponse#getMimeType
+	 * ()
+	 */
+	@Override
+	public String getMimeType() {
+		return mimeType;
+	}
+
+	/**
+	 * @param mimeType
+	 *            the mimeType to set
+	 */
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
 	}
 
 	public abstract void add(T data);

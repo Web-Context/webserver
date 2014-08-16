@@ -239,7 +239,7 @@ public class RestServer {
 	 */
 	private void initServer(int port) throws IOException {
 
-		// CReate the server
+		// Create the server
 		server = HttpServer.create(new InetSocketAddress(port), 0);
 
 		// initialize its ThreadPool to serve RestHandler
@@ -250,7 +250,12 @@ public class RestServer {
 		server.createContext("/rest/admin", new AdminHandler(this));
 		addRessourceContext("/web", new WebHandler(this));
 
-		LOGGER.info("Server has just been initialized on port " + port);
+		LOGGER.info(String
+				.format("Server has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d]",
+						port, 
+						CORE_POOL_SIZE, 
+						MAX_CORE_POOL_SIZE,
+						POOL_QUEUE_SIZE));
 	}
 
 	/**
@@ -271,8 +276,10 @@ public class RestServer {
 					getServerName(), port));
 			while (heartBeat != -1) {
 				Thread.sleep(HEARBEAT_FREQUENCY);
-				/*LOGGER.debug(String.format("Rest Server heart beat is alive",
-						heartBeat));*/
+				/*
+				 * LOGGER.debug(String.format("Rest Server heart beat is alive",
+				 * heartBeat));
+				 */
 				if (heartBeat != -1) {
 					heartBeat = 0;
 				}
@@ -361,7 +368,7 @@ public class RestServer {
 	public void addRessourceContext(String restPath, WebHandler webHandler) {
 		HttpContext hc1 = server.createContext(restPath, webHandler);
 		if (authentication) {
-			hc1.setAuthenticator(new BasicAuthenticator("rest") {
+			hc1.setAuthenticator(new BasicAuthenticator("web") {
 				@Override
 				public boolean checkCredentials(String user, String pwd) {
 					return user.equals("admin") && pwd.equals("password");

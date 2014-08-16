@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,10 +66,11 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 			}
 			br.close();
 		} catch (Exception e) {
-			LOGGER.error("Unable to read resource from " + resourcePath);
+			LOGGER.error("Unable to read resource for URI "
+					+ request.getHttpExchange().getRequestURI().toString());
 		}
 		LOGGER.info(String.format(
-				"Send resource [%s] of siez %s with mime type [%s].",
+				"Send resource [%s] of size %s with mime type [%s].",
 				resourcePath, formatSize(resourceFile), mimeType));
 
 		return HttpStatus.OK;
@@ -101,8 +103,8 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 	}
 
 	@Override
-	public WebResponse createResponse() {
-		return new WebResponse();
+	public WebResponse createResponse(OutputStream outputStream) {
+		return new WebResponse(outputStream);
 	}
 
 	@Override

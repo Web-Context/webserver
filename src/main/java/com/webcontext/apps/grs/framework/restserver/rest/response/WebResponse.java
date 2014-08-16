@@ -3,6 +3,8 @@
  */
 package com.webcontext.apps.grs.framework.restserver.rest.response;
 
+import java.io.OutputStream;
+
 import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
 
 /**
@@ -12,8 +14,8 @@ import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
 public class WebResponse extends HttpResponse<String> {
 
 	
-	public WebResponse() {
-		super();
+	public WebResponse(OutputStream outputstream) {
+		super(outputstream);
 		this.data = "";
 	}
 	/*
@@ -33,5 +35,4 @@ public class WebResponse extends HttpResponse<String> {
 		this.data += data;
 
 	}
-
 }

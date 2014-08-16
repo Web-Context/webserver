@@ -1,5 +1,6 @@
 package com.webcontext.apps.grs.framework.restserver.rest.response;
 
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,11 +16,8 @@ import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
  * @author Frédéric Delorme<frederic.delorme@serphydose.com>
  * 
  */
-public class RestResponse extends HttpResponse<Map<String,Object>> {
+public class RestResponse extends HttpResponse<Map<String, Object>> {
 
-	
-	
-	
 	/**
 	 * Serialize response object to JSON object.
 	 */
@@ -32,7 +30,8 @@ public class RestResponse extends HttpResponse<Map<String,Object>> {
 	/**
 	 * Default constructor. Initialize the Data list.
 	 */
-	public RestResponse() {
+	public RestResponse(OutputStream outputStream) {
+		super(outputStream);
 		data = new HashMap<String, Object>();
 		this.mimeType = "application/json";
 	}
