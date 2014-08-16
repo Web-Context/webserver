@@ -9,8 +9,8 @@ import java.util.Date;
 /**
  * Internal Server information.
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
- *
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
 public class ServerInformation {
 

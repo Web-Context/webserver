@@ -8,16 +8,18 @@ import java.io.OutputStream;
 import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
 
 /**
- * @author 212391884
- *
+ * A WebResponse object return by the WebHandler implementation.
+ * 
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
 public class WebResponse extends HttpResponse<String> {
 
-	
 	public WebResponse(OutputStream outputstream) {
 		super(outputstream);
 		this.data = "";
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -26,7 +28,7 @@ public class WebResponse extends HttpResponse<String> {
 	 */
 	@Override
 	public String process() {
-
+		// simple return data from the response object.
 		return this.data;
 	}
 

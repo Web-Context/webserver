@@ -12,8 +12,10 @@ import com.webcontext.apps.grs.repository.GameRepository;
 import com.webcontext.apps.grs.service.DataManager;
 
 /**
- * @author 212391884
- *
+ * Boostraping the server by adding some basic data to MOngoDB.
+ * 
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
 @Bootstrap
 public class ServerBootstrap implements IBootstrap {

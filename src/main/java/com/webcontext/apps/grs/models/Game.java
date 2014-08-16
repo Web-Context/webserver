@@ -11,11 +11,12 @@ import java.util.Map;
 import com.webcontext.apps.grs.framework.model.MDBEntity;
 
 /**
- * @author 212391884
- *
+ * A sample entity manipulated by the Rest server and the MongoDBRepository.
+ * 
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
-public class Game extends MDBEntity{
-
+public class Game extends MDBEntity {
 
 	public String id, title;
 	public Map<String, URL> cover;
@@ -45,15 +46,15 @@ public class Game extends MDBEntity{
 	 * @param rated
 	 */
 	public Game(String id, String title, Map<String, URL> cover,
-			List<String> tags, List<String> platform, Map<String, Integer> rate,
-			Map<String, String> content, Date publicationDate, String editor,
-			String developer, String rated) {
+			List<String> tags, List<String> platform,
+			Map<String, Integer> rate, Map<String, String> content,
+			Date publicationDate, String editor, String developer, String rated) {
 		this();
 		this.id = id;
 		this.title = title;
 		this.cover = cover;
 		this.tags = tags;
-		this.platform=platform;
+		this.platform = platform;
 		this.rate = rate;
 		this.content = content;
 		this.publicationDate = publicationDate;
@@ -61,7 +62,7 @@ public class Game extends MDBEntity{
 		this.developer = developer;
 		this.rated = rated;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -220,13 +221,16 @@ public class Game extends MDBEntity{
 	}
 
 	/**
-	 * @param platform the platform to set
+	 * @param platform
+	 *            the platform to set
 	 */
 	public void setPlatform(List<String> platform) {
 		this.platform = platform;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -238,6 +242,4 @@ public class Game extends MDBEntity{
 				+ developer + ", rated=" + rated + "]";
 	}
 
-	
-	
 }

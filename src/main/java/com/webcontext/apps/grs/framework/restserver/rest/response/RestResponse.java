@@ -13,7 +13,7 @@ import com.webcontext.apps.grs.framework.restserver.http.HttpResponse;
  * Response builder object to perform JSON serialization of object on Rest
  * answer.
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
 public class RestResponse extends HttpResponse<Map<String, Object>> {

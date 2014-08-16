@@ -10,7 +10,7 @@ import com.sun.net.httpserver.HttpExchange;
 /**
  * Http Request object. contains all HTTP headers and HTTP request parameters.
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
 @SuppressWarnings("restriction")

@@ -40,7 +40,7 @@ import com.webcontext.apps.grs.framework.restserver.rest.handler.WebHandler;
  * see {@link README.md} for more information.
  * </p>
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
+ * @author Fréderic Delorme<frederic.delorme@web-context.com>
  * 
  */
 

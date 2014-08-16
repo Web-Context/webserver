@@ -20,7 +20,7 @@ import com.webcontext.apps.grs.service.DataManager;
  * This is a sample implementation of a RestHandler on this RestServer. It
  * provides JSON document on some basic request over a videogames database.
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
 public class GamesRestHandler extends RestHandler {

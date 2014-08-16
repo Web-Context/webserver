@@ -6,7 +6,7 @@ package com.webcontext.apps.grs.framework.restserver.http;
 import java.io.OutputStream;
 
 /**
- * @author 212391884
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
 public abstract class HttpResponse<T> implements IHttpResponse {

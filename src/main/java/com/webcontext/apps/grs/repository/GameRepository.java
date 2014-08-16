@@ -9,10 +9,12 @@ import com.webcontext.apps.grs.framework.repository.MongoDbRepository;
 import com.webcontext.apps.grs.models.Game;
 
 /**
- * @author 212391884
- *
+ * A simple implementation of a Game repository using a MongoDB games collection
+ * 
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
-public class GameRepository extends MongoDbRepository<Game>{
+public class GameRepository extends MongoDbRepository<Game> {
 
 	/**
 	 * Default constructor for default connection.
@@ -36,5 +38,5 @@ public class GameRepository extends MongoDbRepository<Game>{
 		object = (BasicDBObject) JSON.parse(gson.toJson(item).toString());
 		return object;
 	}
-	
+
 }

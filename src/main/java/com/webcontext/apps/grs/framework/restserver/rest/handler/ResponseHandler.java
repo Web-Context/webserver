@@ -41,7 +41,7 @@ import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus
  * request</li>
  * </ul>
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
 @SuppressWarnings("restriction")

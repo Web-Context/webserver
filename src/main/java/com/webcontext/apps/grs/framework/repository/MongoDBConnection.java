@@ -15,8 +15,8 @@ import com.mongodb.MongoClient;
  * MongoDB connection. Manage a specific connection to one or more MongoDB
  * database.
  * 
- * @author 212391884
- *
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
 public class MongoDBConnection {
 

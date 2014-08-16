@@ -5,6 +5,12 @@ import java.util.List;
 import com.mongodb.WriteResult;
 import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
 
+/**
+ * 
+ * 
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * @param <T>
+ */
 public interface IMongoDbRepository<T> {
 
 	/**

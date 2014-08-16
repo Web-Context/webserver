@@ -1,5 +1,11 @@
 package com.webcontext.apps.grs.framework.restserver.http;
 
+/**
+ * This is the interface manipulated by the Handler to build HTTP Response.
+ * 
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
+ */
 public interface IHttpResponse {
 
 	/**

@@ -31,7 +31,7 @@ import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpMethod
  * request</li>
  * </ul>
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
+ * @author Fréderic Delorme<frederic.delorme@web-context.com>
  * 
  */
 public class RestHandler extends ResponseHandler<RestResponse> {

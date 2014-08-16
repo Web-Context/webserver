@@ -22,8 +22,8 @@ import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnect
  * a specific Collection (<code>collectionName</code>). This database connection
  * will be the same for all implementation (shared MongoClient & DB connection).
  * 
- * @author 212391884
- *
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
 public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 
@@ -113,17 +113,22 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 	@Override
 	public List<T> find(String filter) throws NullMongoDBConnection {
 		BasicDBObject searchfilter = (BasicDBObject) JSON.parse(filter);
-		int offset = (searchfilter.containsField("parameters.offset")?searchfilter.getInt("parameters.offset"):0);
-		int pageSize = (searchfilter.containsField("parameters.pageSize")?searchfilter.getInt("parameters.pageSize"):0);
-		if(searchfilter.containsField("parameters")){
+		int offset = (searchfilter.containsField("parameters.offset") ? searchfilter
+				.getInt("parameters.offset") : 0);
+		int pageSize = (searchfilter.containsField("parameters.pageSize") ? searchfilter
+				.getInt("parameters.pageSize") : 0);
+		if (searchfilter.containsField("parameters")) {
 			searchfilter.removeField("parameters");
 		}
-		return find(searchfilter.toString(),offset,pageSize);
+		return find(searchfilter.toString(), offset, pageSize);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.webcontext.apps.grs.framework.repository.IMongoDbRepository#find(java.lang.String, int, int)
+	 * 
+	 * @see
+	 * com.webcontext.apps.grs.framework.repository.IMongoDbRepository#find(
+	 * java.lang.String, int, int)
 	 */
 	@Override
 	public List<T> find(String filter, int offset, int pageSize)
@@ -135,7 +140,7 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 				collectionName);
 		BasicDBObject searchfilter = (BasicDBObject) JSON.parse(filter);
 		DBCursor cursor = collection.find(searchfilter);
-		if(offset != 0 && pageSize > 0){
+		if (offset != 0 && pageSize > 0) {
 			cursor.skip(offset * pageSize);
 			cursor.limit(pageSize);
 		}

@@ -4,8 +4,11 @@
 package com.webcontext.apps.grs.framework.repository.exception;
 
 /**
- * @author 212391884
- *
+ * A specific exception thrown by MongoDBConnection when connection is
+ * impossible.
+ * 
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * 
  */
 public class NullMongoDBConnection extends Exception {
 

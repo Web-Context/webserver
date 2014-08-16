@@ -14,7 +14,7 @@ import com.webcontext.apps.grs.framework.restserver.server.RestServer.HttpStatus
  * This is the internal ADMIN handler to perform some administrative task on
  * server like stopping it.
  * 
- * @author Frédéric Delorme<frederic.delorme@serphydose.com>
+ * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
 public class AdminHandler extends RestHandler {
