@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.server.web.server.bootstrap;
+package com.webcontext.apps.grs.framework.services.web.server.bootstrap;
 
 /**
  * Interface to build Bootstrap implementations.

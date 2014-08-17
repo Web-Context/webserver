@@ -1,4 +1,4 @@
-package com.webcontext.apps.grs.framework.server.web.response.object;
+package com.webcontext.apps.grs.framework.services.web.response.io;
 
 import java.util.Map;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package com.webcontext.apps.grs.framework.server.web.server.bootstrap;
+package com.webcontext.apps.grs.framework.services.web.server.bootstrap;
 
 /**
  * An annotation to build some BootStrap capabilities for our GenericServer.

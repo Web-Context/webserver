@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.server.web.response.handler;
+package com.webcontext.apps.grs.framework.services.web.response.handler.impl.web;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +13,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.framework.io.FileLoader;
-import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
-import com.webcontext.apps.grs.framework.server.web.response.object.WebResponse;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpStatus;
+import com.webcontext.apps.grs.framework.services.web.response.handler.ResponseHandler;
+import com.webcontext.apps.grs.framework.services.web.response.io.HttpRequest;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpStatus;
 
 /**
  * IMplemnattion for a minimalistic Web Server, adding <code>HTML</code>,

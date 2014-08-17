@@ -1,17 +1,16 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.server.web.response.handler;
+package com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest;
 
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
 import com.sun.net.httpserver.Headers;
-import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
-import com.webcontext.apps.grs.framework.server.web.response.object.RestResponse;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpMethod;
+import com.webcontext.apps.grs.framework.services.web.response.handler.ResponseHandler;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpMethod;
 
 /**
  * The RestHandler class is a specific Handler to perform processing of HTTP
@@ -36,6 +35,7 @@ import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpMet
  * @author Fréderic Delorme<frederic.delorme@web-context.com>
  * 
  */
+@SuppressWarnings("restriction")
 public class RestHandler extends ResponseHandler<RestResponse> {
 
 	private static final Logger LOGGER = Logger.getLogger(RestHandler.class);
@@ -54,14 +54,13 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 	 */
 	public RestHandler(GenericServer server) {
 		super(server);
+		
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	protected boolean authorized(Headers request) {
-		if ((request.containsKey("Api-key") && request
-				.getFirst("Api-key").equals(apiKey))
-				|| apiKey.equals("")) {
+		if ((request.containsKey("Api-key") && request.getFirst("Api-key")
+				.equals(apiKey)) || apiKey.equals("")) {
 			return true;
 		}
 		return false;

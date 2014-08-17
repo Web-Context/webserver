@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.server.web.response.handler;
+package com.webcontext.apps.grs.framework.services.web.response.handler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,11 +16,11 @@ import org.apache.log4j.Logger;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpHandler;
-import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
-import com.webcontext.apps.grs.framework.server.web.response.object.IHttpResponse;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpMethod;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpStatus;
+import com.webcontext.apps.grs.framework.services.web.response.io.HttpRequest;
+import com.webcontext.apps.grs.framework.services.web.response.io.IHttpResponse;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpMethod;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpStatus;
 
 /**
  * The RestHandler class is a specific Handler to perform processing of HTTP

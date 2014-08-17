@@ -1,15 +1,15 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.server.web.server.admin;
+package com.webcontext.apps.grs.framework.services.web.server.admin;
 
 import java.io.IOException;
 
-import com.webcontext.apps.grs.framework.server.web.response.handler.RestHandler;
-import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
-import com.webcontext.apps.grs.framework.server.web.response.object.RestResponse;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpStatus;
+import com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler;
+import com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestResponse;
+import com.webcontext.apps.grs.framework.services.web.response.io.HttpRequest;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpStatus;
 
 /**
  * This is the internal ADMIN handler to perform some administrative task on

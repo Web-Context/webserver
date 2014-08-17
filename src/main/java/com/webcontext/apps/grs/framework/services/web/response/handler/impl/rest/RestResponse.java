@@ -1,4 +1,4 @@
-package com.webcontext.apps.grs.framework.server.web.response.object;
+package com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest;
 
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.webcontext.apps.grs.framework.services.web.response.io.HttpResponse;
 
 /**
  * Response builder object to perform JSON serialization of object on Rest

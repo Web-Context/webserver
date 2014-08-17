@@ -1,4 +1,4 @@
-package com.webcontext.apps.grs.framework.server.web.server;
+package com.webcontext.apps.grs.framework.services.web.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -16,12 +16,12 @@ import org.reflections.Reflections;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import com.webcontext.apps.grs.framework.server.web.response.handler.RestHandler;
-import com.webcontext.apps.grs.framework.server.web.response.handler.WebHandler;
-import com.webcontext.apps.grs.framework.server.web.server.admin.AdminHandler;
-import com.webcontext.apps.grs.framework.server.web.server.admin.ServerInformation;
-import com.webcontext.apps.grs.framework.server.web.server.bootstrap.Bootstrap;
-import com.webcontext.apps.grs.framework.server.web.server.bootstrap.IBootstrap;
+import com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler;
+import com.webcontext.apps.grs.framework.services.web.response.handler.impl.web.WebHandler;
+import com.webcontext.apps.grs.framework.services.web.server.admin.AdminHandler;
+import com.webcontext.apps.grs.framework.services.web.server.admin.ServerInformation;
+import com.webcontext.apps.grs.framework.services.web.server.bootstrap.Bootstrap;
+import com.webcontext.apps.grs.framework.services.web.server.bootstrap.IBootstrap;
 
 /**
  * Internal HTTP server on a specific port (default is 8888).
@@ -68,6 +68,11 @@ public class GenericServer {
 	 * its max.
 	 */
 	private static final int MAX_CORE_POOL_SIZE = 4;
+
+	/**
+	 * Start arguments.
+	 */
+	private String[] arguments;
 
 	/**
 	 * HeartBeat frequency for the server to detect if administrative stop is
@@ -235,6 +240,13 @@ public class GenericServer {
 		this.stopkey = stopKey;
 	}
 
+	public GenericServer(String[] args) throws IOException {
+		arguments = args;
+		this.port = getIntArg("port", 8888);
+		this.stopkey = getStringArg("StopKey", "STOP");
+		initServer(this.port);
+	}
+
 	/**
 	 * Initialize the Rest HTTP Server.
 	 * 
@@ -256,9 +268,7 @@ public class GenericServer {
 
 		LOGGER.info(String
 				.format("Server has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d]",
-						port, 
-						CORE_POOL_SIZE, 
-						MAX_CORE_POOL_SIZE,
+						port, CORE_POOL_SIZE, MAX_CORE_POOL_SIZE,
 						POOL_QUEUE_SIZE));
 	}
 
@@ -369,6 +379,13 @@ public class GenericServer {
 
 	}
 
+	/**
+	 * Add a resource to the context of the server. This will add a new
+	 * WebHandler to the server.
+	 * 
+	 * @param restPath
+	 * @param webHandler
+	 */
 	public void addRessourceContext(String restPath, WebHandler webHandler) {
 		HttpContext hc1 = server.createContext(restPath, webHandler);
 		if (authentication) {
@@ -387,8 +404,6 @@ public class GenericServer {
 	 * <code>args</code> list. if value is not set , return the
 	 * <code>defaultValue</code>.
 	 * 
-	 * @param args
-	 *            list of arguments from the Java main method.
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
@@ -397,8 +412,8 @@ public class GenericServer {
 	 * @return value of the argument, or the fall back default value
 	 *         <code>defaultValue</code>.
 	 */
-	public static int getIntArg(String[] args, String argName, int defaultValue) {
-		String value = parseArgs(args, argName);
+	public int getIntArg(String argName, int defaultValue) {
+		String value = parseArgs(argName);
 		return (value != null ? Integer.parseInt(value) : defaultValue);
 	}
 
@@ -407,8 +422,6 @@ public class GenericServer {
 	 * the <code>args</code> list. if value is not set , return the
 	 * <code>defaultValue</code>.
 	 * 
-	 * @param args
-	 *            list of arguments from the Java main method.
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
@@ -417,9 +430,8 @@ public class GenericServer {
 	 * @return value of the argument, or the fall back default value
 	 *         <code>defaultValue</code>.
 	 */
-	public static String getStringArg(String[] args, String argName,
-			String defaultValue) {
-		String value = parseArgs(args, argName);
+	public String getStringArg(String argName, String defaultValue) {
+		String value = parseArgs(argName);
 		return (value != null ? value : defaultValue);
 	}
 
@@ -428,8 +440,6 @@ public class GenericServer {
 	 * the <code>args</code> list. if value is not set , return the
 	 * <code>defaultValue</code>.
 	 * 
-	 * @param args
-	 *            list of arguments from the Java main method.
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
@@ -438,9 +448,8 @@ public class GenericServer {
 	 * @return value of the argument, or the fall back default value
 	 *         <code>defaultValue</code>.
 	 */
-	public static Boolean getBooleanArg(String[] args, String argName,
-			Boolean defaultValue) {
-		String value = parseArgs(args, argName);
+	public Boolean getBooleanArg(String argName, Boolean defaultValue) {
+		String value = parseArgs(argName);
 		return (value != null ? Boolean.parseBoolean(value) : defaultValue);
 	}
 
@@ -449,8 +458,6 @@ public class GenericServer {
 	 * the <code>args</code> list. if value is not set , return the
 	 * <code>defaultValue</code>.
 	 * 
-	 * @param args
-	 *            list of arguments from the Java main method.
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
@@ -459,9 +466,8 @@ public class GenericServer {
 	 * @return value of the argument, or the fall back default value
 	 *         <code>defaultValue</code>.
 	 */
-	public static Float getFloatArg(String[] args, String argName,
-			Float defaultValue) {
-		String value = parseArgs(args, argName);
+	public Float getFloatArg(String argName, Float defaultValue) {
+		String value = parseArgs(argName);
 		return (value != null ? Float.parseFloat(value) : defaultValue);
 	}
 
@@ -469,16 +475,13 @@ public class GenericServer {
 	 * Parse all <code>args</code> items and retrieve the <code>argName</code>
 	 * value, if exists. Else return null.
 	 * 
-	 * @param args
-	 *            the String[] array containing arguments where to search for
-	 *            the <code>argName</code> value.
 	 * @param argName
 	 *            this is the name of the argument searched for.
 	 * @return
 	 */
-	private static String parseArgs(String[] args, String argName) {
+	private String parseArgs(String argName) {
 		String value = null;
-		for (String arg : args)
+		for (String arg : arguments)
 			if (arg.startsWith(argName)) {
 				String[] argValue = arg.split("=");
 				value = argValue[1];

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.framework.server.mongodb;
+package com.webcontext.apps.grs.framework.services.mongodb;
 
 import java.io.IOException;
 import java.net.UnknownHostException;

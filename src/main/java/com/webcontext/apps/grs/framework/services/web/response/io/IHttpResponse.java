@@ -1,4 +1,4 @@
-package com.webcontext.apps.grs.framework.server.web.response.object;
+package com.webcontext.apps.grs.framework.services.web.response.io;
 
 /**
  * This is the interface manipulated by the Handler to build HTTP Response.

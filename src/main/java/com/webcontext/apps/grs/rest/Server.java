@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
 import com.webcontext.apps.grs.models.Game;
 import com.webcontext.apps.grs.repository.GameRepository;
 import com.webcontext.apps.grs.service.DataManager;
@@ -26,13 +26,9 @@ public class Server {
 
 	public static void main(String[] args) {
 
-		int port = 0;
-		String stopKey = "";
 		try {
 			// initialize server.
-			port = GenericServer.getIntArg(args, "port", 8888);
-			stopKey = GenericServer.getStringArg(args, "StopKey", "STOP");
-			server = new GenericServer(port, stopKey);
+			server = new GenericServer(args);
 
 			// Add a new repository.
 			DataManager.getInstance()
@@ -46,10 +42,9 @@ public class Server {
 
 		} catch (IOException | InterruptedException | InstantiationException
 				| IllegalAccessException e) {
-			LOGGER.error("Unable to start the internal Rest HTTP Server component on port "
-					+ port + ". Reason : " + e.getLocalizedMessage());
+			LOGGER.error("Unable to start the internal Rest HTTP Server component. Reason : " + e.getLocalizedMessage());
 		}
-		LOGGER.info("End of processing request in Server on port " + port);
+		LOGGER.info("End of processing request in Server");
 
 		// Exit from server.
 		System.exit(0);
