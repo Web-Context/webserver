@@ -14,6 +14,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import org.apache.log4j.Logger;
 
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpHandler;
 import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
 import com.webcontext.apps.grs.framework.server.web.response.object.IHttpResponse;
@@ -75,63 +76,95 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 	public void handle(HttpExchange httpExchange) {
 
 		T response = createResponse(httpExchange.getResponseBody());
-		HttpStatus errCode = HttpStatus.NOT_FOUNT;
-		OutputStream osResp =null;
+		HttpStatus errCode = HttpStatus.NOT_FOUND;
+		OutputStream osResp = null;
 		// prepare and send response.
 		try {
 			Map<String, Set<String>> parameters = extractParameters(httpExchange);
 			HttpRequest request = new HttpRequest(httpExchange, parameters);
 			statistics(errCode, request);
 			osResp = httpExchange.getResponseBody();
+			if (authorized(httpExchange.getRequestHeaders())) {
 
-			if (httpExchange.getRequestMethod().equals(HttpMethod.GET.name())) {
-				errCode = get(request, response);
-			} else if (httpExchange.getRequestMethod().equals(
-					HttpMethod.POST.name())) {
-				errCode = post(request, response);
-			} else if (httpExchange.getRequestMethod().equals(
-					HttpMethod.PUT.name())) {
-				errCode = put(request, response);
-			} else if (httpExchange.getRequestMethod().equals(
-					HttpMethod.DELETE.name())) {
-				errCode = delete(request, response);
-			} else if (httpExchange.getRequestMethod().equals(
-					HttpMethod.OPTIONS.name())) {
-				errCode = options(request, response);
-			} else if (httpExchange.getRequestMethod().equals(
-					HttpMethod.HEAD.name())) {
-				errCode = head(request, response);
-			}
-			// compute response body
-			String strResponse = processResponse(response);
+				if (httpExchange.getRequestMethod().equals(
+						HttpMethod.GET.name())) {
+					errCode = get(request, response);
+				} else if (httpExchange.getRequestMethod().equals(
+						HttpMethod.POST.name())) {
+					errCode = post(request, response);
+				} else if (httpExchange.getRequestMethod().equals(
+						HttpMethod.PUT.name())) {
+					errCode = put(request, response);
+				} else if (httpExchange.getRequestMethod().equals(
+						HttpMethod.DELETE.name())) {
+					errCode = delete(request, response);
+				} else if (httpExchange.getRequestMethod().equals(
+						HttpMethod.OPTIONS.name())) {
+					errCode = options(request, response);
+				} else if (httpExchange.getRequestMethod().equals(
+						HttpMethod.HEAD.name())) {
+					errCode = head(request, response);
+				}
+				// compute response body
+				String strResponse = processResponse(response);
 
-			// Prepare Response Headers
-			httpExchange.getResponseHeaders().add("Content-Type",
-					response.getMimeType());
-			if (response.getEncodage() != null) {
-				httpExchange.getResponseHeaders().add("Encodage",
-						response.getEncodage());
+				// Prepare Response Headers
+				httpExchange.getResponseHeaders().add("Content-Type",
+						comuteContentType(response));
+				if (response.getEncodage() != null) {
+					httpExchange.getResponseHeaders().add("Encodage",
+							response.getEncodage());
+				}
+				httpExchange.sendResponseHeaders(errCode.getCode(),
+						strResponse.getBytes().length);
+				// Send response body (content)
+				osResp.write(strResponse.getBytes());
+			} else {
+				// Prepare Response Headers
+				httpExchange.getResponseHeaders().add("Content-Type",
+						comuteContentType(response));
+				httpExchange.sendResponseHeaders(
+						HttpStatus.FORBIDDEN.getCode(), 0);
+				osResp.write(0);
 			}
-			httpExchange.sendResponseHeaders(errCode.getCode(),
-					strResponse.getBytes().length);
-			
-			// Send response body (content)
-			osResp.write(strResponse.getBytes());
-			
+
 		} catch (IOException e) {
 			LOGGER.error("Error during retrieving data.", e);
-		} finally{
+		} finally {
 			// Close output stream response.
-			if(osResp != null) {
+			if (osResp != null) {
 				try {
 					osResp.close();
 				} catch (IOException e) {
-					LOGGER.error("Error during closing response output stream", e);
+					LOGGER.error("Error during closing response output stream",
+							e);
 				}
 			}
 
-
 		}
+	}
+
+	/**
+	 * @param response
+	 * @return
+	 */
+	private String comuteContentType(T response) {
+		String contentType="";
+		contentType = response.getMimeType();
+		if(response.getEncodage()!=null && !response.getEncodage().equals("")){
+			contentType += "; charset="+response.getEncodage();
+		}
+		return contentType;
+	}
+
+	/**
+	 * verify if request is authorized.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	protected boolean authorized(Headers headers) {
+		return true;
 	}
 
 	/**

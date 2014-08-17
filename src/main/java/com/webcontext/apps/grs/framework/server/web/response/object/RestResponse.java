@@ -33,6 +33,7 @@ public class RestResponse extends HttpResponse<Map<String, Object>> {
 		super(outputStream);
 		data = new HashMap<String, Object>();
 		this.mimeType = "application/json";
+		this.encodage = "UTF-8";
 	}
 
 	/**

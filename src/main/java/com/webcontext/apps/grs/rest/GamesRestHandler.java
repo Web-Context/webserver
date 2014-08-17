@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.restserver;
+package com.webcontext.apps.grs.rest;
 
 import java.util.List;
 
@@ -42,10 +42,6 @@ public class GamesRestHandler extends RestHandler {
 	 */
 	@Override
 	public HttpStatus get(HttpRequest request, RestResponse response) {
-
-		// String title = (String) request.getParameter("title",
-		// "no-title").toArray()[0];
-
 		String title = null, platform = null;
 		Integer pageSize = 0, offset = 0;
 
@@ -69,10 +65,11 @@ public class GamesRestHandler extends RestHandler {
 				String filter = String
 				// {\"title\": {$in : [\"%s\"]},
 				// \"parameters\":{\"offset\":\"%d\",\"pageSize\":\"%d\"}}
-						.format("{" + subfilter(title, platform) + "}");
+						.format("{" + buildfilter(title, platform) + "}");
 
-				List<MDBEntity> games = DataManager.findAll(Game.class, filter,
-						offset, pageSize);
+				List<Class<? extends MDBEntity>> games = DataManager
+						.getRepository(Game.class).find(filter, offset,
+								pageSize);
 
 				response.addObject("games", games);
 				LOGGER.debug(String.format("retrieve nb=%d objects",
@@ -80,7 +77,7 @@ public class GamesRestHandler extends RestHandler {
 				return HttpStatus.OK;
 			} else {
 				response.addObject("error", "Unable to retrieve data");
-				return HttpStatus.NOT_FOUNT;
+				return HttpStatus.NOT_FOUND;
 			}
 		} catch (InstantiationException e) {
 			return HttpStatus.INTERNAL_ERROR;
@@ -103,13 +100,13 @@ public class GamesRestHandler extends RestHandler {
 	 *            game platform to search in.
 	 * @return
 	 */
-	private String subfilter(String title, String platform) {
+	private String buildfilter(String title, String platform) {
 		StringBuilder sb = new StringBuilder();
 		if (title != null && !title.equals("")) {
 			sb.append("\"title\": {$in : [\"").append(title).append("\"]}");
 		}
 		if (platform != null && !platform.equals("")) {
-			if(!sb.toString().equals("")){
+			if (!sb.toString().equals("")) {
 				sb.append(",");
 			}
 			sb.append("\"platform\": {$in : [\"").append(platform)

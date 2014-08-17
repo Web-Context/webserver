@@ -7,6 +7,8 @@ import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import com.sun.net.httpserver.Headers;
+import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
 import com.webcontext.apps.grs.framework.server.web.response.object.RestResponse;
 import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
 import com.webcontext.apps.grs.framework.server.web.server.GenericServer.HttpMethod;
@@ -38,6 +40,8 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 
 	private static final Logger LOGGER = Logger.getLogger(RestHandler.class);
 
+	private static final String apiKey = "123456789ABCDEF";
+
 	/**
 	 * Linked GenericServer serving this RestHandler.
 	 */
@@ -52,8 +56,20 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 		super(server);
 	}
 
+	@SuppressWarnings("restriction")
+	@Override
+	protected boolean authorized(Headers request) {
+		if ((request.containsKey("Api-key") && request
+				.getFirst("Api-key").equals(apiKey))
+				|| apiKey.equals("")) {
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	protected String processResponse(RestResponse response) {
+
 		// Build JSON response object.
 		String strResponse = response.process();
 		LOGGER.debug("Serialize response object to a JSON structure:"

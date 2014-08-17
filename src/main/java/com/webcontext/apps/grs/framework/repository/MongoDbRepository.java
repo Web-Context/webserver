@@ -3,18 +3,22 @@
  */
 package com.webcontext.apps.grs.framework.repository;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
+import com.webcontext.apps.grs.framework.io.FileLoader;
 import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
 
 /**
@@ -226,6 +230,30 @@ public abstract class MongoDbRepository<T> implements IMongoDbRepository<T> {
 		Class<T> class1 = (Class<T>) genericSuperClass.getActualTypeArguments()[0];
 		Class<T> entityClass = class1;
 		return gson.fromJson(json, entityClass);
+	}
+
+	/**
+	 * Read the T object list from a JSON file.
+	 * 
+	 * @param filePath
+	 *            the JSON file to be read and parsed to produce a
+	 *            <code>List<T></code> objects.
+	 * @return return a list of T object as a <code>list<T></code>.
+	 * @throws IOException
+	 */
+	public List<T> loadObjectFromJSONFile(String filePath) throws IOException {
+		filePath = this.getClass().getResource("/").getPath().toString()
+				+ File.separator + filePath;
+
+		String json = FileLoader.loadAsString(filePath);
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
+				.create();
+
+		TypeToken<List<T>> token = new TypeToken<List<T>>() {
+		};
+		List<T> list = gson.fromJson(json, token.getType());
+
+		return list;
 	}
 
 	/**

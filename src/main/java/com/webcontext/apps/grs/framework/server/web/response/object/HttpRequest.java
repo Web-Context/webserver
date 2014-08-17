@@ -17,14 +17,14 @@ import com.sun.net.httpserver.HttpExchange;
 public class HttpRequest {
 
 	private Map<String, Set<String>> parameters;
-	private Headers headers;
+	private Headers headers = new Headers();
 	private HttpExchange httpExchange;
 
 	public HttpRequest(HttpExchange httpExchange,
 			Map<String, Set<String>> parameters) {
 		this.parameters = parameters;
 		this.setHttpExchange(httpExchange);
-		setHeaders(httpExchange.getResponseHeaders());
+		this.headers.putAll(httpExchange.getResponseHeaders());
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class HttpRequest {
 	 *            the headers to set
 	 */
 	public void setHeaders(Headers headers) {
-		this.headers = headers;
+		this.headers.putAll(headers);
 	}
 
 	/**

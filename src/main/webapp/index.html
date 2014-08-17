@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html ng-app>
+<html>
 <head>
 <meta charset="UTF-8">
 <title>GamesLibrary</title>
 <link rel="stylesheet" type="text/css" href="styles/screen.css"
 	media="screen">
-<link rel="stylesheet" type="text/css" href="styles/print.css"
-	media="print">
-<script type="text/javascript" src="scripts/angular.min.js"></script>
+<script type="text/javascript" src="scripts/libs/angular.min.js"></script>
 </head>
-<body>
+<body ng-app>
 	<header>
 		<h1>Games library</h1>
 		<nav>
@@ -22,7 +20,7 @@
 			</ul>
 		</nav>
 	</header>
-	<section>
+	<section ng-controller="GameCtrl">
 		<article ng-repeat="game in games">
 			<h1>{{game.title}}</h1>
 			<div class="header">{{game.header}}</div>
@@ -33,5 +31,7 @@
 	<footer>
 		<p>(c) 2014 - Frédéric Delorme</p>
 	</footer>
+	<script type="text/javascript" src="scripts/application/app.js"></script>
+	<script type="text/javascript" src="scripts/application/controllers/gamesCtrl.js"></script>
 </body>
 </html>

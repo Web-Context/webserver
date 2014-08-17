@@ -3,9 +3,8 @@
  */
 package com.webcontext.apps.grs.framework.server.web.response.handler;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -13,6 +12,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.webcontext.apps.grs.framework.io.FileLoader;
 import com.webcontext.apps.grs.framework.server.web.response.object.HttpRequest;
 import com.webcontext.apps.grs.framework.server.web.response.object.WebResponse;
 import com.webcontext.apps.grs.framework.server.web.server.GenericServer;
@@ -65,24 +65,23 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 			response.setMimeType(mimeType);
 		}
 		// Send file content to response stream.
-		String line;
 		File resourceFile = new File(resourcePath);
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(resourcePath));
+			String content = FileLoader.loadAsString(resourcePath);
+			if (content != null && !content.equals("")) {
+				response.add(content);
+				LOGGER.info(String.format(
+						"Send resource [%s] of size %s with mime type [%s].",
+						resourcePath, formatSize(resourceFile), mimeType));
 
-			while ((line = br.readLine()) != null) {
-				response.add(line);
+				return HttpStatus.OK;
+			}else{
+				return HttpStatus.INTERNAL_ERROR;
 			}
-			br.close();
-		} catch (Exception e) {
-			LOGGER.error("Unable to read resource for URI "
-					+ request.getHttpExchange().getRequestURI().toString());
+		} catch (FileNotFoundException fnfe) {
+			return HttpStatus.NOT_FOUND;			
 		}
-		LOGGER.info(String.format(
-				"Send resource [%s] of size %s with mime type [%s].",
-				resourcePath, formatSize(resourceFile), mimeType));
 
-		return HttpStatus.OK;
 	}
 
 	/**

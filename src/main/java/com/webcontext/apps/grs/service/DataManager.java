@@ -13,12 +13,13 @@ import com.webcontext.apps.grs.framework.model.MDBEntity;
 import com.webcontext.apps.grs.framework.repository.IMongoDbRepository;
 import com.webcontext.apps.grs.framework.repository.MongoDBConnection;
 import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
+import com.webcontext.apps.grs.framework.repository.exception.RepositoryDoesNotExistsException;
 
 /**
  * Data manager is a MongoDB Repository Service, providing easy access to data.
  * 
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
- *
+ * 
  */
 public class DataManager {
 
@@ -171,10 +172,12 @@ public class DataManager {
 	 * 
 	 * @param entity
 	 * @return
+	 * @throws RepositoryDoesNotExistsException
 	 */
-	@SuppressWarnings("unchecked")
-	public long count(Class<? extends MDBEntity> entity) {
-		IMongoDbRepository<MDBEntity> repository = repositories.get(entity);
+	// @SuppressWarnings("unchecked")
+	public long count(Class<? extends MDBEntity> entity)
+			throws RepositoryDoesNotExistsException {
+		IMongoDbRepository<Class<? extends MDBEntity>> repository = getRepository(entity);
 		long count = -1;
 		try {
 			count = repository.count();
@@ -191,8 +194,10 @@ public class DataManager {
 	 * 
 	 * @param entity
 	 * @return
+	 * @throws RepositoryDoesNotExistsException
 	 */
-	public static long countEntities(Class<? extends MDBEntity> entity) {
+	public static long countEntities(Class<? extends MDBEntity> entity)
+			throws RepositoryDoesNotExistsException {
 		return DataManager.getInstance().count(entity);
 	}
 
@@ -211,6 +216,31 @@ public class DataManager {
 		} catch (NullMongoDBConnection e) {
 			LOGGER.error("Unalble to retrieve data for "
 					+ entity.getClass().getCanonicalName(), e);
+		}
+	}
+
+	/**
+	 * Return the correpsonding repository fo entityClass if it has previously
+	 * been registered.
+	 * 
+	 * @param entityClass
+	 *            the class to find the repository for.
+	 * @return the IMongoDBRepository corresponding to entityClass .
+	 * @throws RepositoryDoesNotExistsException
+	 */
+	@SuppressWarnings("unchecked")
+	public static IMongoDbRepository<Class<? extends MDBEntity>> getRepository(
+			Class<? extends MDBEntity> entityClass)
+			throws RepositoryDoesNotExistsException {
+		IMongoDbRepository<Class<? extends MDBEntity>> repository;
+		if (getInstance().repositories.containsKey(entityClass)) {
+			repository = getInstance().repositories.get(entityClass);
+			return repository;
+		} else {
+			throw new RepositoryDoesNotExistsException(
+					String.format(
+							"The repository for %s does not exists or had not been registered.",
+							entityClass));
 		}
 	}
 

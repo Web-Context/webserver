@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.restserver;
+package com.webcontext.apps.grs.rest;
 
 import java.io.IOException;
 
