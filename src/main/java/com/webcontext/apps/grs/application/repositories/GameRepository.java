@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.repository;
+package com.webcontext.apps.grs.application.repositories;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
+import com.webcontext.apps.grs.application.models.Game;
 import com.webcontext.apps.grs.framework.repository.MongoDbRepository;
-import com.webcontext.apps.grs.models.Game;
 
 /**
  * A simple implementation of a Game repository using a MongoDB games collection

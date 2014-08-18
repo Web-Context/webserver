@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.service;
+package com.webcontext.apps.grs.framework.services.persistence;
 
 import java.util.HashMap;
 import java.util.List;
