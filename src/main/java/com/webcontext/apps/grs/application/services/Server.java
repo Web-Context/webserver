@@ -13,6 +13,7 @@ import com.webcontext.apps.grs.application.rest.GamesRestHandler;
 import com.webcontext.apps.grs.framework.services.mongodb.MongoDBServer;
 import com.webcontext.apps.grs.framework.services.persistence.DataManager;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
+import com.webcontext.apps.grs.framework.utils.ArgumentParser;
 
 /**
  * This is the start class for our server.
@@ -31,12 +32,14 @@ public class Server {
 
 		try {
 
-			/**
-			 * Initialize and start the MongoDBserver.
-			 */
-			dbServer = new MongoDBServer(args);
-			dbServer.start();
-			dbServer.waitUntilStarted();
+			if(new ArgumentParser(args).getBooleanArg("embedded", true)){
+				/**
+				 * Initialize and start the MongoDBserver.
+				 */
+				dbServer = new MongoDBServer(args);
+				dbServer.start();
+				dbServer.waitUntilStarted();				
+			}
 
 			// initialize server.
 			appServer = new GenericServer(args);

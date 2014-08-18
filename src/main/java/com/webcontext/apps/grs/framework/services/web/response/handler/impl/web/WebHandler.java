@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -28,26 +30,43 @@ import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpS
  */
 public class WebHandler extends ResponseHandler<WebResponse> {
 
+	/*
+	 * Logger ...
+	 */
 	private static final Logger LOGGER = Logger.getLogger(WebHandler.class);
 
+	/**
+	 * MIME types for Web handling files !
+	 */
 	private Map<String, String> mimeTypes = new HashMap<>();
 
 	/**
 	 * Create the basic MIME Types table.
 	 * 
 	 * @param server
+	 * @throws IOException
 	 */
-	public WebHandler(GenericServer server) {
+	public WebHandler(GenericServer server) throws IOException {
 		super(server);
-		mimeTypes.put("css", "text/css");
-		mimeTypes.put("html", "text/html");
-		mimeTypes.put("js", "application/javascript");
-		mimeTypes.put("png", "image/png");
-		mimeTypes.put("jpg,jpeg", "image/jpeg");
+		loadMimeTypesFromFiles();
 	}
 
 	/**
-	 * serve a simple page on an HTTP GET method.
+	 * load MIME types from file.
+	 * 
+	 * @throws IOException
+	 */
+	public void loadMimeTypesFromFiles() throws IOException {
+		Properties props = new Properties();
+		props.load(this.getClass().getResourceAsStream(
+				"/config/web-mimes.properties"));
+		for (Entry<Object, Object> prop : props.entrySet()) {
+			mimeTypes.put((String) prop.getKey(), (String) prop.getValue());
+		}
+	}
+
+	/**
+	 * Serve a simple page on an HTTP GET method.
 	 */
 	@SuppressWarnings("restriction")
 	@Override
@@ -68,7 +87,7 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 		File resourceFile = new File(resourcePath);
 		try {
 			String content = FileLoader.loadAsString(resourcePath);
-			//String content = FileLoader.fastRead(resourcePath);
+			// String content = FileLoader.fastRead(resourcePath);
 			if (content != null && !content.equals("")) {
 				response.add(content);
 				LOGGER.info(String.format(
@@ -76,11 +95,11 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 						resourcePath, formatSize(resourceFile), mimeType));
 
 				return HttpStatus.OK;
-			}else{
+			} else {
 				return HttpStatus.INTERNAL_ERROR;
 			}
 		} catch (FileNotFoundException fnfe) {
-			return HttpStatus.NOT_FOUND;			
+			return HttpStatus.NOT_FOUND;
 		}
 
 	}
@@ -112,7 +131,16 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 	private String extractMimeType(String resourcePath) {
 		String extension = resourcePath
 				.substring(resourcePath.lastIndexOf(".") + 1);
-		String mimeType = mimeTypes.get(extension);
+		String mimeType = null;
+		if (mimeTypes.containsKey(extension)) {
+			mimeType = mimeTypes.get(extension);
+		} else {
+			if (mimeTypes.containsKey("default")) {
+				mimeType = mimeTypes.get("default");
+			} else {
+				mimeType = "application/actet-stream";
+			}
+		}
 		return mimeType;
 	}
 
