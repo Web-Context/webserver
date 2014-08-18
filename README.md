@@ -12,18 +12,16 @@ developer some basic features :
 
 ### MIME Type
 
-the WebHandler component, serving pages, supports the following MIME Types:
+The WebHandler component, serving pages, supports the following MIME Types:
 
-<table>
-<thead><tr><td>MIME type</td><td>File served</td></tr></thead>
-<tbody>
-<tr><td>application/javascript</td><td>*.js file containing javascript</td></tr>
-<tr><td>text/html</td><td>*.html file containing Web page structure</td></tr>
-<tr><td>text/css</td><td>*.css file containing Cascades Styles Sheet</td></tr>
-<tr><td>application/javascript</td><td>*.js file containing javascript</td></tr>
-</tbody>
-</table>
-
+| MIME Type                | File served                                 |
+|--------------------------|---------------------------------------------|
+| application/javascript   | *.js file containing javascript             |
+| text/html                | *.html file containing Web page structure   |
+| text/css                 | *.css file containing Cascades Styles Sheet |
+| image/jpeg               | *.jpg,*.jpeg image resource                 |
+| image/png                | *.png image resource                        |
+| application/octet-stream | *.* others binary resource                  |
 
 ## Basic Usage
 
@@ -31,33 +29,45 @@ to start the server you can create a main function (if needed) instantiating the
 
 ```java
 	public static void main(String[] args) {
-	
-			GenericServer server;
+		try {
 
-			int port = 0;
+			/**
+			 * Initialize and start the MongoDBserver.
+			 */
+			dbServer = new MongoDBServer(args);
+			dbServer.start();
+			dbServer.waitUntilStarted();
 
-			String stopKey = "";
+			// initialize server.
+			appServer = new GenericServer(args);
 
-			try {
-				// Retrieve from args from command line like listening port
-				port = GenericServer.getIntArg(args, "port", 8888);
-				// and the magic keyword to stop server on receiving this one.
-				stopKey = GenericServer.getStringArg(args, "StopKey", "STOP");
+			// Add a new repository.
+			DataManager.getInstance()
+					.register(Game.class, GameRepository.class);
 
-				// create the Rest Server
-				server = new GenericServer(port, stopKey);
-				// Add some specific Rest handler to process request
-				server.addContext("/rest/foo", new FooRestHandler(server));
-				// then start server.
-				server.start();
+			// add a new Handler to the Rest Server.
+			appServer.addRestContext("/rest/games", new GamesRestHandler(appServer));
 
-			} catch (IOException | InterruptedException e) {
-				LOGGER.error("Unable to start the internal Rest HTTP Server component on port "
-						+ port + ". Reason : " + e.getLocalizedMessage());
+			// and start server.
+			appServer.start();
+
+		} catch (IOException | InterruptedException | InstantiationException
+				| IllegalAccessException e) {
+			LOGGER.error("Unable to start the internal Rest HTTP Server component. Reason : "
+					+ e.getLocalizedMessage());
+		}finally{
+			if(appServer != null){
+				appServer.stop();
 			}
-			LOGGER.info("End of processing request in Server on port "+port);
-			System.exit(0);
+			if(dbServer != null){
+				dbServer.stop();
+			}
 		}
+		LOGGER.info("End of processing request in Server");
+
+		// Exit from server.
+		System.exit(0);
+	}
 ```
 
 ## Stop the server
