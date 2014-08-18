@@ -2,9 +2,27 @@
 
 ## GenericServer
 
-the rest Server component is a small and dependency reduced HTTP server, serving JSON document. 
-Based only on the HttpServer implementation from Java SE 7, and the GSon library it brings to 
-developer some basic features like Rest request handling with simple Implementation.
+the GenericServer component is a small and dependency reduced HTTP server, serving JSON document. 
+Based only on the HttpServer implementation from Java JDK7, and the Google JSon library (GSON) it brings to 
+developer some basic features :
+
+- Rest request handling with simple Implementation,
+- Web HTML based pages serving, containing HTML, CSS, and Javascript files, but also images resources like JPG and PNG.
+- Other resource would be serve as 
+
+### MIME Type
+
+the WebHandler component, serving pages, supports the following MIME Types:
+
+<table>
+<thead><tr><td>MIME type</td><td>File served</td></tr></thead>
+<tbody>
+<tr><td>application/javascript</td><td>*.js file containing javascript</td></tr>
+<tr><td>text/html</td><td>*.html file containing Web page structure</td></tr>
+<tr><td>text/css</td><td>*.css file containing Cascades Styles Sheet</td></tr>
+<tr><td>application/javascript</td><td>*.js file containing javascript</td></tr>
+</tbody>
+</table>
 
 
 ## Basic Usage
