@@ -1,7 +1,8 @@
+'use strict';
 /**
  * Games controller, provide all Games from back-end. 
  */
-var app = angular.module("app",[]);
+var app = angular.module("gamesrestserver",[]);
 
 app.controller("GameCtrl", function($scope,$http,$get){
 	

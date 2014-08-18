@@ -68,6 +68,7 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 		File resourceFile = new File(resourcePath);
 		try {
 			String content = FileLoader.loadAsString(resourcePath);
+			//String content = FileLoader.fastRead(resourcePath);
 			if (content != null && !content.equals("")) {
 				response.add(content);
 				LOGGER.info(String.format(

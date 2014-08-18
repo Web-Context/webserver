@@ -1,6 +1,7 @@
+'use strict';
 /**
  * 
  */
-angular.module("games",[
+angular.module("gamesrestserver",[
     "GameCtrl"
 ]);
