@@ -104,26 +104,25 @@ first implements a RestHandler and add its instance to the GenericServer:
 	} 
 	```
 
-
-
-
 # Implementation
 
-## HttpRequest
+## Rest Service
+
+### HttpRequest
 
  ``Object getParamater(String name, T defaultValue)`` will extract the ``name`` parameter from the Http request, or if this one does not exist, the ``defaultValue``.
  
-## RestResponse 
+### RestResponse 
 
 ``RestResponse`` class encapsulates the mechanism to generate JSon from data push to this object. ``HttpResponse`` embeds a ``Map<String,Object>`` containing all object to be return as JSON accordingly to the ``HttpRequest``.
 
-## RestHandler
+### RestHandler
 
 The ``get()``, ``post()``, ``put()``, ``delete()``, ``options()``, and ``head()`` methods are reflecting some of the standard HTTP Method.
 
 ``HttpRequest`` class is a design of the HTTP Request. It contains basically all object from the HttpExchange class from the  ``com.sun.net.httpserver```package, but adding Request parameters and headers easy access helpers.
 
-## Processing GET, POST, PUT, DELETE, etc...
+### Processing GET, POST, PUT, DELETE, etc...
 
 To perform processing of one of the HTTP method on a specific URL, you must implements a RestHandler linked to the "URL" and declare this into the server:
 
@@ -167,11 +166,20 @@ This small piece of code will serve the ```localhost:8888/rest/foo```  with a js
 	{ "title": "[title from URL]" }
 	```   	
 
-# Administration
+## Web Page Service
+
+The first service assured by this small web server implementation, This handler (the ``WebHandler``) is ready to serve real web pages as HTML, CSS and javascript files, and images like JPG and PNG ones. But also will serve any other file ``application/octet-stream``. 
+
+A small properties file exists to set mapping between file extension and MIME types. See previous exposed MIME types table. You will be able to map anay file extension to MIME types.
+
+The mechanism is based on the same implementation as RestHandler.
+
+
+## Administration
 
 The server can be called on the localhost:[port]/rest/admin to perform some administratiove operation like:
 
-## Usage Statistics
+### Usage Statistics
 
 * ``localhost:[port]/rest/admin?command=info``  return a json structure containing some basic usage statistics and information
 
@@ -205,7 +213,7 @@ where :
 > Calling this url ``localhost:[port]/rest/admin`` with a ``POST`` method drive to the same result.
 
 
-## Stop server
+### Stop server
 
 * ``localhost:[port]/rest/admin?command=stop`` drive to ask stopping the RestHTTP server.
-* 
+
