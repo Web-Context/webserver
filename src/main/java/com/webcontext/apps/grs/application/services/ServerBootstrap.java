@@ -40,7 +40,7 @@ public class ServerBootstrap implements IBootstrap {
 				try {
 					List<Game> list = gr.loadObjectFromJSONFile("games.json");
 					for (Game game : list) {
-						gr.save(game);
+						gr.save((Game)game);
 					}
 				} catch (FileNotFoundException e) {
 					LOGGER.error("unable to read file", e);
