@@ -1,20 +1,20 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.rest;
+package com.webcontext.apps.grs.application.rest;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.webcontext.apps.grs.application.models.Game;
 import com.webcontext.apps.grs.framework.model.MDBEntity;
+import com.webcontext.apps.grs.framework.services.persistence.DataManager;
 import com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler;
 import com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestResponse;
 import com.webcontext.apps.grs.framework.services.web.response.io.HttpRequest;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpStatus;
-import com.webcontext.apps.grs.models.Game;
-import com.webcontext.apps.grs.service.DataManager;
 
 /**
  * This is a sample implementation of a RestHandler on this GenericServer. It

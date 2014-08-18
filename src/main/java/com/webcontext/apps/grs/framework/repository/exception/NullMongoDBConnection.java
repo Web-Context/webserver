@@ -15,6 +15,11 @@ public class NullMongoDBConnection extends Exception {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -8762131616763841871L;
+
+	/**
+	 * 
+	 */
 	public NullMongoDBConnection() {
 		// TODO Auto-generated constructor stub
 	}

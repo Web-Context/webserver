@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.models;
+package com.webcontext.apps.grs.application.models;
 
 import java.net.URL;
 import java.util.Date;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.webcontext.apps.grs.rest;
+package com.webcontext.apps.grs.application.services;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,14 +9,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.webcontext.apps.grs.application.models.Game;
+import com.webcontext.apps.grs.application.repositories.GameRepository;
 import com.webcontext.apps.grs.framework.repository.MongoDBConnection;
 import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
 import com.webcontext.apps.grs.framework.repository.exception.RepositoryDoesNotExistsException;
+import com.webcontext.apps.grs.framework.services.persistence.DataManager;
 import com.webcontext.apps.grs.framework.services.web.server.bootstrap.Bootstrap;
 import com.webcontext.apps.grs.framework.services.web.server.bootstrap.IBootstrap;
-import com.webcontext.apps.grs.models.Game;
-import com.webcontext.apps.grs.repository.GameRepository;
-import com.webcontext.apps.grs.service.DataManager;
 
 /**
  * Boostraping the server by adding some basic data to MongoDB.
@@ -40,7 +40,7 @@ public class ServerBootstrap implements IBootstrap {
 				try {
 					List<Game> list = gr.loadObjectFromJSONFile("games.json");
 					for (Game game : list) {
-						gr.save(game);
+						gr.save((Game)game);
 					}
 				} catch (FileNotFoundException e) {
 					LOGGER.error("unable to read file", e);
