@@ -125,8 +125,8 @@
 		</plugins>
 	</build>
 	<scm>
-		<url>http://bitbucket.org/McGivrer/webserver</url>
-		<connection>git@bitbucket.org:McGivrer/webserver.git</connection>
+		<url>http://github.com/web-context/webserver</url>
+		<connection>git@github.com:web-context/webserver.git</connection>
 		<developerConnection>git@bitbucket.org:McGivrer/webserver.git</developerConnection>
 		<tag>SNAPSHOT</tag>
 	</scm>
