@@ -111,7 +111,9 @@ public class MongoDBServer {
 	}
 
 	public MongoDBServer(String[] args) {
-		this(new ArgumentParser(args).getIntArg("dbport", 27017));
+		this(new ArgumentParser(args).getIntArg(
+				ArgumentParser.ServerArguments.DATABASE_PORT.getKeyword(),
+				ArgumentParser.ServerArguments.DATABASE_PORT.getDefaultValue()));
 
 	}
 
@@ -184,7 +186,9 @@ public class MongoDBServer {
 	public static void main(String[] args) {
 		// extract specific arg from java list args.
 		ArgumentParser ap = new ArgumentParser(args);
-		MongoDBServer mgserver = new MongoDBServer(ap.getIntArg("port", 27017));
+		MongoDBServer mgserver = new MongoDBServer(ap.getIntArg(
+				ArgumentParser.ServerArguments.DATABASE_PORT.getKeyword(),
+				ArgumentParser.ServerArguments.DATABASE_PORT.getDefaultValue()));
 		try {
 			if (mgserver != null && mgserver.mongod == null) {
 				mgserver.start();

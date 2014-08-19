@@ -32,7 +32,9 @@ public class Server {
 
 		try {
 
-			if(new ArgumentParser(args).getBooleanArg("embedded", true)){
+			if(new ArgumentParser(args).getBooleanArg(
+					ArgumentParser.ServerArguments.DATABASE_EMBEDDED.getKeyword(), 
+					ArgumentParser.ServerArguments.DATABASE_EMBEDDED.getDefaultValue())){
 				/**
 				 * Initialize and start the MongoDBserver.
 				 */
@@ -43,6 +45,7 @@ public class Server {
 
 			// initialize server.
 			appServer = new GenericServer(args);
+			
 
 			// Add a new repository.
 			DataManager.getInstance()

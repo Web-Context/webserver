@@ -1,6 +1,35 @@
-# README
+# WebServer
+
+![Travis-CI.org build status](https://travis-ci.org/mcgivrer/webserver.svg?branch=master)
+
+This small piece of code is my first implementation of a minimalistic web server coded over the JDK(>=6).
+This server and its sample usage demonstration based on a Game library web site proposes some basic features for a modern web server.
+
+- Web server (java oriented but not JavaEE !)
+- Embedded MongoDB server (if parametered).
+
+The ``Server`` class propose an implementation of both services with some arguments on java command:
+
+	```bash
+
+	$> java -jar gamerestserver-0.0.1-SNAPSHOT.jar \
+		com.webcontext.apps.grs.application.services.Server \
+			port=8888 dbembedded=true dbport=27017 
+	```
+
+
+where arguments are :
+
+| argument      | value     | description                                    |
+|---------------|-----------|------------------------------------------------|
+| port          | 8888      | this is the Web server port, default is 8888   |
+| dbembedded    | true      | Ask to embedded MongoDb server to install, start and intialize.   |
+| dbport        | 27017     | dbport set the MongoDB execution port. default is 27017 |
+
+
 
 ## GenericServer
+
 
 the GenericServer component is a small and dependency reduced HTTP server, serving JSON document. 
 Based only on the HttpServer implementation from Java JDK7, and the Google JSon library (GSON) it brings to 

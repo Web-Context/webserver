@@ -194,6 +194,8 @@ public class GenericServer {
 	 */
 	private int port = 8888;
 
+	private ArgumentParser argsParser = null;
+
 	/**
 	 * Magic keyword to stop server on the <code>/rest/admin</code> URI.
 	 */
@@ -237,9 +239,15 @@ public class GenericServer {
 	}
 
 	public GenericServer(String[] args) throws IOException {
-		ArgumentParser ap = new ArgumentParser(args);
-		this.port = ap.getIntArg("port", 8888);
-		this.stopkey = ap.getStringArg("StopKey", "STOP");
+		argsParser = new ArgumentParser(args);
+		this.port = argsParser.getIntArg(
+				ArgumentParser.ServerArguments.SERVER_PORT.getKeyword(),
+				ArgumentParser.ServerArguments.SERVER_PORT.getDefaultValue());
+		this.stopkey = argsParser
+				.getStringArg(ArgumentParser.ServerArguments.SERVER_STOPKEY
+						.getKeyword(),
+						ArgumentParser.ServerArguments.SERVER_STOPKEY
+								.getDefaultValue());
 		initServer(this.port);
 	}
 
@@ -394,7 +402,6 @@ public class GenericServer {
 		}
 
 	}
-
 
 	/**
 	 * @return the info

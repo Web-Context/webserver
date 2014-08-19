@@ -19,6 +19,7 @@ import com.webcontext.apps.grs.framework.services.web.response.handler.ResponseH
 import com.webcontext.apps.grs.framework.services.web.response.io.HttpRequest;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpStatus;
+import com.webcontext.apps.grs.framework.utils.FileIO;
 
 /**
  * IMplemnattion for a minimalistic Web Server, adding <code>HTML</code>,
@@ -135,7 +136,8 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 		if (mimeTypes.containsKey(extension)) {
 			mimeType = mimeTypes.get(extension);
 		} else {
-			if (mimeTypes.containsKey("default")) {
+			mimeType = FileIO.getContentType(resourcePath);
+			if((mimeType == null || mimeType.equals("")) && mimeTypes.containsKey("default")) {
 				mimeType = mimeTypes.get("default");
 			} else {
 				mimeType = "application/actet-stream";
