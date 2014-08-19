@@ -1,6 +1,6 @@
 # WebServer
 
-![Travis-CI.org build status](https://travis-ci.org/mcgivrer/webserver.svg?branch=master)
+[![Build Status](https://travis-ci.org/mcgivrer/webserver.svg?branch=master)](https://travis-ci.org/mcgivrer/webserver)
 
 This small piece of code is my first implementation of a minimalistic web server coded over the JDK(>=6).
 This server and its sample usage demonstration based on a Game library web site proposes some basic features for a modern web server.
