@@ -121,6 +121,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							<mainClass>com.webcontext.apps.grs.application.services.Server</mainClass>
+						</manifest>
+					</archive>
+					<manifestEntries>
+
+						<mode>development</mode>
+						<url>${project.url}</url>
+					</manifestEntries>
+
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>

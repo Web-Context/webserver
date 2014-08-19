@@ -21,11 +21,11 @@ The ``Server`` class propose an implementation of both services with some argume
 
 where arguments are :
 
-| argument      | value     | description                                    |
-|---------------|-----------|------------------------------------------------|
-| port          | 8888      | this is the Web server port, default is 8888   |
-| dbembedded    | true      | Ask to embedded MongoDb server to install, start and intialize.   |
-| dbport        | 27017     | dbport set the MongoDB execution port. default is 27017 |
+| argument      | value     | description                                                               |
+|---------------|-----------|---------------------------------------------------------------------------|
+| port          | 8888      | this is the Web server ``port``, default is 8888                        |
+| dbembedded    | true      | Ask to ``embedded`` MongoDb server to install, start and initialize.   |
+| dbport        | 27017     | ``dbport`` set the MongoDB execution port. default is 27017             |
 
 
 
@@ -53,9 +53,10 @@ The WebHandler component, serving pages, supports the following MIME Types:
 | image/png                | *.png image resource                        |
 | application/octet-stream | *.* others binary resource                  |
 
-## Basic Usage
+## Basic Usage Demonstration
 
-to start the server you can create a main function (if needed) instantiating the server with some basic parameters:
+To start the server you can create a main function (if needed) instantiating the server with some basic parameters:
+
 
 ```java
 	public static void main(String[] args) {
@@ -99,12 +100,6 @@ to start the server you can create a main function (if needed) instantiating the
 		System.exit(0);
 	}
 ```
-
-## Stop the server
-
-A default RestHandler is listening the ``localhost:8888/rest/admin`` URL. if the parameter ``stop=stop`` is send, the server will automatically stop (see AdminRestHandler class for more information).
-
-
 
 first implements a RestHandler and add its instance to the GenericServer:
 
@@ -243,7 +238,10 @@ where :
 > Calling this url ``localhost:[port]/rest/admin`` with a ``POST`` method drive to the same result.
 
 
-### Stop server
+### Stop the server
+
+A default RestHandler is listening the ``localhost:8888/rest/admin`` URL. if the parameter ``command=stop`` is send, the server will automatically stop (see AdminRestHandler class for more information).
+
 
 * ``localhost:[port]/rest/admin?command=stop`` drive to ask stopping the RestHTTP server.
 

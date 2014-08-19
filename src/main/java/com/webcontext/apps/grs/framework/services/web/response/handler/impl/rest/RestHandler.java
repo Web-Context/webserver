@@ -11,7 +11,6 @@ import com.sun.net.httpserver.Headers;
 import com.webcontext.apps.grs.framework.services.web.response.handler.ResponseHandler;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpMethod;
-import com.webcontext.apps.grs.framework.utils.ArgumentParser;
 
 /**
  * The RestHandler class is a specific Handler to perform processing of HTTP
@@ -55,7 +54,7 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 	 */
 	public RestHandler(GenericServer server) {
 		super(server);
-		
+
 	}
 
 	@Override

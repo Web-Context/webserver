@@ -40,13 +40,19 @@ public class FileLoader {
 		return content;
 	}
 
+	/**
+	 * Quick reading of any file.
+	 * 
+	 * @param name
+	 * @return
+	 * @throws IOException
+	 */
 	public static String fastRead(String name) throws IOException {
 		BufferedInputStream f = new BufferedInputStream(new FileInputStream(
 				name));
 		byte[] barray = new byte[256];
-		int nRead;
 		String content = "";
-		while ((nRead = f.read(barray, 0, 256)) != -1)
+		while ((f.read(barray, 0, 256)) != -1)
 			content += new String(barray);
 		f.close();
 		return content;
