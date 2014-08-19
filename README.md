@@ -10,12 +10,12 @@ This server and its sample usage demonstration based on a Game library web site 
 
 The ``Server`` class propose an implementation of both services with some arguments on java command:
 
-	```bash
+```bash
 
 	$> java -jar gamerestserver-0.0.1-SNAPSHOT.jar \
 		com.webcontext.apps.grs.application.services.Server \
 			port=8888 dbembedded=true dbport=27017 
-	```
+```
 
 
 where arguments are :
@@ -107,7 +107,7 @@ A default RestHandler is listening the ``localhost:8888/rest/admin`` URL. if the
 
 first implements a RestHandler and add its instance to the GenericServer:
 
-	``` java
+``` java
 	public class GamesRestHandler extends RestHandler {
 
 		@Override
@@ -131,7 +131,7 @@ first implements a RestHandler and add its instance to the GenericServer:
 		}
 	
 	} 
-	```
+```
 
 # Implementation
 
@@ -155,14 +155,14 @@ The ``get()``, ``post()``, ``put()``, ``delete()``, ``options()``, and ``head()`
 
 To perform processing of one of the HTTP method on a specific URL, you must implements a RestHandler linked to the "URL" and declare this into the server:
 
-	```java
+```java
 	server.addContext("/rest/foo", new GamesRestHandler(server));
-	```
+```
 
 Then, implements the corresponding method into the RestHandler. See bellow for a sample implementation serving
 
 
-	```java
+```java
 	public class GamesRestHandler extends RestHandler {
 		private static final Logger LOGGER = Logger
 			.getLogger(FooRestHandler.class);
@@ -187,13 +187,13 @@ Then, implements the corresponding method into the RestHandler. See bellow for a
 			}
 		} 
  	}
-	```
+```
 	
 This small piece of code will serve the ```localhost:8888/rest/foo```  with a json document : 
 
-	```java
+```javascript
 	{ "title": "[title from URL]" }
-	```   	
+```   	
 
 ## Web Page Service
 
@@ -212,7 +212,7 @@ The server can be called on the localhost:[port]/rest/admin to perform some admi
 
 * ``localhost:[port]/rest/admin?command=info``  return a json structure containing some basic usage statistics and information
 
-	```
+```javascript
 	{
 	  "info": {
 	    "StartDate": "Aug 11, 2014 11:38:25 AM",
@@ -224,7 +224,7 @@ The server can be called on the localhost:[port]/rest/admin to perform some admi
 	    "LastErrorURI": null
 	  }
 	} 
-	```  
+```  
 
 where :
 
