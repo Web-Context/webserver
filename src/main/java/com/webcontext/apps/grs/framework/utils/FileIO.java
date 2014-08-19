@@ -1,5 +1,9 @@
 package com.webcontext.apps.grs.framework.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -50,5 +54,42 @@ public class FileIO {
 			// later.
 			return "";
 		}
+	}
+
+	/**
+	 * Load <code>filePath</code> text file to a String.
+	 * 
+	 * @param filePath
+	 *            File to be read.
+	 * @return a string containing auu the file.
+	 * @throws IOException
+	 */
+	public static String loadAsString(String filePath) throws IOException {
+		String content = "", line = "";
+		BufferedReader br = new BufferedReader(new FileReader(filePath));
+
+		while ((line = br.readLine()) != null) {
+			content += line;
+		}
+		br.close();
+		return content;
+	}
+
+	/**
+	 * Quick reading of any file.
+	 * 
+	 * @param name
+	 * @return
+	 * @throws IOException
+	 */
+	public static String fastRead(String name) throws IOException {
+		BufferedInputStream f = new BufferedInputStream(new FileInputStream(
+				name));
+		byte[] barray = new byte[256];
+		String content = "";
+		while ((f.read(barray, 0, 256)) != -1)
+			content += new String(barray);
+		f.close();
+		return content;
 	}
 }

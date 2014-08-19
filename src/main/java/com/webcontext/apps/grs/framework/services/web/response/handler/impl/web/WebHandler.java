@@ -14,7 +14,6 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.framework.io.FileLoader;
 import com.webcontext.apps.grs.framework.services.web.response.handler.ResponseHandler;
 import com.webcontext.apps.grs.framework.services.web.response.io.HttpRequest;
 import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
@@ -87,7 +86,7 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 		// Send file content to response stream.
 		File resourceFile = new File(resourcePath);
 		try {
-			String content = FileLoader.loadAsString(resourcePath);
+			String content = FileIO.loadAsString(resourcePath);
 			// String content = FileLoader.fastRead(resourcePath);
 			if (content != null && !content.equals("")) {
 				response.add(content);

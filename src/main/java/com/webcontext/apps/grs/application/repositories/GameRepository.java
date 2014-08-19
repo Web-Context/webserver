@@ -13,8 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import com.webcontext.apps.grs.application.models.Game;
-import com.webcontext.apps.grs.framework.io.FileLoader;
 import com.webcontext.apps.grs.framework.repository.MongoDbRepository;
+import com.webcontext.apps.grs.framework.utils.FileIO;
 
 /**
  * A simple implementation of a Game repository using a MongoDB games collection
@@ -59,7 +59,7 @@ public class GameRepository extends MongoDbRepository<Game> {
 		filePath = this.getClass().getResource("/").getPath().toString()
 				+ File.separator + filePath;
 
-		String json = FileLoader.loadAsString(filePath);
+		String json = FileIO.loadAsString(filePath);
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
 				.create();
 
