@@ -13,8 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import com.webcontext.apps.grs.application.models.Game;
-import com.webcontext.apps.grs.framework.repository.MongoDbRepository;
-import com.webcontext.apps.grs.framework.utils.FileIO;
+import com.webcontext.framework.appserver.repository.MongoDbRepository;
+import com.webcontext.framework.appserver.utils.FileIO;
 
 /**
  * A simple implementation of a Game repository using a MongoDB games collection

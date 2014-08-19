@@ -11,12 +11,12 @@ import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.application.models.Game;
 import com.webcontext.apps.grs.application.repositories.GameRepository;
-import com.webcontext.apps.grs.framework.repository.MongoDBConnection;
-import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
-import com.webcontext.apps.grs.framework.repository.exception.RepositoryDoesNotExistsException;
-import com.webcontext.apps.grs.framework.services.persistence.DataManager;
-import com.webcontext.apps.grs.framework.services.web.server.bootstrap.Bootstrap;
-import com.webcontext.apps.grs.framework.services.web.server.bootstrap.IBootstrap;
+import com.webcontext.framework.appserver.repository.MongoDBConnection;
+import com.webcontext.framework.appserver.repository.exception.NullMongoDBConnection;
+import com.webcontext.framework.appserver.repository.exception.RepositoryDoesNotExistsException;
+import com.webcontext.framework.appserver.services.persistence.DataManager;
+import com.webcontext.framework.appserver.services.web.server.bootstrap.Bootstrap;
+import com.webcontext.framework.appserver.services.web.server.bootstrap.IBootstrap;
 
 /**
  * Boostraping the server by adding some basic data to MongoDB.

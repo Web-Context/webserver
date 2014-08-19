@@ -30,7 +30,7 @@ public class test_1_RestHander {
 	}
 
 	/**
-	 * Test method for {@link com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler#statistics(com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpStatus, com.webcontext.apps.grs.framework.services.web.http.HttpRequest)}.
+	 * Test method for {@link com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler#statistics(com.webcontext.framework.appserver.services.web.server.GenericServer.HttpStatus, com.webcontext.framework.appserver.services.web.http.HttpRequest)}.
 	 */
 	@Test
 	public void testStatistics() {
@@ -38,7 +38,7 @@ public class test_1_RestHander {
 	}
 
 	/**
-	 * Test method for {@link com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler#get(com.webcontext.apps.grs.framework.services.web.http.HttpRequest, com.webcontext.apps.grs.framework.services.web.response.RestResponse)}.
+	 * Test method for {@link com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler#get(com.webcontext.framework.appserver.services.web.http.HttpRequest, com.webcontext.framework.appserver.services.web.response.RestResponse)}.
 	 */
 	@Test
 	public void testGet() {
@@ -46,7 +46,7 @@ public class test_1_RestHander {
 	}
 
 	/**
-	 * Test method for {@link com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler#post(com.webcontext.apps.grs.framework.services.web.http.HttpRequest, com.webcontext.apps.grs.framework.services.web.response.RestResponse)}.
+	 * Test method for {@link com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler#post(com.webcontext.framework.appserver.services.web.http.HttpRequest, com.webcontext.framework.appserver.services.web.response.RestResponse)}.
 	 */
 	@Test
 	public void testPost() {
@@ -54,7 +54,7 @@ public class test_1_RestHander {
 	}
 
 	/**
-	 * Test method for {@link com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler#put(com.webcontext.apps.grs.framework.services.web.http.HttpRequest, com.webcontext.apps.grs.framework.services.web.response.RestResponse)}.
+	 * Test method for {@link com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler#put(com.webcontext.framework.appserver.services.web.http.HttpRequest, com.webcontext.framework.appserver.services.web.response.RestResponse)}.
 	 */
 	@Test
 	public void testPut() {
@@ -62,7 +62,7 @@ public class test_1_RestHander {
 	}
 
 	/**
-	 * Test method for {@link com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler#delete(com.webcontext.apps.grs.framework.services.web.http.HttpRequest, com.webcontext.apps.grs.framework.services.web.response.RestResponse)}.
+	 * Test method for {@link com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler#delete(com.webcontext.framework.appserver.services.web.http.HttpRequest, com.webcontext.framework.appserver.services.web.response.RestResponse)}.
 	 */
 	@Test
 	public void testDelete() {
