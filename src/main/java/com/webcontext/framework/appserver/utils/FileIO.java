@@ -61,7 +61,7 @@ public class FileIO {
 	 * 
 	 * @param filePath
 	 *            File to be read.
-	 * @return a string containing auu the file.
+	 * @return a string containing all the file.
 	 * @throws IOException
 	 */
 	public static String loadAsString(String filePath) throws IOException {
@@ -69,7 +69,7 @@ public class FileIO {
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
 
 		while ((line = br.readLine()) != null) {
-			content += line;
+			content += line+"\n";
 		}
 		br.close();
 		return content;
