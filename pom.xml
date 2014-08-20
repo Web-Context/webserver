@@ -70,6 +70,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Codec -->
+		<dependency>
+			<groupId>org.glassfish.external</groupId>
+			<artifactId>commons-codec-repackaged</artifactId>
+			<version>3.1-b36</version>
+		</dependency>
+
 
 		<!-- Test dependencies -->
 		<dependency>

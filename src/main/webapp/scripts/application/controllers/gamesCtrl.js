@@ -4,7 +4,7 @@
  */
 var app = angular.module("gamesrestserver",[]);
 
-app.controller("GameCtrl", function($scope,$http,$get){
+app.controller("GamesCtrl", function($scope,$http,$get){
 	
 	$httpProvider.defaults.headers.get = { 'API-KEY' : '123456789ABCDEF' };
 	
