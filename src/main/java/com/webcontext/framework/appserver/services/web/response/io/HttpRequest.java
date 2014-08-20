@@ -92,7 +92,7 @@ public class HttpRequest {
 		if (parameters.containsKey(name)) {
 			return parameters.get(name);
 		} else if (defaultValue != null) {
-			Set<String> defaultValues = new CopyOnWriteArraySet<>();
+			Set<String> defaultValues = new CopyOnWriteArraySet<String>();
 			defaultValues.add(defaultValue);
 			return defaultValues;
 		} else {
