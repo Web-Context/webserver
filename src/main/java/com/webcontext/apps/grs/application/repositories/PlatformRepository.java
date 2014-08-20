@@ -12,39 +12,35 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import com.webcontext.apps.grs.application.models.Game;
+import com.webcontext.apps.grs.application.models.Platform;
 import com.webcontext.framework.appserver.repository.MongoDbRepository;
 import com.webcontext.framework.appserver.utils.FileIO;
 
 /**
- * A simple implementation of a Game repository using a MongoDB games collection
- * 
- * @author Frédéric Delorme<frederic.delorme@web-context.com>
+ * @author frederic
  * 
  */
-public class GameRepository extends MongoDbRepository<Game> {
+public class PlatformRepository extends MongoDbRepository<Platform> {
 
-	/**
-	 * Default constructor for default connection.
-	 */
-	public GameRepository() {
-		super("games");
+	public PlatformRepository() {
+		super("platforms");
 	}
 
 	@Override
-	public Game deserialize(BasicDBObject item) {
-		Game game = new Game();
-		game = gson.fromJson(item.toString(), Game.class);
-		return game;
+	public Platform deserialize(BasicDBObject item) {
+		Platform platform = new Platform();
+		platform = gson.fromJson(item.toString(), Platform.class);
+		return platform;
 	}
 
 	@Override
-	public BasicDBObject serialize(Game item) {
+	public BasicDBObject serialize(Platform item) {
 		BasicDBObject object = new BasicDBObject();
 
 		object = (BasicDBObject) JSON.parse(gson.toJson(item).toString());
 		return object;
 	}
+
 	/**
 	 * Read the T object list from a JSON file.
 	 * 
@@ -54,7 +50,8 @@ public class GameRepository extends MongoDbRepository<Game> {
 	 * @return return a list of T object as a <code>list<T></code>.
 	 * @throws IOException
 	 */
-	public List<Game> loadObjectFromJSONFile(String filePath) throws IOException {
+	public List<Platform> loadObjectFromJSONFile(String filePath)
+			throws IOException {
 		filePath = this.getClass().getResource("/").getPath().toString()
 				+ File.separator + filePath;
 
@@ -62,10 +59,11 @@ public class GameRepository extends MongoDbRepository<Game> {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
 				.create();
 
-		TypeToken<List<Game>> token = new TypeToken<List<Game>>() {
+		TypeToken<List<Platform>> token = new TypeToken<List<Platform>>() {
 		};
-		List<Game> list = gson.fromJson(json, token.getType());
+		List<Platform> list = gson.fromJson(json, token.getType());
 
 		return list;
 	}
+
 }

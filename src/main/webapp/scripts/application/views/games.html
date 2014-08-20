@@ -1,0 +1,11 @@
+<article class="article" ng-repeat="game in games">
+	<img class="cover" src="{{game.cover.big}}" title="{{game.title}}" />
+	<h1>{{game.title}}</h1>
+	<ul class="platform">
+		<li ng-repeat="pf in game.platform">{{pf}}</li>
+	</ul>
+	<div class="header">{{game['header'][language]}}</div>
+	<div class="content">{{game['content'][language]}}</div>
+	<div class="info">{{game.editor}} / {{game.developer}} /
+		{{game.publicationDate | date : 'medium' }}</div>
+</article>

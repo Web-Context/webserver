@@ -8,12 +8,14 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.application.models.Game;
+import com.webcontext.apps.grs.application.models.Platform;
 import com.webcontext.apps.grs.application.repositories.GameRepository;
+import com.webcontext.apps.grs.application.repositories.PlatformRepository;
 import com.webcontext.apps.grs.application.rest.GamesRestHandler;
-import com.webcontext.apps.grs.framework.services.mongodb.MongoDBServer;
-import com.webcontext.apps.grs.framework.services.persistence.DataManager;
-import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
-import com.webcontext.apps.grs.framework.utils.ArgumentParser;
+import com.webcontext.framework.appserver.services.mongodb.MongoDBServer;
+import com.webcontext.framework.appserver.services.persistence.DataManager;
+import com.webcontext.framework.appserver.services.web.server.GenericServer;
+import com.webcontext.framework.appserver.utils.ArgumentParser;
 
 /**
  * This is the start class for our server.
@@ -32,40 +34,54 @@ public class Server {
 
 		try {
 
-			if(new ArgumentParser(args).getBooleanArg(
-					ArgumentParser.ServerArguments.DATABASE_EMBEDDED.getKeyword(), 
-					ArgumentParser.ServerArguments.DATABASE_EMBEDDED.getDefaultValue())){
+			if (new ArgumentParser(args).getBooleanArg(
+					ArgumentParser.ServerArguments.DATABASE_EMBEDDED
+							.getKeyword(),
+					ArgumentParser.ServerArguments.DATABASE_EMBEDDED
+							.getDefaultValue())) {
 				/**
 				 * Initialize and start the MongoDBserver.
 				 */
 				dbServer = new MongoDBServer(args);
 				dbServer.start();
-				dbServer.waitUntilStarted();				
+				dbServer.waitUntilStarted();
 			}
 
 			// initialize server.
 			appServer = new GenericServer(args);
-			
 
 			// Add a new repository.
-			DataManager.getInstance()
-					.register(Game.class, GameRepository.class);
+			DataManager.getInstance().register(Game.class, GameRepository.class);
+			DataManager.getInstance().register(Platform.class, PlatformRepository.class);
 
 			// add a new Handler to the Rest Server.
-			appServer.addRestContext("/rest/games", new GamesRestHandler(appServer));
+			appServer.addRestContext("/rest/games", new GamesRestHandler(
+					appServer));
 
 			// and start server.
 			appServer.start();
 
-		} catch (IOException | InterruptedException | InstantiationException
-				| IllegalAccessException e) {
-			LOGGER.error("Unable to start the internal Rest HTTP Server component. Reason : "
-					+ e.getLocalizedMessage());
-		}finally{
-			if(appServer != null){
+		} catch (IOException e) {
+			LOGGER.error(
+					"Unable to start the internal Rest HTTP Server component.",
+					e);
+		} catch (InstantiationException e) {
+			LOGGER.error(
+					"Unable to start the internal Rest HTTP Server component.",
+					e);
+		} catch (IllegalAccessException e) {
+			LOGGER.error(
+					"Unable to start the internal Rest HTTP Server component.",
+					e);
+		} catch (InterruptedException e) {
+			LOGGER.error(
+					"Unable to start the internal Rest HTTP Server component.",
+					e);
+		} finally {
+			if (appServer != null) {
 				appServer.stop();
 			}
-			if(dbServer != null){
+			if (dbServer != null) {
 				dbServer.stop();
 			}
 		}

@@ -7,14 +7,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.sun.net.httpserver.Headers;
 import com.webcontext.apps.grs.application.models.Game;
-import com.webcontext.apps.grs.framework.model.MDBEntity;
-import com.webcontext.apps.grs.framework.services.persistence.DataManager;
-import com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestHandler;
-import com.webcontext.apps.grs.framework.services.web.response.handler.impl.rest.RestResponse;
-import com.webcontext.apps.grs.framework.services.web.response.io.HttpRequest;
-import com.webcontext.apps.grs.framework.services.web.server.GenericServer;
-import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpStatus;
+import com.webcontext.apps.grs.application.models.Platform;
+import com.webcontext.framework.appserver.model.MDBEntity;
+import com.webcontext.framework.appserver.services.persistence.DataManager;
+import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler;
+import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestResponse;
+import com.webcontext.framework.appserver.services.web.response.io.HttpRequest;
+import com.webcontext.framework.appserver.services.web.server.GenericServer;
+import com.webcontext.framework.appserver.services.web.server.GenericServer.HttpStatus;
 
 /**
  * This is a sample implementation of a RestHandler on this GenericServer. It
@@ -23,6 +25,7 @@ import com.webcontext.apps.grs.framework.services.web.server.GenericServer.HttpS
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
+@SuppressWarnings("restriction")
 public class GamesRestHandler extends RestHandler {
 	private static final Logger LOGGER = Logger
 			.getLogger(GamesRestHandler.class);
@@ -34,6 +37,11 @@ public class GamesRestHandler extends RestHandler {
 	 */
 	public GamesRestHandler(GenericServer server) {
 		super(server);
+	}
+
+	@Override
+	protected boolean authorized(Headers request) {
+		return true;
 	}
 
 	/**
@@ -62,18 +70,20 @@ public class GamesRestHandler extends RestHandler {
 
 			if (pageSize > 0 && title != null && platform != null) {
 
-				String filter = String
-				// {\"title\": {$in : [\"%s\"]},
-				// \"parameters\":{\"offset\":\"%d\",\"pageSize\":\"%d\"}}
-						.format("{" + buildfilter(title, platform) + "}");
+				String filter = buildfilter(title, platform);
 
 				List<Class<? extends MDBEntity>> games = DataManager
 						.getRepository(Game.class).find(filter, offset,
 								pageSize);
-
 				response.addObject("games", games);
-				LOGGER.debug(String.format("retrieve nb=%d objects",
-						games.size()));
+
+				List<Class<? extends MDBEntity>> platforms = DataManager
+						.getRepository(Platform.class).find();
+				response.addObject("platforms", platforms);
+
+				LOGGER.debug(String.format(
+						"retrieve %d games and %d platforms", games.size(),
+						platforms.size()));
 				return HttpStatus.OK;
 			} else {
 				response.addObject("error", "Unable to retrieve data");
@@ -101,18 +111,19 @@ public class GamesRestHandler extends RestHandler {
 	 * @return
 	 */
 	private String buildfilter(String title, String platform) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("{");
 		if (title != null && !title.equals("")) {
 			sb.append("\"title\": {$in : [\"").append(title).append("\"]}");
 		}
 		if (platform != null && !platform.equals("")) {
-			if (!sb.toString().equals("")) {
+			if (!sb.toString().equals("{")) {
 				sb.append(",");
 			}
 			sb.append("\"platform\": {$in : [\"").append(platform)
 					.append("\"]}");
 
 		}
+		sb.append("}");
 		return sb.toString();
 	}
 

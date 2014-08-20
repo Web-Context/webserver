@@ -7,32 +7,28 @@
 	media="screen">
 </head>
 <body ng-app="gamesrestserver">
-	<header>
-		<h1>Games library</h1>
-		<nav>
-			<ul>
-				<li><a href="#/home" title="got to Library home page"><em>H</em>ome</a></li>
-				<li ng-repeat="platform in platforms"><a
-					href="#/category/{{platform.code}}"
-					accesskey="{{platform.accesskey}}"
-					title="got to {{platform.name}} Library">{{platform.name | highLightAccessKey}}</a></li>
-			</ul>
-		</nav>
-	</header>
-	<section ng-controller="GameCtrl">
-		<article ng-repeat="game in games">
-			<h1>{{game.title}}</h1>
-			<div class="header">{{game.header}}</div>
-			<div class="content">{{game.content}}</div>
-			<div class="info">{{game.editor}} / {{game.publisher}} / {{game.publicationDate}} </div>
-		</article>
-		<div><a href="/rest/games.json">download extract of database</a></div>
-	</section>
-	<footer>
-		<p>(c) 2014 - Frédéric Delorme</p>
-	</footer>
+	<div class="page" ng-controller="GamesCtrl">
+		<header>
+			<h1>Games library</h1>
+			<nav>
+				<ul>
+					<li><a href="#/home" title="got to Library home page"><em>H</em>ome</a></li>
+					<li ng-repeat="platform in platforms"><a
+						href="#/platform/{{platform.code}}"
+						accesskey="{{platform.accesskey}}"
+						title="got to {{platform.name}} Library">{{platform.code}}</a></li>
+				</ul>
+			</nav>
+		</header>
+		<section ng-view>
+		</section>
+		<footer>
+			<p>(c) 2014 - Frédéric Delorme</p>
+		</footer>
+	</div>
 	<script type="text/javascript" src="scripts/libs/angular.min.js"></script>
 	<script type="text/javascript" src="scripts/application/app.js"></script>
-	<script type="text/javascript" src="scripts/application/controllers/gamesCtrl.js"></script>
+	<script type="text/javascript"
+		src="scripts/application/controllers/gamesCtrl.js"></script>
 </body>
 </html>

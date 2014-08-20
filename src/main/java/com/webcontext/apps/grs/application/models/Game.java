@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.webcontext.apps.grs.framework.model.MDBEntity;
+import com.webcontext.framework.appserver.model.MDBEntity;
 
 /**
  * A sample entity manipulated by the Rest server and the MongoDBRepository.

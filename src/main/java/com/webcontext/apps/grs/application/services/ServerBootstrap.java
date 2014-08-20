@@ -10,13 +10,15 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.application.models.Game;
+import com.webcontext.apps.grs.application.models.Platform;
 import com.webcontext.apps.grs.application.repositories.GameRepository;
-import com.webcontext.apps.grs.framework.repository.MongoDBConnection;
-import com.webcontext.apps.grs.framework.repository.exception.NullMongoDBConnection;
-import com.webcontext.apps.grs.framework.repository.exception.RepositoryDoesNotExistsException;
-import com.webcontext.apps.grs.framework.services.persistence.DataManager;
-import com.webcontext.apps.grs.framework.services.web.server.bootstrap.Bootstrap;
-import com.webcontext.apps.grs.framework.services.web.server.bootstrap.IBootstrap;
+import com.webcontext.apps.grs.application.repositories.PlatformRepository;
+import com.webcontext.framework.appserver.repository.MongoDBConnection;
+import com.webcontext.framework.appserver.repository.exception.NullMongoDBConnection;
+import com.webcontext.framework.appserver.repository.exception.RepositoryDoesNotExistsException;
+import com.webcontext.framework.appserver.services.persistence.DataManager;
+import com.webcontext.framework.appserver.services.web.server.bootstrap.Bootstrap;
+import com.webcontext.framework.appserver.services.web.server.bootstrap.IBootstrap;
 
 /**
  * Boostraping the server by adding some basic data to MongoDB.
@@ -34,22 +36,29 @@ public class ServerBootstrap implements IBootstrap {
 		MongoDBConnection connection = new MongoDBConnection();
 		GameRepository gr = new GameRepository();
 		gr.setConnection(connection);
+		PlatformRepository pr = new PlatformRepository();
+		pr.setConnection(connection);
 
 		try {
 			if (DataManager.countEntities(Game.class) == 0) {
-				try {
-					List<Game> list = gr.loadObjectFromJSONFile("games.json");
-					for (Game game : list) {
-						gr.save((Game)game);
-					}
-				} catch (FileNotFoundException e) {
-					LOGGER.error("unable to read file", e);
-				} catch (NullMongoDBConnection e) {
-					LOGGER.error("unable to integrate MongoDB file.", e);
-				} catch (IOException e) {
-					LOGGER.error("Error during file access", e);
+				List<Game> games = gr.loadObjectFromJSONFile("games.json");
+				for (Game game : games) {
+					gr.save((Game) game);
 				}
 			}
+			if (DataManager.countEntities(Platform.class) == 0) {
+				List<Platform> platforms = pr
+						.loadObjectFromJSONFile("platforms.json");
+				for (Platform platform : platforms) {
+					pr.save((Platform) platform);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			LOGGER.error("unable to read file", e);
+		} catch (NullMongoDBConnection e) {
+			LOGGER.error("unable to integrate MongoDB file.", e);
+		} catch (IOException e) {
+			LOGGER.error("Error during file access", e);
 		} catch (RepositoryDoesNotExistsException e) {
 			LOGGER.error("Unable to generate data", e);
 		}

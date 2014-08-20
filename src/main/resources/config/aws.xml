@@ -1,0 +1,10 @@
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="encoding">UTF-8</entry>
+	<entry key="hmac_algo">HmacSHA256</entry>
+	<entry key="uri">/onca/xml</entry>
+	<entry key="request_method">GET</entry>
+	<entry key="endpoint">webservice.amazon.com</entry>
+	<entry key="awsAccessKey">AKIAIEMXK6RAHRA3VXDQ</entry>
+	<entry key="awsSecretKey">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</entry>	
+</properties>
