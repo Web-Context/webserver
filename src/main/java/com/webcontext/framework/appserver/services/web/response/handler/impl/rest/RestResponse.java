@@ -22,7 +22,7 @@ public class RestResponse extends HttpResponse<Map<String, Object>> {
 	 * Serialize response object to JSON object.
 	 */
 	protected Gson gson = new GsonBuilder().serializeNulls()
-			.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+			.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
 			.setPrettyPrinting().setVersion(1.0).create();
 
 	private Map<String, Object> data;

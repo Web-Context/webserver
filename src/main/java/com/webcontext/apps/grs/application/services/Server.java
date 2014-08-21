@@ -8,7 +8,9 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.webcontext.apps.grs.application.models.Game;
+import com.webcontext.apps.grs.application.models.Platform;
 import com.webcontext.apps.grs.application.repositories.GameRepository;
+import com.webcontext.apps.grs.application.repositories.PlatformRepository;
 import com.webcontext.apps.grs.application.rest.GamesRestHandler;
 import com.webcontext.framework.appserver.services.mongodb.MongoDBServer;
 import com.webcontext.framework.appserver.services.persistence.DataManager;
@@ -49,8 +51,8 @@ public class Server {
 			appServer = new GenericServer(args);
 
 			// Add a new repository.
-			DataManager.getInstance()
-					.register(Game.class, GameRepository.class);
+			DataManager.getInstance().register(Game.class, GameRepository.class);
+			DataManager.getInstance().register(Platform.class, PlatformRepository.class);
 
 			// add a new Handler to the Rest Server.
 			appServer.addRestContext("/rest/games", new GamesRestHandler(

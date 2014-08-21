@@ -70,6 +70,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Codec -->
+		<dependency>
+			<groupId>org.glassfish.external</groupId>
+			<artifactId>commons-codec-repackaged</artifactId>
+			<version>3.1-b36</version>
+		</dependency>
+
 
 		<!-- Test dependencies -->
 		<dependency>
@@ -121,6 +128,18 @@
 					</execution>
 				</executions>
 			</plugin>
+			 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.2</version>
+                <!-- The configuration of the plugin -->
+                <configuration>
+                    <!-- Specifies the configuration file of the assembly plugin -->
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -136,7 +155,6 @@
 						</manifest>
 					</archive>
 					<manifestEntries>
-
 						<mode>development</mode>
 						<url>${project.url}</url>
 					</manifestEntries>
