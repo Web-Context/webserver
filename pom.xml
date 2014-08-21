@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.webcontext.apps</groupId>
 	<artifactId>gamerestserver</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>Games REST Server</name>
 
 	<organization>
