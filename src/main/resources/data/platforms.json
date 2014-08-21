@@ -87,6 +87,7 @@
 			"code" : "PSVita",
 			"name" : "Sony PlayStation Vita",
 			"manufacturer" : "Sony Computer Entertainment",
+			"developer" : "Sony Computer Entertainment",
 			"accesskey" : "P",
 			"availabilityDate" : "2012-02-22 00:00:00",
 			"pictures" : {
@@ -113,6 +114,7 @@
 			"code" : "PSP",
 			"name" : "Sony PlayStation Portable",
 			"manufacturer" : "Sony Computer Entertainment",
+			"developer" : "Sony Computer Entertainment",
 			"accesskey" : "3",
 			"availabilityDate" : "2005-09-01 00:00:00",
 			"pictures" : {
@@ -121,6 +123,5 @@
 				"small" : "http://ecx.images-amazon.com/images/I/41XIEugi89L._SL250_.jpg"
 			}
 
-		},
-
+		}
 ]

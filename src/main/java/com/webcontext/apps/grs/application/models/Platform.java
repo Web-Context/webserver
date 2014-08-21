@@ -3,6 +3,10 @@
  */
 package com.webcontext.apps.grs.application.models;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.webcontext.framework.appserver.model.MDBEntity;
 
 /**
@@ -11,9 +15,13 @@ import com.webcontext.framework.appserver.model.MDBEntity;
  */
 public class Platform extends MDBEntity {
 
-	private String code=null;
-	private String name=null;
-	private String description=null;
+	private String code = "";
+	private String name = "";
+	private String manufacturer = "";
+	private String developer = "";
+	private String accesskey = "";
+	private Date availabilityDate = new Date();
+	private Map<String, String> pictures = new HashMap<>();
 
 	public Platform() {
 		// TODO Auto-generated constructor stub
@@ -22,13 +30,98 @@ public class Platform extends MDBEntity {
 	/**
 	 * @param code
 	 * @param name
-	 * @param description
+	 * @param manufacturer
+	 * @param developer
+	 * @param accesskey
+	 * @param availabilityDate
+	 * @param pictures
 	 */
-	public Platform(String code, String name, String description) {
+	public Platform(String code, String name, String manufacturer,
+			String developer, String accesskey, Date availabilityDate,
+			Map<String, String> pictures) {
 		super();
 		this.code = code;
 		this.name = name;
-		this.description = description;
+		this.manufacturer = manufacturer;
+		this.developer = developer;
+		this.accesskey = accesskey;
+		this.availabilityDate = availabilityDate;
+		this.pictures = pictures;
+	}
+
+	/**
+	 * @return the manufacturer
+	 */
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	/**
+	 * @param manufacturer
+	 *            the manufacturer to set
+	 */
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	/**
+	 * @return the developer
+	 */
+	public String getDeveloper() {
+		return developer;
+	}
+
+	/**
+	 * @param developer
+	 *            the developer to set
+	 */
+	public void setDeveloper(String developer) {
+		this.developer = developer;
+	}
+
+	/**
+	 * @return the accesskey
+	 */
+	public String getAccesskey() {
+		return accesskey;
+	}
+
+	/**
+	 * @param accesskey
+	 *            the accesskey to set
+	 */
+	public void setAccesskey(String accesskey) {
+		this.accesskey = accesskey;
+	}
+
+	/**
+	 * @return the availabilityDate
+	 */
+	public Date getAvailabilityDate() {
+		return availabilityDate;
+	}
+
+	/**
+	 * @param availabilityDate
+	 *            the availabilityDate to set
+	 */
+	public void setAvailabilityDate(Date availabilityDate) {
+		this.availabilityDate = availabilityDate;
+	}
+
+	/**
+	 * @return the pictures
+	 */
+	public Map<String, String> getPictures() {
+		return pictures;
+	}
+
+	/**
+	 * @param pictures
+	 *            the pictures to set
+	 */
+	public void setPictures(Map<String, String> pictures) {
+		this.pictures = pictures;
 	}
 
 	/**
@@ -39,7 +132,8 @@ public class Platform extends MDBEntity {
 	}
 
 	/**
-	 * @param code the code to set
+	 * @param code
+	 *            the code to set
 	 */
 	public void setCode(String code) {
 		this.code = code;
@@ -53,33 +147,28 @@ public class Platform extends MDBEntity {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Platform [code=" + code + ", name=" + name + ", description="
-				+ description + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Platform [code=").append(code).append(", name=")
+				.append(name).append(", manufacturer=").append(manufacturer)
+				.append(", developer=").append(developer)
+				.append(", accesskey=").append(accesskey)
+				.append(", availabilityDate=").append(availabilityDate)
+				.append(", pictures=").append(pictures).append("]");
+		return builder.toString();
 	}
 
 }

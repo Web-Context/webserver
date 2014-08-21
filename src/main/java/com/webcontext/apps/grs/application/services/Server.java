@@ -77,7 +77,11 @@ public class Server {
 			LOGGER.error(
 					"Unable to start the internal Rest HTTP Server component.",
 					e);
-		} finally {
+		} catch(Exception e){
+			LOGGER.error(
+					"Unable to start the internal Rest HTTP Server component.",
+					e);
+		}finally {
 			if (appServer != null) {
 				appServer.stop();
 			}

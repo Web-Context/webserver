@@ -21,7 +21,7 @@ import com.webcontext.framework.appserver.services.web.server.bootstrap.Bootstra
 import com.webcontext.framework.appserver.services.web.server.bootstrap.IBootstrap;
 
 /**
- * Boostraping the server by adding some basic data to MongoDB.
+ * Bootstraping the server by adding some basic data to MongoDB.
  * 
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
@@ -41,14 +41,14 @@ public class ServerBootstrap implements IBootstrap {
 
 		try {
 			if (DataManager.countEntities(Game.class) == 0) {
-				List<Game> games = gr.loadObjectFromJSONFile("games.json");
+				List<Game> games = gr.loadObjectFromJSONFile("data/games.json");
 				for (Game game : games) {
 					gr.save((Game) game);
 				}
 			}
 			if (DataManager.countEntities(Platform.class) == 0) {
 				List<Platform> platforms = pr
-						.loadObjectFromJSONFile("platforms.json");
+						.loadObjectFromJSONFile("data/platforms.json");
 				for (Platform platform : platforms) {
 					pr.save((Platform) platform);
 				}

@@ -90,6 +90,7 @@
 
 	<build>
 		<plugins>
+			<!-- Compile project -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -101,6 +102,7 @@
 					<encoding>UTF-8	</encoding>
 				</configuration>
 			</plugin>
+			<!-- Add resources -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -128,18 +130,17 @@
 					</execution>
 				</executions>
 			</plugin>
-			 <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.2</version>
-                <!-- The configuration of the plugin -->
-                <configuration>
-                    <!-- Specifies the configuration file of the assembly plugin -->
-                    <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
-                    </descriptors>
-                </configuration>
-            </plugin>
+			<!-- Generate documentation -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<show>private</show>
+					<nohelp>true</nohelp>
+				</configuration>
+			</plugin>
+			<!-- Prepare the Java Archive -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -158,16 +159,43 @@
 						<mode>development</mode>
 						<url>${project.url}</url>
 					</manifestEntries>
-
+				</configuration>
+			</plugin>
+			<!-- Package the distribution -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2.2</version>
+				<!-- The configuration of the plugin -->
+				<configuration>
+					<!-- Specifies the configuration file of the assembly plugin -->
+					<descriptors>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
 				</configuration>
 			</plugin>
 
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<stylesheetfile>${basedir}/src/main/javadoc/doc.css</stylesheetfile>
+					<show>public</show>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
 	<scm>
 		<url>http://github.com/web-context/webserver</url>
-		<connection>git@github.com:web-context/webserver.git</connection>
-		<developerConnection>git@bitbucket.org:McGivrer/webserver.git</developerConnection>
+		<connection>scm:git:ssh//git@github.com/web-context/webserver.git</connection>
+		<developerConnection>scm:git:ssh//git@bitbucket.org/McGivrer/webserver.git</developerConnection>
 		<tag>SNAPSHOT</tag>
 	</scm>
 	<inceptionYear>2014</inceptionYear>
