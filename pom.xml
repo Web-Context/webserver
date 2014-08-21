@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.webcontext.apps</groupId>
@@ -29,7 +28,7 @@
 	</scm>
 
 	<issueManagement>
-		<system>bitbucket</system>
+		<system>Bitbucket</system>
 		<url>http://bitbucket.org/McGivrer/webserver/issues</url>
 	</issueManagement>
 
@@ -114,7 +113,7 @@
 					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
-					<encoding>source.encoding	</encoding>
+					<encoding>${source.encoding}	</encoding>
 				</configuration>
 			</plugin>
 			<!-- Add resources -->
@@ -123,7 +122,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
-					<encoding>source.encoding</encoding>
+					<encoding>${source.encoding}</encoding>
 				</configuration>
 				<executions>
 					<execution>
@@ -190,6 +189,21 @@
 				</configuration>
 			</plugin>
 
+			<!-- Publish the corresponding javadoc. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-publish-plugin</artifactId>
+				<version>1.0-beta-2</version>
+				<configuration>
+					<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
+					<checkinComment>Publishing javadoc for
+						${project.artifactId}:${project.version}</checkinComment>
+					<content>${project.reporting.outputDirectory}/apidocs</content>
+					<skipDeletedFiles>true</skipDeletedFiles>
+					<pubScmUrl>scm:git:git@github.com:web-context/web-context.github.io.git</pubScmUrl>
+					<scmBranch>gh-pages</scmBranch> <!-- branch with static site -->
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -221,7 +235,7 @@
 				<version>3.0.1</version>
 				<configuration>
 					<linkXref>true</linkXref>
-					<sourceEncoding>source.encoding</sourceEncoding>
+					<sourceEncoding>${source.encoding}</sourceEncoding>
 					<minimumTokens>100</minimumTokens>
 					<targetJdk>${jdk.version}</targetJdk>
 					<!-- <excludes> <exclude>**/*Bean.java</exclude> <exclude>**/generated/*.java</exclude> 
@@ -230,6 +244,19 @@
 						<excludeRoot>target/generated-sources/stubs</excludeRoot>
 					</excludeRoots>
 				</configuration>
+			</plugin>
+			<!-- Prepare the changes -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+				<version>2.10</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>bitbucket-report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 		</plugins>
 	</reporting>
