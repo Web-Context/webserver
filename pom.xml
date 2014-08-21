@@ -1,9 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.webcontext.apps</groupId>
 	<artifactId>gamerestserver</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>Games REST Server</name>
+
+	<properties>
+		<jdk.version>1.7</jdk.version>
+		<source.encoding>UTF-8</source.encoding>
+	</properties>
 
 	<organization>
 		<name>web-context</name>
@@ -11,6 +18,15 @@
 	</organization>
 
 	<description>This is an embedded  restServer connected to a MongoDB database to manage VideoGames files.</description>
+
+	<inceptionYear>2014</inceptionYear>
+
+	<scm>
+		<url>http://github.com/web-context/webserver</url>
+		<connection>scm:git:git@github.com:web-context/webserver.git</connection>
+		<developerConnection>scm:git:git@bitbucket.org:McGivrer/webserver.git</developerConnection>
+		<tag>${project.artifactId}-${project.version}</tag>
+	</scm>
 
 	<issueManagement>
 		<system>bitbucket</system>
@@ -22,7 +38,7 @@
 			<name>Frédéric Delorme</name>
 			<email>frederic.delorme@web-context.com</email>
 			<organization>Web-Context</organization>
-			<organizationUrl>http://web-context.github.io/</organizationUrl>
+			<organizationUrl>http://web-context.github.io/webserver</organizationUrl>
 			<roles>
 				<role>Architect</role>
 				<role>Developer</role>
@@ -96,9 +112,9 @@
 				<version>3.1</version>
 				<configuration>
 					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
-					<source>1.7</source>
-					<target>1.7</target>
-					<encoding>UTF-8	</encoding>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<encoding>source.encoding	</encoding>
 				</configuration>
 			</plugin>
 			<!-- Add resources -->
@@ -107,7 +123,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
-					<encoding>UTF-8</encoding>
+					<encoding>source.encoding</encoding>
 				</configuration>
 				<executions>
 					<execution>
@@ -177,25 +193,45 @@
 		</plugins>
 	</build>
 
+	<!-- Reporting -->
 	<reporting>
 		<plugins>
+			<!-- Generate Test report -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.17</version>
 				<configuration>
-					<stylesheetfile>${basedir}/src/main/javadoc/doc.css</stylesheetfile>
-					<show>public</show>
+					<outputDirectory>${basedir}/target/reporting</outputDirectory>
+				</configuration>
+			</plugin>
+			<!-- Build Project Site -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<outputDirectory>${basedir}/target/site</outputDirectory>
+				</configuration>
+			</plugin>
+			<!-- Build Code quality Analysis report -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>source.encoding</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>${jdk.version}</targetJdk>
+					<!-- <excludes> <exclude>**/*Bean.java</exclude> <exclude>**/generated/*.java</exclude> 
+						</excludes> -->
+					<excludeRoots>
+						<excludeRoot>target/generated-sources/stubs</excludeRoot>
+					</excludeRoots>
 				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>
 
-	<scm>
-		<url>http://github.com/web-context/webserver</url>
-		<connection>scm:git:ssh//git@github.com/web-context/webserver.git</connection>
-		<developerConnection>scm:git:ssh//git@bitbucket.org/McGivrer/webserver.git</developerConnection>
-		<tag>SNAPSHOT</tag>
-	</scm>
-	<inceptionYear>2014</inceptionYear>
 </project>
