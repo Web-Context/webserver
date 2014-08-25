@@ -6,8 +6,10 @@ package com.webcontext.framework.appserver.services.persistence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.reflections.Reflections;
 
 import com.webcontext.framework.appserver.model.MDBEntity;
 import com.webcontext.framework.appserver.repository.IMongoDbRepository;
@@ -77,6 +79,37 @@ public class DataManager {
 		IMongoDbRepository<?> repo = repository.newInstance();
 		repo.setConnection(connection);
 		repositories.put(entity, repo);
+	}
+
+	/**
+	 * Auto register classes annotated by <code>@Repository</code>.
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void autoRegister() {
+		Reflections reflections = new Reflections("com.webcontext.apps");
+		Set<Class<?>> classes = reflections
+				.getTypesAnnotatedWith(Repository.class);
+		Class<? extends MDBEntity> entityClass;
+		for (Class<?> classe : classes) {
+
+			entityClass = classe.getAnnotation(Repository.class).entity();
+			try {
+				this.register(entityClass, (Class<IMongoDbRepository>) classe);
+				LOGGER.error(String.format(
+						"autoregistering Repository %s for entity %s.", classe,
+						entityClass));
+			} catch (InstantiationException e) {
+				LOGGER.error(String.format(
+						"Unable to instantiate Repository %s for entity %s", classe,
+						entityClass), e);
+			} catch (IllegalAccessException e) {
+				LOGGER.error(
+						String.format(
+								"Unable to access class of Repository %s for entity %s",
+								classe, entityClass), e);
+			}
+
+		}
 	}
 
 	/**

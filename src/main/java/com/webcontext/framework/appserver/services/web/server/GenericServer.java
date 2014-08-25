@@ -1,6 +1,8 @@
 package com.webcontext.framework.appserver.services.web.server;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -16,6 +18,10 @@ import org.reflections.Reflections;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import com.webcontext.framework.appserver.services.persistence.DataManager;
+import com.webcontext.framework.appserver.services.persistence.Repository;
+import com.webcontext.framework.appserver.services.web.response.handler.ContextHandler;
+import com.webcontext.framework.appserver.services.web.response.handler.IResponseHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.web.WebHandler;
 import com.webcontext.framework.appserver.services.web.server.admin.AdminHandler;
@@ -32,6 +38,17 @@ import com.webcontext.framework.appserver.utils.ArgumentParser;
  * SE 7, and the GSon library it brings to developer some basic features like
  * Rest request handling with simple Implementation.
  * </p>
+ * 
+ * <p>
+ * This light Server implementation will detect :
+ * <ul>
+ * <li><code>@Bootstrap</code> annotated components/li>
+ * <li>and <code>@Repository</code> annotated Components, to respectively,
+ * Initialize things, serve and persists data to some data container,</li>
+ * <li>and will initialize specific <code>@ContextHandler</code> annotated
+ * components to serve REST and web data.</li>
+ * </ul>
+ * </p>
  * <p>
  * a basic usage can be
  * </p>
@@ -43,10 +60,13 @@ import com.webcontext.framework.appserver.utils.ArgumentParser;
  * </pre>
  * <p>
  * see {@link README.md} for more information.
+ * 
  * </p>
  * 
  * @author Fréderic Delorme<frederic.delorme@web-context.com>
- * 
+ * @see Bootstrap
+ * @see ContextHandler
+ * @see Repository
  */
 
 @SuppressWarnings("restriction")
@@ -238,6 +258,13 @@ public class GenericServer {
 		this.stopkey = stopKey;
 	}
 
+	/**
+	 * Start the server with arguments from command line, analyzed by the
+	 * <code>ArgurmentParser</code>.
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public GenericServer(String[] args) throws IOException {
 		argsParser = new ArgumentParser(args);
 		this.port = argsParser.getIntArg(
@@ -269,6 +296,9 @@ public class GenericServer {
 		// Add the internal Administrative Handler.
 		server.createContext("/rest/admin", new AdminHandler(this));
 		addRessourceContext("/web", new WebHandler(this));
+
+		// initialize repositories.
+		DataManager.getInstance().autoRegister();
 
 		LOGGER.info(String
 				.format("Server has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d]",
@@ -320,8 +350,42 @@ public class GenericServer {
 		Set<Class<?>> classes = reflections
 				.getTypesAnnotatedWith(Bootstrap.class);
 		for (Class<?> classe : classes) {
+
 			IBootstrap bootStrapped = (IBootstrap) classe.newInstance();
 			bootStrapped.initialized();
+		}
+
+	}
+
+	/**
+	 * Detect Class inheriting from IBootstrap to perform their processing and
+	 * initialize what have to be initialized.
+	 * 
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 */
+	@SuppressWarnings("unused")
+	private void registerHandlers(GenericServer server)
+			throws InstantiationException, IllegalAccessException,
+			NoSuchMethodException, SecurityException, IllegalArgumentException,
+			InvocationTargetException {
+		Reflections reflections = new Reflections("com.webcontext.apps");
+		Set<Class<?>> classes = reflections
+				.getTypesAnnotatedWith(ContextHandler.class);
+		for (Class<?> classe : classes) {
+			String path = classe.getAnnotation(ContextHandler.class).path();
+			// Retrieve the default constructor for GenericSever.
+			Constructor<?> ctr = classe
+					.getDeclaredConstructor(GenericServer.class);
+			// build this instance.
+			IResponseHandler handler = (IResponseHandler) ctr
+					.newInstance(server);
+			addContext(path, handler);
+
 		}
 
 	}
@@ -370,6 +434,7 @@ public class GenericServer {
 		}
 	}
 
+	@Deprecated
 	public void addRestContext(String restPath, RestHandler restHandler) {
 		HttpContext hc1 = server.createContext(restPath, restHandler);
 		if (authentication) {
@@ -383,15 +448,31 @@ public class GenericServer {
 
 	}
 
-	/**
-	 * Add a resource to the context of the server. This will add a new
-	 * WebHandler to the server.
-	 * 
-	 * @param restPath
-	 * @param webHandler
-	 */
+	@Deprecated
 	public void addRessourceContext(String restPath, WebHandler webHandler) {
 		HttpContext hc1 = server.createContext(restPath, webHandler);
+		if (authentication) {
+			hc1.setAuthenticator(new BasicAuthenticator("web") {
+				@Override
+				public boolean checkCredentials(String user, String pwd) {
+					return user.equals("admin") && pwd.equals("password");
+				}
+			});
+		}
+
+	}
+
+	/**
+	 * Add a handler to the context of the server. This will add a new
+	 * <code>IResponseHandler</code> to the context server.
+	 * 
+	 * @param restPath
+	 *            the URL path to serve with this handler.
+	 * @param handler
+	 *            the IResponseHandler to connect to the <code>path</code>.
+	 */
+	public void addContext(String restPath, IResponseHandler handler) {
+		HttpContext hc1 = server.createContext(restPath, handler);
 		if (authentication) {
 			hc1.setAuthenticator(new BasicAuthenticator("web") {
 				@Override

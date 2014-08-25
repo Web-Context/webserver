@@ -43,11 +43,6 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 	private static final String apiKey = "123456789ABCDEF";
 
 	/**
-	 * Linked GenericServer serving this RestHandler.
-	 */
-	protected GenericServer server;
-
-	/**
 	 * Initialize RestHandler with the managing server.
 	 * 
 	 * @param server

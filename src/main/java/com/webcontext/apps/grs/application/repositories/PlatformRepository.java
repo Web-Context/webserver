@@ -14,12 +14,14 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import com.webcontext.apps.grs.application.models.Platform;
 import com.webcontext.framework.appserver.repository.MongoDbRepository;
+import com.webcontext.framework.appserver.services.persistence.Repository;
 import com.webcontext.framework.appserver.utils.FileIO;
 
 /**
  * @author frederic
  * 
  */
+@Repository(entity=Platform.class)
 public class PlatformRepository extends MongoDbRepository<Platform> {
 
 	public PlatformRepository() {

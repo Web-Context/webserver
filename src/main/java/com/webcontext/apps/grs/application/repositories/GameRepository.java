@@ -14,6 +14,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import com.webcontext.apps.grs.application.models.Game;
 import com.webcontext.framework.appserver.repository.MongoDbRepository;
+import com.webcontext.framework.appserver.services.persistence.Repository;
 import com.webcontext.framework.appserver.utils.FileIO;
 
 /**
@@ -22,6 +23,7 @@ import com.webcontext.framework.appserver.utils.FileIO;
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
+@Repository(entity = Game.class)
 public class GameRepository extends MongoDbRepository<Game> {
 
 	/**
@@ -45,6 +47,7 @@ public class GameRepository extends MongoDbRepository<Game> {
 		object = (BasicDBObject) JSON.parse(gson.toJson(item).toString());
 		return object;
 	}
+
 	/**
 	 * Read the T object list from a JSON file.
 	 * 
@@ -54,7 +57,8 @@ public class GameRepository extends MongoDbRepository<Game> {
 	 * @return return a list of T object as a <code>list<T></code>.
 	 * @throws IOException
 	 */
-	public List<Game> loadObjectFromJSONFile(String filePath) throws IOException {
+	public List<Game> loadObjectFromJSONFile(String filePath)
+			throws IOException {
 		filePath = this.getClass().getResource("/").getPath().toString()
 				+ File.separator + filePath;
 

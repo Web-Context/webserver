@@ -13,9 +13,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.apache.log4j.Logger;
 
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpExchange;
 import com.webcontext.framework.appserver.services.web.response.io.HttpRequest;
 import com.webcontext.framework.appserver.services.web.response.io.IHttpResponse;
 import com.webcontext.framework.appserver.services.web.server.GenericServer;
@@ -47,7 +46,7 @@ import com.webcontext.framework.appserver.services.web.server.GenericServer.Http
  */
 @SuppressWarnings("restriction")
 public abstract class ResponseHandler<T extends IHttpResponse> implements
-		HttpHandler {
+		IResponseHandler {
 
 	private static final Logger LOGGER = Logger
 			.getLogger(ResponseHandler.class);
@@ -121,15 +120,21 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 				osResp.write(strResponse.getBytes());
 			} else {
 				// Prepare Response Headers
-				httpExchange.getResponseHeaders().add("Content-Type",
-						comuteContentType(response));
-				httpExchange.sendResponseHeaders(
-						HttpStatus.FORBIDDEN.getCode(), 0);
-				osResp.write(0);
+				errCode = HttpStatus.FORBIDDEN;
+
+				sendErrorMessage(httpExchange, HttpStatus.FORBIDDEN, osResp);
 			}
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOGGER.error("Error during retrieving data.", e);
+			try {
+				sendErrorMessage(httpExchange, HttpStatus.INTERNAL_ERROR,
+						osResp);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 		} finally {
 			// Close output stream response.
 			if (osResp != null) {
@@ -145,14 +150,35 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 	}
 
 	/**
+	 * Send an error message on server output stream.
+	 * 
+	 * @param httpExchange
+	 * @param errCode
+	 * @param osResp
+	 * @param uri
+	 * @throws IOException
+	 */
+	private void sendErrorMessage(HttpExchange httpExchange,
+			HttpStatus errCode, OutputStream osResp) throws IOException {
+
+		String error = String.format("Error: %s (%d) accessing resource %s",
+				errCode, errCode.getCode(), httpExchange.getRequestURI());
+		httpExchange.getResponseHeaders().add("Content-Type", "text/HTML");
+		httpExchange.sendResponseHeaders(HttpStatus.FORBIDDEN.getCode(),
+				error.getBytes().length);
+		osResp.write(error.getBytes());
+	}
+
+	/**
 	 * @param response
 	 * @return
 	 */
 	private String comuteContentType(T response) {
-		String contentType="";
+		String contentType = "";
 		contentType = response.getMimeType();
-		if(response.getEncodage()!=null && !response.getEncodage().equals("")){
-			contentType += "; charset="+response.getEncodage();
+		if (response.getEncodage() != null
+				&& !response.getEncodage().equals("")) {
+			contentType += "; charset=" + response.getEncodage();
 		}
 		return contentType;
 	}

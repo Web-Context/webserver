@@ -6,19 +6,14 @@ import com.mongodb.WriteResult;
 import com.webcontext.framework.appserver.repository.exception.NullMongoDBConnection;
 
 /**
- * 
+ * This is a basic Interface for a <code>MongoDBRepository</code>
+ * implementation. It's inherited from the <code>IRepositrory</code> which is
+ * the Generic Repository interface.
  * 
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * @param <T>
  */
-public interface IMongoDbRepository<T> {
-
-	/**
-	 * Set the database connection for this repository.
-	 * 
-	 * @param conn
-	 */
-	public void setConnection(MongoDBConnection conn);
+public interface IMongoDbRepository<T> extends IRepository<T> {
 
 	/**
 	 * Retrieve data from the defined collection.

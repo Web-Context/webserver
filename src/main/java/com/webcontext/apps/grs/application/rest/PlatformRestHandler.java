@@ -5,8 +5,7 @@ package com.webcontext.apps.grs.application.rest;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
+import com.webcontext.framework.appserver.services.web.response.handler.ContextHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestResponse;
 import com.webcontext.framework.appserver.services.web.response.io.HttpRequest;
@@ -14,13 +13,14 @@ import com.webcontext.framework.appserver.services.web.server.GenericServer;
 import com.webcontext.framework.appserver.services.web.server.GenericServer.HttpStatus;
 
 /**
+ * This specific context handler serves <code>Platform</code> JSON data on the
+ * <code>"rest/platform"</code> URI path.
+ * 
  * @author frederic
  * 
  */
+@ContextHandler(path = "/rest/platform")
 public class PlatformRestHandler extends RestHandler {
-
-	private static final Logger LOGGER = Logger
-			.getLogger(PlatformRestHandler.class);
 
 	/**
 	 * @param server
@@ -32,9 +32,8 @@ public class PlatformRestHandler extends RestHandler {
 	@Override
 	public HttpStatus get(HttpRequest request, RestResponse response)
 			throws IOException {
-	
+
 		return super.get(request, response);
 	}
-	
-	
+
 }

@@ -12,6 +12,7 @@ import com.webcontext.apps.grs.application.models.Game;
 import com.webcontext.apps.grs.application.models.Platform;
 import com.webcontext.framework.appserver.model.MDBEntity;
 import com.webcontext.framework.appserver.services.persistence.DataManager;
+import com.webcontext.framework.appserver.services.web.response.handler.ContextHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestResponse;
 import com.webcontext.framework.appserver.services.web.response.io.HttpRequest;
@@ -20,12 +21,14 @@ import com.webcontext.framework.appserver.services.web.server.GenericServer.Http
 
 /**
  * This is a sample implementation of a RestHandler on this GenericServer. It
- * provides JSON document on some basic request over a videogames database.
+ * provides JSON document on some basic request over a video games database. It
+ * serves JSON on the "rest/games" URI path.
  * 
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
 @SuppressWarnings("restriction")
+@ContextHandler(path = "rest/games")
 public class GamesRestHandler extends RestHandler {
 	private static final Logger LOGGER = Logger
 			.getLogger(GamesRestHandler.class);
