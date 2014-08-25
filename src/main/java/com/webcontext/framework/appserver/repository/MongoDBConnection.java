@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 
@@ -19,6 +21,8 @@ import com.mongodb.MongoClient;
  * 
  */
 public class MongoDBConnection {
+	
+	private static Logger LOGGER  = Logger.getLogger(MongoDBConnection.class);
 
 	/**
 	 * Authentication flag. True if authenticated is activated and
@@ -57,8 +61,7 @@ public class MongoDBConnection {
 		}
 		if (mongo == null) {
 			try {
-				@SuppressWarnings("unused")
-				String path = this.getClass().getResource("/").toString();
+				LOGGER.info("Load data configuration from " + dataConfiguration);
 				properties.loadFromXML(this.getClass().getResourceAsStream(
 						dataConfiguration));
 				mongo = new MongoClient();

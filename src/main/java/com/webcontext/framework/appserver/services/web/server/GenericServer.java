@@ -22,8 +22,6 @@ import com.webcontext.framework.appserver.services.persistence.DataManager;
 import com.webcontext.framework.appserver.services.persistence.Repository;
 import com.webcontext.framework.appserver.services.web.response.handler.ContextHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.IResponseHandler;
-import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler;
-import com.webcontext.framework.appserver.services.web.response.handler.impl.web.WebHandler;
 import com.webcontext.framework.appserver.services.web.server.admin.ServerInformation;
 import com.webcontext.framework.appserver.services.web.server.bootstrap.Bootstrap;
 import com.webcontext.framework.appserver.services.web.server.bootstrap.IBootstrap;
@@ -378,7 +376,6 @@ public class GenericServer {
 	 * @throws InvocationTargetException
 	 * @throws IllegalArgumentException
 	 */
-	@SuppressWarnings("unused")
 	private void registerHandlers(GenericServer server)
 			throws InstantiationException, IllegalAccessException,
 			NoSuchMethodException, SecurityException, IllegalArgumentException,
@@ -442,34 +439,6 @@ public class GenericServer {
 			heartBeat = -1;
 			LOGGER.info("Ask server to Stop");
 		}
-	}
-
-	@Deprecated
-	public void addRestContext(String restPath, RestHandler restHandler) {
-		HttpContext hc1 = server.createContext(restPath, restHandler);
-		if (authentication) {
-			hc1.setAuthenticator(new BasicAuthenticator("rest") {
-				@Override
-				public boolean checkCredentials(String user, String pwd) {
-					return user.equals("admin") && pwd.equals("password");
-				}
-			});
-		}
-
-	}
-
-	@Deprecated
-	public void addRessourceContext(String restPath, WebHandler webHandler) {
-		HttpContext hc1 = server.createContext(restPath, webHandler);
-		if (authentication) {
-			hc1.setAuthenticator(new BasicAuthenticator("web") {
-				@Override
-				public boolean checkCredentials(String user, String pwd) {
-					return user.equals("admin") && pwd.equals("password");
-				}
-			});
-		}
-
 	}
 
 	/**

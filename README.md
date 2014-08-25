@@ -13,7 +13,7 @@ The ``Server`` class propose an implementation of both services with some argume
 
 ```bash
 
-	$> java -jar gamerestserver-0.0.1-SNAPSHOT.jar \
+	$> java -jar gamerestserver-0.0.1-SNAPSHOT-full-jar-with-dependencies.jar \
 		com.webcontext.apps.grs.application.services.Server \
 			port=8888 dbembedded=true dbport=27017 
 ```
@@ -77,7 +77,7 @@ To start the server you can create a main function (if needed) instantiating the
 					.register(Game.class, GameRepository.class);
 
 			// add a new Handler to the Rest Server.
-			appServer.addRestContext("/rest/games", new GamesRestHandler(appServer));
+			appServer.addContext("/rest/games", new GamesRestHandler(appServer));
 
 			// and start server.
 			appServer.start();
@@ -129,6 +129,68 @@ first implements a RestHandler and add its instance to the GenericServer:
 	} 
 ```
 
+But you also can use some Annotation in your code to auto register Data ``Reposity``, ``Bootstrap`` and ```ContextHandler`` on the right classes.
+
+* ``Bootstrap`` will allow to setup some default values in files or anyway in a data source,
+
+	```java
+	@Bootstrap
+	public class ServerBootstrap implements IBootstrap {
+	
+		private final static Logger LOGGER = Logger
+				.getLogger(ServerBootstrap.class);
+	
+		public void initialized() {
+			...
+		}
+	}
+	```
+
+
+* ``Repository(entity)`` declare a repository mapped to an entity, this one must inherit from ``MDBEntity``,
+
+	```java
+	@Repository(entity = Game.class)
+	public class GameRepository extends MongoDbRepository<Game> {
+	
+		/**
+		 * Default constructor for default connection.
+		 */
+		public GameRepository() {
+			super("games");
+		}
+		
+		...
+	}
+	```
+
+
+* ``ContextHandler(path)`` is a specific handler addressing a particular url path.
+
+
+See bellow a sample implementation for a specific REST handler on "/rest/games" path : 
+
+	```java
+	@ContextHandler(path = "/rest/games")
+	public class GamesRestHandler extends RestHandler {
+		    private static final Logger LOGGER = Logger
+			.getLogger(GamesRestHandler.class);
+			
+		/**
+		 * Default constructor initializing the parent Server attribute.
+		 * 
+		 * @param server
+		 */
+		public GamesRestHandler(GenericServer server) {
+			super(server);
+		}
+		
+		...
+	}
+	```
+
+
+
 # Implementation
 
 ## Rest Service
@@ -158,32 +220,38 @@ To perform processing of one of the HTTP method on a specific URL, you must impl
 Then, implements the corresponding method into the RestHandler. See bellow for a sample implementation serving
 
 
-```java
-	public class GamesRestHandler extends RestHandler {
-		private static final Logger LOGGER = Logger
-			.getLogger(FooRestHandler.class);
-		@Override
-		public HttpStatus get(
-			HttpRequest request, 
-			RestResponse response) {
-		
-			String title = (String) request
-				.getParameter(
-					"title", "no-title").toArray()[0];
-			if( title != "" ){
-				LOGGER.debug(
-					String.format("Parameters title=%s",
-										title));
-		
-				response.add("title", title);
+	```java
+	@Override
+		public HttpStatus get(HttpRequest request, RestResponse response) {
+			String title = null, platform = null;
+			Integer pageSize = 0, offset = 0;
+	
+			try {
+				title = (String) request.getParameter("title", String.class, "");
+	
+				platform = (String) request.getParameter("platform", String.class,
+						"");
+	
+				pageSize = (Integer) request.getParameter("pageSize",
+						Integer.class, "10");
+				offset = (Integer) request.getParameter("offset", Integer.class,
+						"0");
+				
+				// TODO : Process your data !
+				...
+						
 				return HttpStatus.OK;
-			} else {
-				response.add("error", "Unable to retrieve data");
-				return HttpStatus.NOT_FOUNT;
+				
+			} catch (InstantiationException e) {
+				return HttpStatus.INTERNAL_ERROR;
+			} catch (IllegalAccessException e) {
+				return HttpStatus.INTERNAL_ERROR;
+			} catch (Exception e) {
+				LOGGER.error("Unable to retrieve data", e);
+				return HttpStatus.INTERNAL_ERROR;
 			}
-		} 
- 	}
-```
+	}
+	```
 	
 This small piece of code will serve the ```localhost:8888/rest/foo```  with a json document : 
 
@@ -195,7 +263,7 @@ This small piece of code will serve the ```localhost:8888/rest/foo```  with a js
 
 The first service assured by this small web server implementation, This handler (the ``WebHandler``) is ready to serve real web pages as HTML, CSS and javascript files, and images like JPG and PNG ones. But also will serve any other file ``application/octet-stream``. 
 
-A small properties file exists to set mapping between file extension and MIME types. See previous exposed MIME types table. You will be able to map anay file extension to MIME types.
+A small properties file exists to set mapping between file extension and MIME types. See previous exposed MIME types table. You will be able to map any file extension to MIME types. but a new Fall Back mode attempts to retrieve (since JDK7) the mime type for a resource (``FileIO.getContentType(resourcePath)``).
 
 The mechanism is based on the same implementation as RestHandler.
 

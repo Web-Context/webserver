@@ -9,6 +9,7 @@
 	<properties>
 		<jdk.version>1.7</jdk.version>
 		<source.encoding>UTF-8</source.encoding>
+		<mainClass>com.webcontext.apps.grs.application.services.Server</mainClass>
 	</properties>
 
 	<organization>
@@ -139,6 +140,10 @@
 									<directory>src/main/webapp</directory>
 									<filtering>true</filtering>
 								</resource>
+								<resource>
+									<directory>src/main/resources</directory>
+									<filtering>true</filtering>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>
@@ -166,7 +171,7 @@
 							<addClasspath>true</addClasspath>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							<mainClass>com.webcontext.apps.grs.application.services.Server</mainClass>
+							<mainClass>${mainClass}</mainClass>
 						</manifest>
 					</archive>
 					<manifestEntries>
@@ -179,14 +184,38 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2.2</version>
-				<!-- The configuration of the plugin -->
+				<version>2.4</version>
 				<configuration>
-					<!-- Specifies the configuration file of the assembly plugin -->
+					<finalName>${project.artifactId}-${project.version}-full</finalName>
 					<descriptors>
 						<descriptor>src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
+					<filters>
+						<filter>src/main/assembly/filter.properties</filter>
+					</filters>
+					<appendAssemblyId>true</appendAssemblyId>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
 				</configuration>
+				<executions>
+					<execution>
+						<id>${project.artifactId}-${project.version}-full</id>
+						<phase>package</phase>
+
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.artifactId}-${project.version}-full</finalName>
+							<archive>
+								<manifest>
+									<mainClass>${mainClass}</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- Publish the corresponding javadoc. -->
@@ -245,7 +274,7 @@
 					</excludeRoots>
 				</configuration>
 			</plugin>
-			<!-- Prepare the changes -->
+			<!-- Prepare the changes
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-changes-plugin</artifactId>
@@ -258,6 +287,7 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			 -->
 		</plugins>
 	</reporting>
 
