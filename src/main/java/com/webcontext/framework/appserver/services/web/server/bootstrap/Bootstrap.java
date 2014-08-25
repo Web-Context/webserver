@@ -1,5 +1,8 @@
 package com.webcontext.framework.appserver.services.web.server.bootstrap;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * An annotation to build some BootStrap capabilities for our GenericServer.
  * 
@@ -7,6 +10,7 @@ package com.webcontext.framework.appserver.services.web.server.bootstrap;
  * 
  * 
  */
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Bootstrap {
 	/**
 	 * Type of Group for Bootstrap operation.

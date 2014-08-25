@@ -45,10 +45,6 @@ public class Server {
 			// initialize server.
 			appServer = new GenericServer(args);
 
-			// add a new Handler to the Rest Server.
-			appServer.addRestContext("/rest/games", new GamesRestHandler(
-					appServer));
-
 			// and start server.
 			appServer.start();
 

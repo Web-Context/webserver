@@ -28,7 +28,7 @@ import com.webcontext.framework.appserver.services.web.server.GenericServer.Http
  * 
  */
 @SuppressWarnings("restriction")
-@ContextHandler(path = "rest/games")
+@ContextHandler(path = "/rest/games")
 public class GamesRestHandler extends RestHandler {
 	private static final Logger LOGGER = Logger
 			.getLogger(GamesRestHandler.class);

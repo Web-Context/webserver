@@ -5,6 +5,7 @@ package com.webcontext.framework.appserver.services.web.server.admin;
 
 import java.io.IOException;
 
+import com.webcontext.framework.appserver.services.web.response.handler.ContextHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestResponse;
 import com.webcontext.framework.appserver.services.web.response.io.HttpRequest;
@@ -18,6 +19,7 @@ import com.webcontext.framework.appserver.services.web.server.GenericServer.Http
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
+@ContextHandler(path = "/rest/admin")
 public class AdminHandler extends RestHandler {
 
 	public AdminHandler(GenericServer server) {

@@ -24,7 +24,6 @@ import com.webcontext.framework.appserver.services.web.response.handler.ContextH
 import com.webcontext.framework.appserver.services.web.response.handler.IResponseHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.rest.RestHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.impl.web.WebHandler;
-import com.webcontext.framework.appserver.services.web.server.admin.AdminHandler;
 import com.webcontext.framework.appserver.services.web.server.admin.ServerInformation;
 import com.webcontext.framework.appserver.services.web.server.bootstrap.Bootstrap;
 import com.webcontext.framework.appserver.services.web.server.bootstrap.IBootstrap;
@@ -294,11 +293,17 @@ public class GenericServer {
 				MAX_CORE_POOL_SIZE, HEARBEAT_FREQUENCY, TimeUnit.MILLISECONDS,
 				new ArrayBlockingQueue<Runnable>(POOL_QUEUE_SIZE)));
 		// Add the internal Administrative Handler.
-		server.createContext("/rest/admin", new AdminHandler(this));
-		addRessourceContext("/web", new WebHandler(this));
 
 		// initialize repositories.
 		DataManager.getInstance().autoRegister();
+
+		try {
+			registerHandlers(this);
+		} catch (InstantiationException | IllegalAccessException
+				| NoSuchMethodException | SecurityException
+				| IllegalArgumentException | InvocationTargetException e) {
+			LOGGER.error("Unable to initialize ContextHandler", e);
+		}
 
 		LOGGER.info(String
 				.format("Server has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d]",
@@ -312,9 +317,14 @@ public class GenericServer {
 	 * @throws InterruptedException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
 	 */
 	public void start() throws InterruptedException, InstantiationException,
-			IllegalAccessException {
+			IllegalAccessException, NoSuchMethodException, SecurityException,
+			IllegalArgumentException, InvocationTargetException {
 		if (server != null) {
 
 			boostrapServer();
@@ -373,7 +383,7 @@ public class GenericServer {
 			throws InstantiationException, IllegalAccessException,
 			NoSuchMethodException, SecurityException, IllegalArgumentException,
 			InvocationTargetException {
-		Reflections reflections = new Reflections("com.webcontext.apps");
+		Reflections reflections = new Reflections("com.webcontext");
 		Set<Class<?>> classes = reflections
 				.getTypesAnnotatedWith(ContextHandler.class);
 		for (Class<?> classe : classes) {

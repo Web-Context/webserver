@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import com.webcontext.framework.appserver.services.web.response.handler.ContextHandler;
 import com.webcontext.framework.appserver.services.web.response.handler.ResponseHandler;
 import com.webcontext.framework.appserver.services.web.response.io.HttpRequest;
 import com.webcontext.framework.appserver.services.web.server.GenericServer;
@@ -28,6 +29,7 @@ import com.webcontext.framework.appserver.utils.FileIO;
  * @author Fréderic Delorme<frederic.delorme@web-context.com>
  * 
  */
+@ContextHandler(path="/web")
 public class WebHandler extends ResponseHandler<WebResponse> {
 
 	/*
