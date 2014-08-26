@@ -9,23 +9,51 @@ package com.webcontext.framework.appserver.utils;
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
-public class ArgumentParser {
+public class ArgsParser {
 
 	/**
-	 * Define list of optional command line server execution arguments.
+	 * Define list of optional command line server execution arguments with
+	 * their Command line argument name and there default value.
 	 * 
 	 * @author frederic
 	 * 
 	 */
-	public enum ServerArguments {
-		// Java server port.
+	public enum ArgType {
+		/**
+		 * Java server port.
+		 */
 		SERVER_PORT("port", "8888"),
-		// Stop key word to use to stop the server.
+		/**
+		 * Stop key word to use to stop the server.
+		 */
 		SERVER_STOPKEY("stopkey", "stop"),
-		// Set of MongoDB database server is embedded or not.
+		/**
+		 * Set of MongoDB database server is embedded or not.
+		 */
 		DATABASE_EMBEDDED("dbembedded", "false"),
-		// Set of MongoDB database service port.
-		DATABASE_PORT("dbport", "27017");
+		/**
+		 * Set of MongoDB database service port.
+		 */
+		DATABASE_PORT("dbport", "27017"),
+		/**
+		 * Internal concurrent thread pool queue to server Handler.
+		 */
+		POOL_QUEUE_SIZE("PoolQueueSize", "50"),
+		/**
+		 * Number of parallel processing threads.
+		 */
+		CORE_POOL_SIZE("CorePoolSize", "10"),
+		/**
+		 * max number of parallel processing threads where thread pool queue
+		 * riched its max.
+		 */
+		MAX_CORE_POOL_SIZE("MaxCorePoolSize", "20"),
+
+		/**
+		 * HeartBeat frequency for the server to detect if administrative stop
+		 * is required.
+		 */
+		HEARBEAT_FREQUENCY("HeartBeatFrequency", "1000");
 
 		/**
 		 * internal attributes to store keyword and default keyword.
@@ -38,7 +66,7 @@ public class ArgumentParser {
 		 * @param keyword
 		 * @param defaultValue
 		 */
-		private ServerArguments(String code, String defaultValue) {
+		private ArgType(String code, String defaultValue) {
 			this.keyword = code;
 			this.defaultValue = defaultValue;
 		}
@@ -67,7 +95,7 @@ public class ArgumentParser {
 	/**
 	 * Default constructor.
 	 */
-	public ArgumentParser() {
+	public ArgsParser() {
 	}
 
 	/**
@@ -75,20 +103,20 @@ public class ArgumentParser {
 	 * 
 	 * @param args
 	 */
-	public ArgumentParser(String[] args) {
+	public ArgsParser(String[] args) {
 		this.arguments = args;
 	}
 
 	/**
-	 * retrieve an <keyword>int</keyword> parameter name <keyword>argName</keyword> from the
-	 * <keyword>args</keyword> list. if keyword is not set , return the
-	 * <keyword>defaultValue</keyword>.
+	 * retrieve an <keyword>int</keyword> parameter name
+	 * <keyword>argName</keyword> from the <keyword>args</keyword> list. if
+	 * keyword is not set , return the <keyword>defaultValue</keyword>.
 	 * 
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
-	 *            the default keyword if <keyword>argName</keyword> keyword is not found
-	 *            in the <keyword>args</keyword> list.
+	 *            the default keyword if <keyword>argName</keyword> keyword is
+	 *            not found in the <keyword>args</keyword> list.
 	 * @return keyword of the argument, or the fall back default keyword
 	 *         <keyword>defaultValue</keyword>.
 	 */
@@ -99,15 +127,15 @@ public class ArgumentParser {
 	}
 
 	/**
-	 * retrieve a <keyword>String</keyword> parameter name <keyword>argName</keyword> from
-	 * the <keyword>args</keyword> list. if keyword is not set , return the
-	 * <keyword>defaultValue</keyword>.
+	 * retrieve a <keyword>String</keyword> parameter name
+	 * <keyword>argName</keyword> from the <keyword>args</keyword> list. if
+	 * keyword is not set , return the <keyword>defaultValue</keyword>.
 	 * 
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
-	 *            the default keyword if <keyword>argName</keyword> keyword is not found
-	 *            in the <keyword>args</keyword> list.
+	 *            the default keyword if <keyword>argName</keyword> keyword is
+	 *            not found in the <keyword>args</keyword> list.
 	 * @return keyword of the argument, or the fall back default keyword
 	 *         <keyword>defaultValue</keyword>.
 	 */
@@ -117,15 +145,15 @@ public class ArgumentParser {
 	}
 
 	/**
-	 * retrieve a <keyword>Boolean</keyword> parameter name <keyword>argName</keyword> from
-	 * the <keyword>args</keyword> list. if keyword is not set , return the
-	 * <keyword>defaultValue</keyword>.
+	 * retrieve a <keyword>Boolean</keyword> parameter name
+	 * <keyword>argName</keyword> from the <keyword>args</keyword> list. if
+	 * keyword is not set , return the <keyword>defaultValue</keyword>.
 	 * 
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
-	 *            the default keyword if <keyword>argName</keyword> keyword is not found
-	 *            in the <keyword>args</keyword> list.
+	 *            the default keyword if <keyword>argName</keyword> keyword is
+	 *            not found in the <keyword>args</keyword> list.
 	 * @return keyword of the argument, or the fall back default keyword
 	 *         <keyword>defaultValue</keyword>.
 	 */
@@ -136,15 +164,15 @@ public class ArgumentParser {
 	}
 
 	/**
-	 * retrieve a <keyword>Float</keyword> parameter name <keyword>argName</keyword> from
-	 * the <keyword>args</keyword> list. if keyword is not set , return the
-	 * <keyword>defaultValue</keyword>.
+	 * retrieve a <keyword>Float</keyword> parameter name
+	 * <keyword>argName</keyword> from the <keyword>args</keyword> list. if
+	 * keyword is not set , return the <keyword>defaultValue</keyword>.
 	 * 
 	 * @param argName
 	 *            argument name to search in the list
 	 * @param defaultValue
-	 *            the default keyword if <keyword>argName</keyword> keyword is not found
-	 *            in the <keyword>args</keyword> list.
+	 *            the default keyword if <keyword>argName</keyword> keyword is
+	 *            not found in the <keyword>args</keyword> list.
 	 * @return keyword of the argument, or the fall back default keyword
 	 *         <keyword>defaultValue</keyword>.
 	 */
@@ -155,8 +183,8 @@ public class ArgumentParser {
 	}
 
 	/**
-	 * Parse all <keyword>args</keyword> items and retrieve the <keyword>argName</keyword>
-	 * keyword, if exists. Else return null.
+	 * Parse all <keyword>args</keyword> items and retrieve the
+	 * <keyword>argName</keyword> keyword, if exists. Else return null.
 	 * 
 	 * @param argName
 	 *            this is the name of the argument searched for.

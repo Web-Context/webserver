@@ -137,7 +137,7 @@
 							<outputDirectory>${basedir}/target/classes</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/main/webapp</directory>
+									<directory>src/angular/app</directory>
 									<filtering>true</filtering>
 								</resource>
 								<resource>
@@ -179,6 +179,43 @@
 						<url>${project.url}</url>
 					</manifestEntries>
 				</configuration>
+			</plugin>
+			<!-- Prepare the angular apps to distribution -->
+			<plugin>
+				<groupId>pl.allegro</groupId>
+				<artifactId>grunt-maven-plugin</artifactId>
+				<version>1.4.1</version>
+				<configuration>
+					<!-- relative to src/main/webapp/, default: static -->
+					<jsSourceDirectory>scripts</jsSourceDirectory>
+
+					<!-- example options usage to get verbose output in logs -->
+					<gruntOptions>
+						<gruntOption>--verbose</gruntOption>
+					</gruntOptions>
+
+					<!-- example npm install env variable -->
+					<npmEnvironmentVar>
+						<PHANTOMJS_CDNURL>http://cnpmjs.org/downloads</PHANTOMJS_CDNURL>
+					</npmEnvironmentVar>
+
+					<!-- example options usage to filter variables in given resource -->
+					<filteredResources>
+						<filteredResource>maven-properties.json</filteredResource>
+					</filteredResources>
+
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>create-resources</goal>
+							<goal>npm</goal>
+							<!-- or npm-offline if npm failure is not an option -->
+							<goal>bower</goal>
+							<goal>grunt</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<!-- Package the distribution -->
 			<plugin>
@@ -234,6 +271,41 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>pl.allegro</groupId>
+										<artifactId>
+											grunt-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.4.1,)
+										</versionRange>
+										<goals>
+											<goal>
+												create-resources
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<!-- Reporting -->
@@ -274,20 +346,10 @@
 					</excludeRoots>
 				</configuration>
 			</plugin>
-			<!-- Prepare the changes
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changes-plugin</artifactId>
-				<version>2.10</version>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>bitbucket-report</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-			 -->
+			<!-- Prepare the changes <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-changes-plugin</artifactId> <version>2.10</version> <reportSets> 
+				<reportSet> <reports> <report>bitbucket-report</report> </reports> </reportSet> 
+				</reportSets> </plugin> -->
 		</plugins>
 	</reporting>
 

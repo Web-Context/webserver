@@ -7,10 +7,9 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.apps.grs.application.rest.GamesRestHandler;
 import com.webcontext.framework.appserver.services.mongodb.MongoDBServer;
 import com.webcontext.framework.appserver.services.web.server.GenericServer;
-import com.webcontext.framework.appserver.utils.ArgumentParser;
+import com.webcontext.framework.appserver.utils.ArgsParser;
 
 /**
  * This is the start class for our server.
@@ -29,10 +28,10 @@ public class Server {
 
 		try {
 
-			if (new ArgumentParser(args).getBooleanArg(
-					ArgumentParser.ServerArguments.DATABASE_EMBEDDED
+			if (new ArgsParser(args).getBooleanArg(
+					ArgsParser.ArgType.DATABASE_EMBEDDED
 							.getKeyword(),
-					ArgumentParser.ServerArguments.DATABASE_EMBEDDED
+					ArgsParser.ArgType.DATABASE_EMBEDDED
 							.getDefaultValue())) {
 				/**
 				 * Initialize and start the MongoDBserver.

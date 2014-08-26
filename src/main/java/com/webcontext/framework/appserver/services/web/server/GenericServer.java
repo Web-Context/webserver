@@ -25,7 +25,7 @@ import com.webcontext.framework.appserver.services.web.response.handler.IRespons
 import com.webcontext.framework.appserver.services.web.server.admin.ServerInformation;
 import com.webcontext.framework.appserver.services.web.server.bootstrap.Bootstrap;
 import com.webcontext.framework.appserver.services.web.server.bootstrap.IBootstrap;
-import com.webcontext.framework.appserver.utils.ArgumentParser;
+import com.webcontext.framework.appserver.utils.ArgsParser;
 
 /**
  * Internal HTTP server on a specific port (default is 8888).
@@ -72,26 +72,6 @@ public class GenericServer {
 	 * Internal Logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(GenericServer.class);
-
-	/**
-	 * Internal concurrent thread pool queue to server Handler.
-	 */
-	private static final int POOL_QUEUE_SIZE = 50;
-	/**
-	 * Number of parallel processing threads.
-	 */
-	private static final int CORE_POOL_SIZE = 2;
-	/**
-	 * max number of parallel processing threads where thread pool queue riched
-	 * its max.
-	 */
-	private static final int MAX_CORE_POOL_SIZE = 4;
-
-	/**
-	 * HeartBeat frequency for the server to detect if administrative stop is
-	 * required.
-	 */
-	private static final int HEARBEAT_FREQUENCY = 5000;
 
 	/**
 	 * boolean flag to activate authentication on administrative and all request
@@ -211,7 +191,7 @@ public class GenericServer {
 	 */
 	private int port = 8888;
 
-	private ArgumentParser argsParser = null;
+	private ArgsParser argsParser = null;
 
 	/**
 	 * Magic keyword to stop server on the <code>/rest/admin</code> URI.
@@ -263,14 +243,14 @@ public class GenericServer {
 	 * @throws IOException
 	 */
 	public GenericServer(String[] args) throws IOException {
-		argsParser = new ArgumentParser(args);
+		argsParser = new ArgsParser(args);
 		this.port = argsParser.getIntArg(
-				ArgumentParser.ServerArguments.SERVER_PORT.getKeyword(),
-				ArgumentParser.ServerArguments.SERVER_PORT.getDefaultValue());
+				ArgsParser.ArgType.SERVER_PORT.getKeyword(),
+				ArgsParser.ArgType.SERVER_PORT.getDefaultValue());
 		this.stopkey = argsParser
-				.getStringArg(ArgumentParser.ServerArguments.SERVER_STOPKEY
+				.getStringArg(ArgsParser.ArgType.SERVER_STOPKEY
 						.getKeyword(),
-						ArgumentParser.ServerArguments.SERVER_STOPKEY
+						ArgsParser.ArgType.SERVER_STOPKEY
 								.getDefaultValue());
 		initServer(this.port);
 	}
@@ -286,10 +266,21 @@ public class GenericServer {
 		// Create the server
 		server = HttpServer.create(new InetSocketAddress(port), 0);
 
+		int corePoolSize =argsParser.getIntArg(ArgsParser.ArgType.CORE_POOL_SIZE.getKeyword(), ArgsParser.ArgType.CORE_POOL_SIZE.getDefaultValue()),
+			maxCorePoolSize = argsParser.getIntArg(ArgsParser.ArgType.MAX_CORE_POOL_SIZE.getKeyword(), ArgsParser.ArgType.MAX_CORE_POOL_SIZE.getDefaultValue()),
+			heartBeatFreq = argsParser.getIntArg(ArgsParser.ArgType.HEARBEAT_FREQUENCY.getKeyword(), ArgsParser.ArgType.HEARBEAT_FREQUENCY.getDefaultValue()),
+			poolQueueSize = argsParser.getIntArg(ArgsParser.ArgType.POOL_QUEUE_SIZE.getKeyword(), ArgsParser.ArgType.POOL_QUEUE_SIZE.getDefaultValue());
+		
 		// initialize its ThreadPool to serve RestHandler
-		server.setExecutor(new ThreadPoolExecutor(CORE_POOL_SIZE,
-				MAX_CORE_POOL_SIZE, HEARBEAT_FREQUENCY, TimeUnit.MILLISECONDS,
-				new ArrayBlockingQueue<Runnable>(POOL_QUEUE_SIZE)));
+		server.setExecutor(
+			new ThreadPoolExecutor(
+				corePoolSize,
+				maxCorePoolSize,
+				heartBeatFreq,
+				TimeUnit.MILLISECONDS,
+				new ArrayBlockingQueue<Runnable>(poolQueueSize)
+			)
+		);
 		// Add the internal Administrative Handler.
 
 		// initialize repositories.
@@ -304,9 +295,8 @@ public class GenericServer {
 		}
 
 		LOGGER.info(String
-				.format("Server has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d]",
-						port, CORE_POOL_SIZE, MAX_CORE_POOL_SIZE,
-						POOL_QUEUE_SIZE));
+				.format("Server has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d, heartBeat: %d]",
+						port, corePoolSize, maxCorePoolSize,poolQueueSize, heartBeatFreq));
 	}
 
 	/**
@@ -330,8 +320,11 @@ public class GenericServer {
 			server.start();
 			LOGGER.info(String.format("Server '%s' on port %d started",
 					getServerName(), port));
+
+			int heartBeatFreq = argsParser.getIntArg(ArgsParser.ArgType.HEARBEAT_FREQUENCY.getKeyword(), ArgsParser.ArgType.HEARBEAT_FREQUENCY.getDefaultValue());
+
 			while (heartBeat != -1) {
-				Thread.sleep(HEARBEAT_FREQUENCY);
+				Thread.sleep(heartBeatFreq);
 				/*
 				 * LOGGER.debug(String.format("Rest Server heart beat is alive",
 				 * heartBeat));

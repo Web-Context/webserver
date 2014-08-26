@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 
-import com.webcontext.framework.appserver.utils.ArgumentParser;
+import com.webcontext.framework.appserver.utils.ArgsParser;
 
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
@@ -97,7 +97,7 @@ public class MongoDBServer {
 
 			MongodStarter starter = MongodStarter.getInstance(runtimeConfig);
 			mongodExecutable = starter.prepare(mongodConfig);
-			LOGGER.info(String.format("MongoDB configuraiton:",
+			LOGGER.info(String.format("MongoDB configuration:",
 					mongodConfig.toString()));
 
 		} catch (UnknownHostException e) {
@@ -111,9 +111,9 @@ public class MongoDBServer {
 	}
 
 	public MongoDBServer(String[] args) {
-		this(new ArgumentParser(args).getIntArg(
-				ArgumentParser.ServerArguments.DATABASE_PORT.getKeyword(),
-				ArgumentParser.ServerArguments.DATABASE_PORT.getDefaultValue()));
+		this(new ArgsParser(args).getIntArg(
+				ArgsParser.ArgType.DATABASE_PORT.getKeyword(),
+				ArgsParser.ArgType.DATABASE_PORT.getDefaultValue()));
 
 	}
 
@@ -185,10 +185,10 @@ public class MongoDBServer {
 	 */
 	public static void main(String[] args) {
 		// extract specific arg from java list args.
-		ArgumentParser ap = new ArgumentParser(args);
+		ArgsParser ap = new ArgsParser(args);
 		MongoDBServer mgserver = new MongoDBServer(ap.getIntArg(
-				ArgumentParser.ServerArguments.DATABASE_PORT.getKeyword(),
-				ArgumentParser.ServerArguments.DATABASE_PORT.getDefaultValue()));
+				ArgsParser.ArgType.DATABASE_PORT.getKeyword(),
+				ArgsParser.ArgType.DATABASE_PORT.getDefaultValue()));
 		try {
 			if (mgserver != null && mgserver.mongod == null) {
 				mgserver.start();
