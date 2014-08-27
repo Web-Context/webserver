@@ -11,7 +11,7 @@
 			<li ng-repeat="tag in game.tags"><a ng-href="#/tags/{{tag}}" title="Get all games for tag [{{tag}}]">{{tag}}</a></li>
 		</ul>
 		<ul class="platforms">
-			<li ng-repeat="platform in game.platform"><a ng-href="#/game/{{game.id}}/{{platform}}" title="Get game for platform [{{platform}}]">{{platform}}</a></li>
+			<li ng-repeat="platform in game.platform"><a ng-href="#/game/{{game.id}}/platform/{{platform}}" title="Get game for platform [{{platform}}]">{{platform}}</a></li>
 		</ul>
 		<div class="header">{{game['header'][language]}}</div>
 		<div class="content">{{game['content'][language]}}</div>
