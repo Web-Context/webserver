@@ -36,7 +36,7 @@
 	<distributionManagement>
 		<repository>
 			<id>bintray</id>
-			<url>https://api.bintray.com/maven/webcontext/webserver/package</url>
+			<url>https://api.bintray.com/maven/webcontext/webserver</url>
 		</repository>
 	</distributionManagement>
 
@@ -124,6 +124,7 @@
 					<encoding>${source.encoding}	</encoding>
 				</configuration>
 			</plugin>
+
 			<!-- Add resources -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -156,6 +157,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<!-- Generate documentation -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -165,7 +167,29 @@
 					<show>private</show>
 					<nohelp>true</nohelp>
 				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+			
+			<!-- Package sources -->
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- Prepare the Java Archive -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -227,20 +251,20 @@
 			</plugin>
 
 			<!-- Publish the corresponding javadoc. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-publish-plugin</artifactId>
-				<version>1.0-beta-2</version>
-				<configuration>
-					<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-					<checkinComment>Publishing javadoc for
-						${project.artifactId}:${project.version}</checkinComment>
-					<content>${project.reporting.outputDirectory}/apidocs</content>
-					<skipDeletedFiles>true</skipDeletedFiles>
-					<pubScmUrl>scm:git:git@github.com:web-context/web-context..git</pubScmUrl>
-					<scmBranch>gh-pages</scmBranch> <!-- branch with static site -->
-				</configuration>
-			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-scm-publish-plugin</artifactId> -->
+			<!-- <version>1.0-beta-2</version> -->
+			<!-- <configuration> -->
+			<!-- <checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory> -->
+			<!-- <checkinComment>Publishing javadoc for -->
+			<!-- ${project.artifactId}:${project.version}</checkinComment> -->
+			<!-- <content>${project.reporting.outputDirectory}/apidocs</content> -->
+			<!-- <skipDeletedFiles>true</skipDeletedFiles> -->
+			<!-- <pubScmUrl>scm:git:git@github.com:web-context/web-context.wiki.git</pubScmUrl> -->
+			<!-- <scmBranch>gh-pages</scmBranch> branch with static site -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
 
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
@@ -252,45 +276,7 @@
 				</configuration>
 			</plugin>
 
-
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>pl.allegro</groupId>
-										<artifactId>
-											grunt-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.4.1,)
-										</versionRange>
-										<goals>
-											<goal>
-												create-resources
-											</goal>
-											<goal>bower</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 
@@ -333,10 +319,6 @@
 					</excludeRoots>
 				</configuration>
 			</plugin>
-			<!-- Prepare the changes <plugin> <groupId>org.apache.maven.plugins</groupId> 
-				<artifactId>maven-changes-plugin</artifactId> <version>2.10</version> <reportSets> 
-				<reportSet> <reports> <report>bitbucket-report</report> </reports> </reportSet> 
-				</reportSets> </plugin> -->
 		</plugins>
 	</reporting>
 
