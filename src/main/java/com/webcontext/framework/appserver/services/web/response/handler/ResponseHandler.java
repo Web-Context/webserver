@@ -109,7 +109,7 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 
 				// Prepare Response Headers
 				httpExchange.getResponseHeaders().add("Content-Type",
-						comuteContentType(response));
+						computeContentType(response));
 				if (response.getEncodage() != null) {
 					httpExchange.getResponseHeaders().add("Encodage",
 							response.getEncodage());
@@ -120,16 +120,15 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 				osResp.write(strResponse.getBytes());
 			} else {
 				// Prepare Response Headers
-				errCode = HttpStatus.FORBIDDEN;
+				//errCode = HttpStatus.FORBIDDEN;
 
-				sendErrorMessage(httpExchange, HttpStatus.FORBIDDEN, osResp);
+				sendErrorMessage(httpExchange, HttpStatus.FORBIDDEN);
 			}
 
 		} catch (Exception e) {
 			LOGGER.error("Error during retrieving data.", e);
 			try {
-				sendErrorMessage(httpExchange, HttpStatus.INTERNAL_ERROR,
-						osResp);
+				sendErrorMessage(httpExchange, HttpStatus.INTERNAL_ERROR);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -158,22 +157,22 @@ public abstract class ResponseHandler<T extends IHttpResponse> implements
 	 * @param uri
 	 * @throws IOException
 	 */
-	private void sendErrorMessage(HttpExchange httpExchange,
-			HttpStatus errCode, OutputStream osResp) throws IOException {
+	protected void sendErrorMessage(HttpExchange httpExchange,
+			HttpStatus errCode) throws IOException {
 
 		String error = String.format("Error: %s (%d) accessing resource %s",
 				errCode, errCode.getCode(), httpExchange.getRequestURI());
 		httpExchange.getResponseHeaders().add("Content-Type", "text/HTML");
 		httpExchange.sendResponseHeaders(HttpStatus.FORBIDDEN.getCode(),
 				error.getBytes().length);
-		osResp.write(error.getBytes());
+		httpExchange.getResponseBody().write(error.getBytes());
 	}
 
 	/**
 	 * @param response
 	 * @return
 	 */
-	private String comuteContentType(T response) {
+	private String computeContentType(T response) {
 		String contentType = "";
 		contentType = response.getMimeType();
 		if (response.getEncodage() != null

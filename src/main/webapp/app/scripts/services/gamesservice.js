@@ -14,6 +14,17 @@ angular.module('gamesrestrserverUiApp')
 				});
 			return deferred.promise;
 		},
+		find : function(gameId){
+			var deferred = $q.defer();
+			$http.get('http://localhost:8888/rest/games/'+gameId)
+				.success(function (data, status, headers, config) {				
+					deferred.resolve({data:data, headers: headers });
+				})
+				.error(function (data, status, headers, config) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		},
 		listPlatform:  function(){
 			var deferred = $q.defer();
 			$http.get('http://localhost:8888/rest/games/platforms/')

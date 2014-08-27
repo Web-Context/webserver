@@ -228,6 +228,26 @@ public class Game extends MDBEntity {
 		this.platform = platform;
 	}
 
+	/**
+	 * 
+	 * @param language
+	 * @return
+	 */
+	public String getContent(String language) {
+		return content.get(language);
+	}
+
+	/**
+	 * Replace in language content, all <code>"."</code> character by
+	 * <code>"<br/>"</code>.
+	 * 
+	 * @param language
+	 * @return
+	 */
+	public String getContentFormat(String language) {
+		return content.get(language).replace(".", ".<br/>");
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

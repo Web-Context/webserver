@@ -1,23 +1,24 @@
 <ul class="nav nav-pills pull-right">
-	<li ng-repeat="platform in platforms"><a
-		ng-href="#/platforms/{{platform.code}}" title="{{platform.name}}">{{platform.code}}</a></li>
+	<li ng-repeat="platform in platforms"><a ng-href="#/platforms/{{platform.code}}" title="{{platform.name}}">{{platform.code}}</a></li>
 </ul>
-<div class="clear:both;"></div>
-<article class="article row" ng-repeat="game in games">
-	<h1>{{game.title}}</h1>
-	<ul class="tags nav-pills pull-right">
-		<li ng-repeat="tag in game.tags">{{tag}}</li>
-	</ul>
-	<a href="{{game.cover.big}}" class="pull-left"> <img
-		class="img-thumbnail" src="{{game.cover.medium}}"
-		title="{{game.title}}" />
-	</a>
-	<ul class="platforms nav-pills pull-right">
-		<li ng-repeat="pf in game.platform">{{pf}}</li>
-	</ul>
-	<div class="header">{{game['header'][language]}}</div>
-	<div class="content">{{game['content'][language]}}</div>
-	<div class="info">{{game.editor}} / {{game.developer}} /
-		{{game.publicationDate | date : 'medium' }}</div>
-	<div class="clear:both;"></div>
-</article>
+<div class="articles">
+	<article class="article row" ng-repeat="game in games">
+		<a href="{{game.cover.big}}" class="img-thumbnail cover left"> <img
+			src="{{game.cover.medium}}" title="{{game.title}}" />
+		</a>
+		<h1>{{game.title}}</h1>
+		<ul class="tags">
+			<li ng-repeat="tag in game.tags"><a ng-href="#/tags/{{tag}}" title="Get all games for tag [{{tag}}]">{{tag}}</a></li>
+		</ul>
+		<ul class="platforms">
+			<li ng-repeat="platform in game.platform"><a ng-href="#/game/{{game.id}}/{{platform}}" title="Get game for platform [{{platform}}]">{{platform}}</a></li>
+		</ul>
+		<div class="header">{{game['header'][language]}}</div>
+		<div class="content">{{game['content'][language]}}</div>
+		<ul class="info">
+			<li>editor: <strong>{{game.editor}}</strong></li>
+			<li>developer: <strong>{{game.developer}}</strong></li>
+			<li>publication: <strong>{{game.publicationDate | date : 'd/M/y' }}</strong></li>
+		</ul>
+	</article>
+</div>

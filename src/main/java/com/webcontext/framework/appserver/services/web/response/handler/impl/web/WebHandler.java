@@ -22,14 +22,14 @@ import com.webcontext.framework.appserver.services.web.server.GenericServer.Http
 import com.webcontext.framework.appserver.utils.FileIO;
 
 /**
- * IMplemnattion for a minimalistic Web Server, adding <code>HTML</code>,
+ * Implementation for a minimalistic Web Server, adding <code>HTML</code>,
  * <code>CSS</code>, <code>Javascript</code> and image resources serving
  * capabilities to the GenericServer.
  * 
  * @author Fréderic Delorme<frederic.delorme@web-context.com>
  * 
  */
-@ContextHandler(path="/web")
+@ContextHandler(path = "/web")
 public class WebHandler extends ResponseHandler<WebResponse> {
 
 	/*
@@ -74,36 +74,44 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 	@Override
 	public HttpStatus get(HttpRequest request, WebResponse response)
 			throws IOException {
+
 		String resourcePath = request.getHttpExchange().getRequestURI()
 				.toString();
+
 		resourcePath = (resourcePath.replace("/web", "").equals("/") ? "index.html"
 				: resourcePath.replace("/web", ""));
+
 		resourcePath = this.getClass().getResource("/").getPath().toString()
 				+ resourcePath.substring(0);
+
 		// extract resource extension
 		String mimeType = extractMimeType(resourcePath);
+
 		if (mimeType != null) {
 			response.setMimeType(mimeType);
 		}
+
 		// Send file content to response stream.
 		File resourceFile = new File(resourcePath);
-		try {
-			String content = FileIO.loadAsString(resourcePath);
-			// String content = FileLoader.fastRead(resourcePath);
-			if (content != null && !content.equals("")) {
-				response.add(content);
-				LOGGER.info(String.format(
-						"Send resource [%s] of size %s with mime type [%s].",
-						resourcePath, formatSize(resourceFile), mimeType));
-
-				return HttpStatus.OK;
-			} else {
-				return HttpStatus.INTERNAL_ERROR;
+		if (resourceFile.exists()) {
+			try {
+				String content = FileIO.fastRead(resourcePath);
+				if (content != null && !content.equals("")) {
+					response.add(content);
+					LOGGER.info(String
+							.format("Send resource [%s] of size %s with mime type [%s].",
+									resourcePath, formatSize(resourceFile),
+									mimeType));
+					return HttpStatus.OK;
+				} else {
+					return HttpStatus.INTERNAL_ERROR;
+				}
+			} catch (FileNotFoundException fnfe) {
+				return HttpStatus.NOT_FOUND;
 			}
-		} catch (FileNotFoundException fnfe) {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
-
 	}
 
 	/**
@@ -138,7 +146,8 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 			mimeType = mimeTypes.get(extension);
 		} else {
 			mimeType = FileIO.getContentType(resourcePath);
-			if((mimeType == null || mimeType.equals("")) && mimeTypes.containsKey("default")) {
+			if ((mimeType == null || mimeType.equals(""))
+					&& mimeTypes.containsKey("default")) {
 				mimeType = mimeTypes.get("default");
 			} else {
 				mimeType = "application/actet-stream";
@@ -156,9 +165,9 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 	}
 
 	/**
-	 * Process response for this kind of ResponseHandler. It is basicaly call
-	 * the <code>process()</code> method from the <code>WebResponse</code>
-	 * object.
+	 * Process response for this kind of ResponseHandler. It is basically
+	 * calling the <code>process()</code> method from the
+	 * <code>WebResponse</code> object.
 	 */
 	@Override
 	protected String processResponse(WebResponse response) {

@@ -1,14 +1,12 @@
 package com.webcontext.framework.appserver.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * File IO utils.
@@ -61,35 +59,24 @@ public class FileIO {
 	 * 
 	 * @param filePath
 	 *            File to be read.
-	 * @return a string containing all the file.
+	 * @return a string containing all the file content.
 	 * @throws IOException
 	 */
-	public static String loadAsString(String filePath) throws IOException {
-		String content = "", line = "";
-		BufferedReader br = new BufferedReader(new FileReader(filePath));
-
-		while ((line = br.readLine()) != null) {
-			content += line+"\n";
-		}
-		br.close();
-		return content;
+	@Deprecated
+	public static String loadAsString(String file) throws IOException {
+		return fastRead(file);
 	}
 
 	/**
-	 * Quick reading of any file.
+	 * Quick reading of file <code>name</code> to a String.
 	 * 
 	 * @param name
-	 * @return
+	 *            File to load to String.
+	 * @return string containing all the file content
 	 * @throws IOException
 	 */
-	public static String fastRead(String name) throws IOException {
-		BufferedInputStream f = new BufferedInputStream(new FileInputStream(
-				name));
-		byte[] barray = new byte[256];
-		String content = "";
-		while ((f.read(barray, 0, 256)) != -1)
-			content += new String(barray);
-		f.close();
-		return content;
+	public static String fastRead(String file) throws IOException {
+		Path filePath = new File(file).toPath();
+		return new String(Files.readAllBytes(filePath));
 	}
 }
