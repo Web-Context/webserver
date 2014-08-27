@@ -93,8 +93,10 @@ public class GamesRestHandler extends RestHandler {
 				return HttpStatus.NOT_FOUND;
 			}
 		} catch (InstantiationException e) {
+			LOGGER.error("Unable to retrieve data", e);
 			return HttpStatus.INTERNAL_ERROR;
 		} catch (IllegalAccessException e) {
+			LOGGER.error("Unable to retrieve data", e);
 			return HttpStatus.INTERNAL_ERROR;
 		} catch (Exception e) {
 			LOGGER.error("Unable to retrieve data", e);

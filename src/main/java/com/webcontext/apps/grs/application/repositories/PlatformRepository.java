@@ -57,7 +57,7 @@ public class PlatformRepository extends MongoDbRepository<Platform> {
 		filePath = this.getClass().getResource("/").getPath().toString()
 				+ File.separator + filePath;
 
-		String json = FileIO.loadAsString(filePath);
+		String json = FileIO.fastRead(filePath);
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
 				.create();
 
