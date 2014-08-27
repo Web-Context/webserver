@@ -36,6 +36,14 @@ public class ArgsParser {
 		 */
 		DATABASE_PORT("dbport", "27017"),
 		/**
+		 * Flag to activate the verbose mode of the embedded Mongo database.
+		 */
+		DATABASE_VERBOSE_MODE("dbverbose", "false"),
+		/**
+		 * Path to data storage for the embedded Mongo database.
+		 */
+		DATABASE_DATAPATH("dbdatapath", ""),
+		/**
 		 * Internal concurrent thread pool queue to server Handler.
 		 */
 		POOL_QUEUE_SIZE("PoolQueueSize", "50"),

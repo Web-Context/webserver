@@ -36,7 +36,7 @@ public class Server {
 				/**
 				 * Initialize and start the MongoDBserver.
 				 */
-				dbServer = new MongoDBServer(args);
+				dbServer = MongoDBServer.getInstance(args);
 				dbServer.start();
 				dbServer.waitUntilStarted();
 			}
@@ -49,23 +49,23 @@ public class Server {
 
 		} catch (IOException e) {
 			LOGGER.error(
-					"Unable to start the internal Rest HTTP Server component.",
+					"Unable to start the internal Rest HTTP TestServer component.",
 					e);
 		} catch (InstantiationException e) {
 			LOGGER.error(
-					"Unable to start the internal Rest HTTP Server component.",
+					"Unable to start the internal Rest HTTP TestServer component.",
 					e);
 		} catch (IllegalAccessException e) {
 			LOGGER.error(
-					"Unable to start the internal Rest HTTP Server component.",
+					"Unable to start the internal Rest HTTP TestServer component.",
 					e);
 		} catch (InterruptedException e) {
 			LOGGER.error(
-					"Unable to start the internal Rest HTTP Server component.",
+					"Unable to start the internal Rest HTTP TestServer component.",
 					e);
 		} catch (Exception e) {
 			LOGGER.error(
-					"Unable to start the internal Rest HTTP Server component.",
+					"Unable to start the internal Rest HTTP TestServer component.",
 					e);
 		} finally {
 			if (appServer != null) {
@@ -75,7 +75,7 @@ public class Server {
 				dbServer.stop();
 			}
 		}
-		LOGGER.info("End of processing request in Server");
+		LOGGER.info("End of processing request in TestServer");
 
 		// Exit from server.
 		System.exit(0);

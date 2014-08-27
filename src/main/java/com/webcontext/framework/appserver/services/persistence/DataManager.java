@@ -95,8 +95,8 @@ public class DataManager {
 			entityClass = classe.getAnnotation(Repository.class).entity();
 			try {
 				this.register(entityClass, (Class<IMongoDbRepository>) classe);
-				LOGGER.error(String.format(
-						"autoregistering Repository %s for entity %s.", classe,
+				LOGGER.info(String.format(
+						"Repository %s autoregistered for entity %s.", classe,
 						entityClass));
 			} catch (InstantiationException e) {
 				LOGGER.error(String.format(

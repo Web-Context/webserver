@@ -28,10 +28,8 @@
 		<tag>${project.artifactId}-${project.version}</tag>
 	</scm>
 
-	<!-- issueManagement>
-		<system>Bitbucket</system>
-		<url>http://bitbucket.org/McGivrer/webserver/issues</url>
-	</issueManagement -->
+	<!-- issueManagement> <system>Bitbucket</system> <url>http://bitbucket.org/McGivrer/webserver/issues</url> 
+		</issueManagement -->
 
 	<issueManagement>
 		<system>github</system>
@@ -117,6 +115,7 @@
 
 
 	<build>
+		<finalName>GameRestServer</finalName>
 		<plugins>
 			<!-- Compile project -->
 			<plugin>
@@ -151,7 +150,7 @@
 							<outputDirectory>${basedir}/target/classes</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/angular/app</directory>
+									<directory>src/main/webapp/app</directory>
 									<filtering>true</filtering>
 								</resource>
 								<resource>
@@ -185,7 +184,9 @@
 
 			<!-- Package sources -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.3</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -248,6 +249,10 @@
 							<finalName>${project.artifactId}-${project.version}-full</finalName>
 							<archive>
 								<manifest>
+									<addClasspath>true</addClasspath>
+									<classpathPrefix>lib/</classpathPrefix>
+									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+									<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 									<mainClass>${mainClass}</mainClass>
 								</manifest>
 							</archive>

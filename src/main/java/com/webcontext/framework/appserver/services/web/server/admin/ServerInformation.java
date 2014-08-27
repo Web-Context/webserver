@@ -7,7 +7,7 @@ import java.net.URI;
 import java.util.Date;
 
 /**
- * Internal Server information.
+ * Internal TestServer information.
  * 
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 

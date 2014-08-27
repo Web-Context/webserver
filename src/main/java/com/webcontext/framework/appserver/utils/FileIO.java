@@ -8,6 +8,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.apache.log4j.Logger;
+
 /**
  * File IO utils.
  * 
@@ -15,6 +17,8 @@ import java.nio.file.Path;
  * 
  */
 public class FileIO {
+
+	private static final Logger LOGGER = Logger.getLogger(FileIO.class);
 
 	/**
 	 * try to detect the Type of a file.
@@ -77,6 +81,7 @@ public class FileIO {
 	 */
 	public static String fastRead(String file) throws IOException {
 		Path filePath = new File(file).toPath();
+		LOGGER.debug(String.format("read file %s, decoded as %s", file, getResource(file)));
 		return new String(Files.readAllBytes(filePath));
 	}
 }

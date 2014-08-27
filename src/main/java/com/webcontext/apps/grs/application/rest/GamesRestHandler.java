@@ -34,7 +34,7 @@ public class GamesRestHandler extends RestHandler {
 			.getLogger(GamesRestHandler.class);
 
 	/**
-	 * Default constructor initializing the parent Server attribute.
+	 * Default constructor initializing the parent TestServer attribute.
 	 * 
 	 * @param server
 	 */

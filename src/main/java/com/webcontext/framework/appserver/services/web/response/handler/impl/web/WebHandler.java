@@ -6,6 +6,7 @@ package com.webcontext.framework.appserver.services.web.response.handler.impl.we
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ import com.webcontext.framework.appserver.services.web.server.GenericServer.Http
 import com.webcontext.framework.appserver.utils.FileIO;
 
 /**
- * Implementation for a minimalistic Web Server, adding <code>HTML</code>,
+ * Implementation for a minimalistic Web TestServer, adding <code>HTML</code>,
  * <code>CSS</code>, <code>Javascript</code> and image resources serving
  * capabilities to the GenericServer.
  * 
@@ -81,6 +82,8 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 		resourcePath = (resourcePath.replace("/web", "").equals("/") ? "index.html"
 				: resourcePath.replace("/web", ""));
 
+		LOGGER.info(String.format("Web Resource %s from path = [%s]", resourcePath, this.getClass().getResource("/").getFile()));
+
 		resourcePath = this.getClass().getResource("/").getPath().toString()
 				+ resourcePath.substring(0);
 
@@ -104,12 +107,18 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 									mimeType));
 					return HttpStatus.OK;
 				} else {
+					LOGGER.error(String
+							.format("error accessing resource [%s]",resourcePath));
 					return HttpStatus.INTERNAL_ERROR;
 				}
 			} catch (FileNotFoundException fnfe) {
+				LOGGER.error(String
+						.format("File [%s] not found",resourcePath),fnfe);
 				return HttpStatus.NOT_FOUND;
 			}
 		} else {
+			LOGGER.warn(String
+					.format("File resource [%s] not found !",resourcePath));
 			return HttpStatus.NOT_FOUND;
 		}
 	}

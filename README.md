@@ -20,7 +20,6 @@ The ``Server`` class propose an implementation of both services with some argume
 			port=8888 dbembedded=true dbport=27017 
 ```
 
-
 where arguments are :
 
 | argument      | value     | description                                                               |
@@ -29,6 +28,8 @@ where arguments are :
 | dbembedded    | true      | Ask to ``embedded`` MongoDb server to install, start and initialize.   |
 | dbport        | 27017     | ``dbport`` set the MongoDB execution port. default is 27017             |
 
+
+then, just open your browser on [http://localhost:8888/web/](http://localhost:8888/web/)
 
 
 ## GenericServer

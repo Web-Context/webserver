@@ -17,6 +17,7 @@ import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
+import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
@@ -32,7 +33,7 @@ import de.flapdoodle.embed.process.runtime.Network;
 
 /**
  * 
- * Instantiate a Stand-Alone MongoDB Server to serve the application in
+ * Instantiate a Stand-Alone MongoDB TestServer to serve the application in
  * dev-mode.
  * 
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
@@ -49,12 +50,32 @@ public class MongoDBServer {
 	private MongodProcess mongod = null;
 
 	/**
+	 * Internal constructor.
+	 */
+	private MongoDBServer() {
+		super();
+	}
+
+	/**
+	 * Internal constructor.
+	 * 
+	 * @param args
+	 */
+	private MongoDBServer(String[] args) {
+		ArgsParser ap = new ArgsParser(args);
+		int port = ap.getIntArg(ArgsParser.ArgType.DATABASE_PORT.getKeyword(),
+				ArgsParser.ArgType.DATABASE_PORT.getDefaultValue());
+		initialize(port, false, null);
+	}
+
+	/**
 	 * Build and run MongoDB server on the IP port <code>mongoServerPort</code>.
 	 * 
 	 * @param mongoServerPort
 	 *            the IP port where to run the MongoDBService.
 	 */
-	private MongoDBServer(int mongoServerPort) {
+	private void initialize(int mongoServerPort, boolean verbose,
+			String dataPath) {
 		LOGGER.info(String.format("Start MongoDB internal server on port %d",
 				mongoServerPort));
 		try {
@@ -62,9 +83,11 @@ public class MongoDBServer {
 			/**
 			 * Set a path for data storage.
 			 */
-			IDirectory artifactStorePath = new FixedPath(
-					System.getProperty("user.home") + File.separator
-							+ ".embeddedMongodb");
+			IDirectory artifactStorePath = new FixedPath((dataPath != null
+					&& !dataPath.equals("") ? dataPath
+					: System.getProperty("user.home") + File.separator
+							+ ".embeddedMongodb"));
+
 			ITempNaming executableNaming = new UUIDTempNaming();
 			Command command = Command.MongoD;
 			IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
@@ -84,13 +107,18 @@ public class MongoDBServer {
 			 * Retrieve the last stable Production version on Internet (if
 			 * accessible).
 			 */
+			IMongoCmdOptions mongoCmdOptions = new MongoCmdOptionsBuilder()
+			// Use small storage space
+					.useSmallFiles(true)
+					// set verbose mode at execution (debug purpose).
+					.verbose(verbose)
+					// Build command Options
+					.build();
+
 			IMongodConfig mongodConfig = new MongodConfigBuilder()
 					.version(Version.Main.PRODUCTION)
 					.net(new Net(mongoServerPort, Network.localhostIsIPv6()))
-					.cmdOptions(
-							new MongoCmdOptionsBuilder().useSmallFiles(true)
-							// .verbose(true)
-									.build()).build();
+					.cmdOptions(mongoCmdOptions).build();
 			/**
 			 * Configure and install the MongoDB server.
 			 */
@@ -105,38 +133,79 @@ public class MongoDBServer {
 					String.format("Unable to retrieve Localhost IP address."),
 					e);
 		} catch (IOException e) {
-			LOGGER.error(String
-					.format("Error during Mongo Server instance execution."), e);
+			LOGGER.error(
+					String.format("Error during Mongo TestServer instance execution."),
+					e);
 		}
 	}
 
-	public MongoDBServer(String[] args) {
-		this(new ArgsParser(args).getIntArg(
-				ArgsParser.ArgType.DATABASE_PORT.getKeyword(),
-				ArgsParser.ArgType.DATABASE_PORT.getDefaultValue()));
-
+	/**
+	 * Retrieve the singleton instance. If not already exists, set default
+	 * execution IP port for the server to 21017, deactivate the verbose mode
+	 * and set data path to a default path (see
+	 * MongoDBServer(int,boolean,String) for details.
+	 * 
+	 * @see MongoDBServer#MongoDBServer(int, boolean, String)
+	 * 
+	 * @return return an instance of the MongoDBServer.
+	 */
+	public static MongoDBServer getInstance() {
+		return getInstance(27017, false, null);
 	}
 
 	/**
-	 * Retrieve the singleton instance
+	 * Retrieve the singleton instance. If not already exists, set default
+	 * execution IP port for the server to <code>mongoServerPort</code>,
+	 * deactivate the verbose mode and set data path to a default path (see
+	 * MongoDBServer(int,boolean,String) for details.
 	 * 
-	 * @return
+	 * @param mongoServerPort
+	 *            the default execution port for the MongoDBServer instance to
+	 *            create.
+	 * @return a new or already existing instance.
 	 */
-	public static MongoDBServer getInstance() {
+	public static MongoDBServer getInstance(int mongoServerPort) {
+		return getInstance(mongoServerPort, false, null);
+	}
+
+	/**
+	 * This is the main Instance builder for MongoDBServer. Retrieve the or
+	 * create a singleton instance. If not already exists, set default execution
+	 * IP port for the server to <code>mongoServerPort</code>, set
+	 * <code>verbose</code> mode and set <code>dataPath</code> (see
+	 * MongoDBServer(int,boolean,String) for details.
+	 * 
+	 * @param port
+	 *            IP port for the server.
+	 * @param verboseMode
+	 *            activate the verbose execution mode of MongoDB server (debug
+	 *            purpose.
+	 * @param dataPath
+	 *            String as path to a folder for data storage.
+	 * @return a brand new instance or an already existing MongoDBServer.
+	 */
+	public static MongoDBServer getInstance(int port, boolean verboseMode,
+			String dataPath) {
 		if (instance == null) {
-			instance = new MongoDBServer(27017);
+			instance = new MongoDBServer();
+			instance.initialize(port, verboseMode, dataPath);
 		}
 		return instance;
 	}
 
 	/**
-	 * Retrieve the singleton instance
+	 * Initialize a new MongoBDServer based on standard java command line
+	 * arguments.
 	 * 
+	 * @param args
+	 *            Arguments list build with <code>ArgsParser.ArgType</code>
+	 *            arguments.
+	 * @see ArgsParser.ArgType
 	 * @return
 	 */
-	public static MongoDBServer getInstance(int mongoServerPort) {
+	public static MongoDBServer getInstance(String[] args) {
 		if (instance == null) {
-			instance = new MongoDBServer(mongoServerPort);
+			instance = new MongoDBServer(args);
 		}
 		return instance;
 	}
@@ -157,7 +226,7 @@ public class MongoDBServer {
 	 */
 	public void start() throws IOException {
 		/**
-		 * Start the MongoDB Server.
+		 * Start the MongoDB TestServer.
 		 */
 		this.mongod = this.mongodExecutable.start();
 		LOGGER.info(String.format("MongoDB deamon :%s", (this.mongod != null
@@ -175,29 +244,6 @@ public class MongoDBServer {
 			e.printStackTrace();
 		}
 
-	}
-
-	/**
-	 * Start the MongoDBServer in a stand alone mode on port 27017.
-	 * 
-	 * @param args
-	 *            list of java arguments .
-	 */
-	public static void main(String[] args) {
-		// extract specific arg from java list args.
-		ArgsParser ap = new ArgsParser(args);
-		MongoDBServer mgserver = new MongoDBServer(ap.getIntArg(
-				ArgsParser.ArgType.DATABASE_PORT.getKeyword(),
-				ArgsParser.ArgType.DATABASE_PORT.getDefaultValue()));
-		try {
-			if (mgserver != null && mgserver.mongod == null) {
-				mgserver.start();
-				Thread.sleep(10 * 1000);
-				mgserver.stop();
-			}
-		} catch (IOException | InterruptedException e) {
-			LOGGER.error("unalbe to start server", e);
-		}
 	}
 
 }

@@ -30,14 +30,14 @@ import com.webcontext.framework.appserver.utils.ArgsParser;
 /**
  * Internal HTTP server on a specific port (default is 8888).
  * <p>
- * the rest Server component is a small and dependency reduced HTTP server,
+ * the rest TestServer component is a small and dependency reduced HTTP server,
  * serving JSON document. Based only on the HttpServer implementation from Java
  * SE 7, and the GSon library it brings to developer some basic features like
  * Rest request handling with simple Implementation.
  * </p>
  * 
  * <p>
- * This light Server implementation will detect :
+ * This light TestServer implementation will detect :
  * <ul>
  * <li><code>@Bootstrap</code> annotated components/li>
  * <li>and <code>@Repository</code> annotated Components, to respectively,
@@ -85,7 +85,7 @@ public class GenericServer {
 	private long heartBeat = 1;
 
 	/**
-	 * This is the internal Server Statistics information object.
+	 * This is the internal TestServer Statistics information object.
 	 */
 	private ServerInformation info = new ServerInformation(new Date());
 
@@ -183,7 +183,7 @@ public class GenericServer {
 	}
 
 	/**
-	 * The internal instance of the Sun Http Server.
+	 * The internal instance of the Sun Http TestServer.
 	 */
 	private HttpServer server = null;
 	/**
@@ -210,7 +210,7 @@ public class GenericServer {
 	}
 
 	/**
-	 * Initialize the Rest HTTP Server on the specified <code>port</code> à
+	 * Initialize the Rest HTTP TestServer on the specified <code>port</code> à
 	 * construction time. In that case, the default stop key is
 	 * <code>STOP</code>.
 	 * 
@@ -256,7 +256,7 @@ public class GenericServer {
 	}
 
 	/**
-	 * Initialize the Rest HTTP Server.
+	 * Initialize the Rest HTTP TestServer.
 	 * 
 	 * @param port
 	 * @throws IOException
@@ -295,7 +295,7 @@ public class GenericServer {
 		}
 
 		LOGGER.info(String
-				.format("Server has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d, heartBeat: %d]",
+				.format("TestServer has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d, heartBeat: %d]",
 						port, corePoolSize, maxCorePoolSize,poolQueueSize, heartBeatFreq));
 	}
 
@@ -318,7 +318,7 @@ public class GenericServer {
 			boostrapServer();
 
 			server.start();
-			LOGGER.info(String.format("Server '%s' on port %d started",
+			LOGGER.info(String.format("TestServer '%s' on port %d started",
 					getServerName(), port));
 
 			int heartBeatFreq = argsParser.getIntArg(ArgsParser.ArgType.HEARBEAT_FREQUENCY.getKeyword(), ArgsParser.ArgType.HEARBEAT_FREQUENCY.getDefaultValue());
@@ -326,7 +326,7 @@ public class GenericServer {
 			while (heartBeat != -1) {
 				Thread.sleep(heartBeatFreq);
 				/*
-				 * LOGGER.debug(String.format("Rest Server heart beat is alive",
+				 * LOGGER.debug(String.format("Rest TestServer heart beat is alive",
 				 * heartBeat));
 				 */
 				if (heartBeat != -1) {
@@ -334,7 +334,7 @@ public class GenericServer {
 				}
 
 			}
-			LOGGER.info("Server has stopped");
+			LOGGER.info("TestServer has stopped");
 		}
 	}
 
@@ -391,7 +391,7 @@ public class GenericServer {
 	}
 
 	/**
-	 * Retrieve the Server name from different ways, according to the post from
+	 * Retrieve the TestServer name from different ways, according to the post from
 	 * "Thomas W" on stackoverflow.com .
 	 * 
 	 * @see http://stackoverflow.com/questions/7348711/20793241#20793241
@@ -424,7 +424,7 @@ public class GenericServer {
 	}
 
 	/**
-	 * Stop the Rest HTTP Server.
+	 * Stop the Rest HTTP TestServer.
 	 */
 	public void stop() {
 		if (server != null) {
