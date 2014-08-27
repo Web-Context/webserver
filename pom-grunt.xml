@@ -180,7 +180,35 @@
 					</manifestEntries>
 				</configuration>
 			</plugin>
-			
+			<!-- Prepare the angular apps to distribution -->
+			<plugin>
+				<groupId>pl.allegro</groupId>
+				<artifactId>grunt-maven-plugin</artifactId>
+				<version>1.4.1</version>
+				<configuration>
+					<jsSourceDirectory>scripts</jsSourceDirectory>
+					<gruntOptions>
+						<gruntOption>--verbose</gruntOption>
+					</gruntOptions>
+					<npmEnvironmentVar>
+						<PHANTOMJS_CDNURL>http://cnpmjs.org/downloads</PHANTOMJS_CDNURL>
+					</npmEnvironmentVar>
+					<filteredResources>
+						<filteredResource>maven-properties.json</filteredResource>
+					</filteredResources>
+
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>create-resources</goal>
+							<goal>npm</goal>
+							<goal>bower</goal>
+							<goal>grunt</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Package the distribution -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
