@@ -1,3 +1,5 @@
+![WebServer Logo](https://raw.githubusercontent.com/Web-Context/webserver/master/src/main/webapp/app/images/web-context-webserver.png)
+
 # WebServer
 
 [![Build Status](https://travis-ci.org/Web-Context/webserver.svg?branch=master)](https://travis-ci.org/Web-Context/webserver)
