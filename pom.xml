@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.webcontext.apps</groupId>
-	<artifactId>gamerestserver</artifactId>
+	<groupId>apps</groupId>
+	<artifactId>webserver</artifactId>
 	<version>0.0.3-SNAPSHOT</version>
 	<name>Games REST Server</name>
 
@@ -35,11 +35,10 @@
 		<url>http://github.com/web-context/webserver/issues</url>
 	</issueManagement>
 
-
 	<distributionManagement>
 		<repository>
 			<id>bintray</id>
-			<url>https://api.bintray.com/maven/webcontext/webserver</url>
+			<url>https://api.bintray.com/maven/webcontext/apps</url>
 		</repository>
 	</distributionManagement>
 
@@ -278,7 +277,7 @@
 
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.4.1</version>
+				<version>2.5</version>
 				<configuration>
 					<useReleaseProfile>false</useReleaseProfile>
 					<releaseProfiles>release</releaseProfiles>
