@@ -1,0 +1,127 @@
+[
+		{
+			"code" : "X360",
+			"name" : "Microsoft Xbox 360",
+			"manufacturer" : "Flextronics, Wistron, Celestica, Foxconn",
+			"developer" : "Microsoft",
+			"accesskey" : "X",
+			"availabilityDate" : "2005-11-22 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/41God7KwSOL._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/41God7KwSOL._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/41God7KwSOL._SL250_.jpg"
+			}
+
+		},
+		{
+			"code" : "XONE",
+			"name" : "Microsoft Xbox One",
+			"manufacturer" : "Flextronics, Wistron, Celestica, Foxconn",
+			"developer" : "Microsoft",
+			"accesskey" : "O",
+			"availabilityDate" : "2014-03-28 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/61WMo899E5L._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/61WMo899E5L._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/61WMo899E5L._SL250_.jpg"
+			}
+
+		},
+		{
+			"code" : "PS3",
+			"name" : "Sony PlayStation 3",
+			"manufacturer" : "Sony",
+			"developer" : "SCEI",
+			"accesskey" : "3",
+			"availabilityDate" : "2007-03-23 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/81z%2BeF07ClL._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/81z%2BeF07ClL._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/81z%2BeF07ClL._SL250_.jpg"
+			}
+
+		},
+		{
+			"code" : "PS4",
+			"name" : "Sony PlayStation 4",
+			"manufacturer" : "Sony, Foxconn",
+			"developer" : "Sony Computer Entertainment",
+			"accesskey" : "4",
+			"availabilityDate" : "2014-02-22 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/61aeYFqV3IL._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/61aeYFqV3IL._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/61aeYFqV3IL._SL250_.jpg"
+			}
+
+		},
+		{
+			"code" : "WiiU",
+			"name" : "Nintendo Wii U",
+			"manufacturer" : "Nintendo, Foxconn, Mitsumi",
+			"developer" : "Nintendo IRD, NTD",
+			"accesskey" : "U",
+			"availabilityDate" : "2012-11-30 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/61uEf%2B%2BcUxL._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/61uEf%2B%2BcUxL._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/61uEf%2B%2BcUxL._SL250_.jpg"
+			}
+
+		},
+		{
+			"code" : "Wii",
+			"name" : "Nintendo Wii",
+			"manufacturer" : "Foxconn",
+			"developer" : "Nintendo",
+			"accesskey" : "W",
+			"availabilityDate" : "2006-12-08 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/41eak-%2B7F-L._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/41eak-%2B7F-L._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/41eak-%2B7F-L._SL250_.jpg"
+			}
+
+		},
+		{
+			"code" : "PSVita",
+			"name" : "Sony PlayStation Vita",
+			"manufacturer" : "Sony Computer Entertainment",
+			"developer" : "Sony Computer Entertainment",
+			"accesskey" : "P",
+			"availabilityDate" : "2012-02-22 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/71TER4fbWHL._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/71TER4fbWHL._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/71TER4fbWHL._SL250_.jpg"
+			}
+
+		},
+		{
+			"code" : "3DS",
+			"name" : "Nintendo Dual Screen 3D",
+			"manufacturer" : "Nintendo, Foxconn",
+			"developer" : "Nintendo",
+			"accesskey" : "3",
+			"availabilityDate" : "2011-02-26 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/41dGcJITWkL._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/41dGcJITWkL._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/41dGcJITWkL._SL250_.jpg"
+			}
+		},
+		{
+			"code" : "PSP",
+			"name" : "Sony PlayStation Portable",
+			"manufacturer" : "Sony Computer Entertainment",
+			"developer" : "Sony Computer Entertainment",
+			"accesskey" : "3",
+			"availabilityDate" : "2005-09-01 00:00:00",
+			"pictures" : {
+				"big" : "http://ecx.images-amazon.com/images/I/41XIEugi89L._SL1000_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/41XIEugi89L._SL500_.jpg",
+				"small" : "http://ecx.images-amazon.com/images/I/41XIEugi89L._SL250_.jpg"
+			}
+
+		}
+]

@@ -1,0 +1,61 @@
+[
+		{
+			"title" : "Watch Dogs",
+			"header" : {
+				"en" : "All it takes is the swipe of a finger. We connect with friends. We buy the latest gadgets and gear. We find out what's happening in the world. But with that same simple swipe, we cast an increasingly expansive shadow. With each connection, we leave a digital trail that tracks our every move and milestone, our every like and dislike. And it\u2019s not just people. Today, all major cities are networked. Urban infrastructures are monitored and controlled by complex operating systems.",
+				"fr" : "Watch Dogs est un jeu d'action à la troisième personne sur Xbox 360. Dans un univers moderne et ouvert o\u00f9 tout est connect\u00e9 \u00e0 un syst\u00e8me de contr\u00f4le central appartenant \u00e0 des soci\u00e9t\u00e9s priv\u00e9es, le joueur incarne un groupe de hackeurs et d'assassins capables de manipuler et de pirater les syst\u00e8mes \u00e9lectroniques."
+			},
+			"content" : {
+				"en" : "All it takes is the swipe of a finger. We connect with friends. We buy the latest gadgets and gear. We find out what's happening in the world. But with that same simple swipe, we cast an increasingly expansive shadow. With each connection, we leave a digital trail that tracks our every move and milestone, our every like and dislike. And it\u2019s not just people. Today, all major cities are networked. Urban infrastructures are monitored and controlled by complex operating systems.",
+				"fr" : "Watch Dogs est un jeu d'action à la troisième personne sur Xbox 360. Dans un univers moderne et ouvert o\u00f9 tout est connect\u00e9 \u00e0 un syst\u00e8me de contr\u00f4le central appartenant \u00e0 des soci\u00e9t\u00e9s priv\u00e9es, le joueur incarne un groupe de hackeurs et d'assassins capables de manipuler et de pirater les syst\u00e8mes \u00e9lectroniques."
+			},
+			"cover" : {
+				"big" : "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL240_.jpg",
+				"full" : "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL1500_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL120_.jpg",
+				"mini" : "http://ecx.images-amazon.com/images/I/91kXsI0XkFL._SL80_.jpg"
+			},
+			"developer" : "Ubisoft Montreal",
+			"editor" : "Ubisoft",
+			"id" : "000001",
+			"platform" : [ "PS4", "PS3", "XONE", "X360", "PC", "WiiU" ],
+			"publicationDate" : "2014-05-27 00:00:00",
+			"rate" : {
+				"feeling" : 18,
+				"gfx" : 18,
+				"music" : 16,
+				"sound" : 15
+			},
+			"rated" : "+18",
+			"tags" : [ "gtalike", "adventure", "action", "openworld" ]
+		},
+		{
+			"title" : "Tomb Raider",
+			"header" : {
+				"en" : "Come, young adventurer. Or, if you remember the original Tomb Raider games: come, adventurer. Down the narrow passage, through the great stone doorway, into the torchlit chamber. Tread with reverence, for this is the final resting place of gaming's fallen heroes.",
+				"fr" : "Tomb Raider est un jeu d'action-aventure sur Xbox 360. On y incarne la jeune Lara, âgée de 21 ans, qui va devoir survivre sur une île à la suite d'un naufrage. Pour ce faire, elle devra se nourrir, chasser mais aussi faire attention aux menaces qui planent sur elle."
+			},
+			"content" : {
+				"en" : "The game is set on a mysterious island, populated by mysterious inhabitants and peppered with mysterious caves, mysterious tombs, mysterious artefacts and mysterious crates. Lara finds herself shipwrecked, without much more than a Kendal mint cake and a load of mutilated corpses for company.<br/>The first hour of play is pretty depressing. It's also embarrassing, unless you have thick walls or neighbours who will regard the noise as adding ambience to the violent pornographic film they're making. When Lara's not screaming, shrieking, panting or squealing, she's busy getting chased, groped and tied up. When she dies, it's with the kind of orgasmic groan that would make Ben Dover demand another take that's less over-the-top.",
+				"fr" : "La licence Tomb Raider n'en est pas à son premier reboot mais les équipes de Crystal Dynamics ont mis cette fois-ci les petits plats dans les grands pour nous faire vivre les premiers pas de Lara Croft en tant qu'aventurière des temps modernes. Ce nouveau départ nous permet donc de découvrir une Lara plus jeune, plus humaine mais aussi moins expérimentée qu'à l'accoutumée. Bref, ce Tomb Raider ambitionne tout simplement de réécrire l'histoire, de poser les jalons d'une nouvelle légende. Les fans purs et durs de la série poussent déjà des cris d'orfraie en imaginant que leur icône a été maltraitée ? Il faut leur donner raison au moins sur un point : la petite Lara va souffrir le martyre tout au long de cette aventure ! On pourrait aussi leur répondre que ce nouvel opus constitue bel et bien une petite révolution en matière de gameplay mais que le joueur n'en sort pas perdant. La licence prend ici un tournant plus spectaculaire sans pour autant trahir l'ADN de la série. Vous êtes encore sceptique ? Ces quelques lignes devraient vous convaincre que ce nouveau Tomb Raider est pourtant un vrai petit chef-d'œuvre."
+			},
+			"cover" : {
+				"big" : "http://ecx.images-amazon.com/images/I/91d3g549m7L._SL240_.jpg",
+				"full" : "http://ecx.images-amazon.com/images/I/91d3g549m7L._SL1500_.jpg",
+				"medium" : "http://ecx.images-amazon.com/images/I/91d3g549m7L._SL120_.jpg",
+				"mini" : "http://ecx.images-amazon.com/images/I/91d3g549m7L._SL80_.jpg"
+			},
+			"developer" : "Crystal Dynamics",
+			"editor" : "Square Enix",
+			"id" : "000002",
+			"platform" : [ "PS4", "PS3", "XONE", "X360", "PC", "WiiU" ],
+			"publicationDate" : "2013-03-05 00:00:00",
+			"rate" : {
+				"feeling" : 18,
+				"gfx" : 18,
+				"music" : 16,
+				"sound" : 15
+			},
+			"rated" : "+18",
+			"tags" : [ "adventure", "action" ]
+		} ]

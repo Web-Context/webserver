@@ -1,0 +1,8 @@
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="hostname">127.0.0.1</entry>
+	<entry key="port">27017</entry>
+	<entry key="database">restgames</entry>
+<!-- 	<entry key="username">fdelorme</entry> -->
+<!-- 	<entry key="password">mathys_nathy_1411</entry> -->
+</properties>
