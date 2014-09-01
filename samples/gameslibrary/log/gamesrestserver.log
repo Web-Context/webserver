@@ -1,0 +1,294 @@
+2014-09-02 00:13:40 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:13:40 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.GameRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Game.
+2014-09-02 00:13:40 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.PlatformRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Platform.
+2014-09-02 00:13:40 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - TestServer has just been initialized on port 8888, with ThreadPool of [core: 10, max: 20, queue: 50, heartBeat: 1000]
+2014-09-02 00:13:44 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: Read operation to server /127.0.0.1:27017 failed on database restgames
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:253)
+	at com.mongodb.DBTCPConnector.call(DBTCPConnector.java:216)
+	at com.mongodb.DBApiLayer$MyCollection.__find(DBApiLayer.java:288)
+	at com.mongodb.DB.command(DB.java:262)
+	at com.mongodb.DB.command(DB.java:244)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:985)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:943)
+	at com.mongodb.DBCursor.count(DBCursor.java:586)
+	at com.webcontext.framework.appserver.repository.MongoDbRepository.count(MongoDbRepository.java:103)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.count(DataManager.java:216)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.countEntities(DataManager.java:234)
+	at com.webcontext.apps.grs.application.services.ServerBootstrap.initialized(ServerBootstrap.java:43)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.boostrapServer(GenericServer.java:356)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.start(GenericServer.java:318)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:48)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.call(DBPort.java:92)
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:244)
+	... 14 more
+2014-09-02 00:13:44 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - Ask server to Stop
+2014-09-02 00:13:44 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-02 00:14:31 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:14:32 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.PlatformRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Platform.
+2014-09-02 00:14:32 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.GameRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Game.
+2014-09-02 00:14:32 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - TestServer has just been initialized on port 8888, with ThreadPool of [core: 10, max: 20, queue: 50, heartBeat: 1000]
+2014-09-02 00:14:35 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: Read operation to server /127.0.0.1:27017 failed on database restgames
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:253)
+	at com.mongodb.DBTCPConnector.call(DBTCPConnector.java:216)
+	at com.mongodb.DBApiLayer$MyCollection.__find(DBApiLayer.java:288)
+	at com.mongodb.DB.command(DB.java:262)
+	at com.mongodb.DB.command(DB.java:244)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:985)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:943)
+	at com.mongodb.DBCursor.count(DBCursor.java:586)
+	at com.webcontext.framework.appserver.repository.MongoDbRepository.count(MongoDbRepository.java:103)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.count(DataManager.java:216)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.countEntities(DataManager.java:234)
+	at com.webcontext.apps.grs.application.services.ServerBootstrap.initialized(ServerBootstrap.java:43)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.boostrapServer(GenericServer.java:356)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.start(GenericServer.java:318)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:48)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.call(DBPort.java:92)
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:244)
+	... 14 more
+2014-09-02 00:14:35 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - Ask server to Stop
+2014-09-02 00:14:35 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-02 00:15:12 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:15:13 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:15:16 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-02 00:15:16 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:15:16 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.GameRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Game.
+2014-09-02 00:15:16 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.PlatformRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Platform.
+2014-09-02 00:15:16 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - TestServer has just been initialized on port 8888, with ThreadPool of [core: 10, max: 20, queue: 50, heartBeat: 1000]
+2014-09-02 00:15:20 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: Read operation to server /127.0.0.1:27017 failed on database restgames
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:253)
+	at com.mongodb.DBTCPConnector.call(DBTCPConnector.java:216)
+	at com.mongodb.DBApiLayer$MyCollection.__find(DBApiLayer.java:288)
+	at com.mongodb.DB.command(DB.java:262)
+	at com.mongodb.DB.command(DB.java:244)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:985)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:943)
+	at com.mongodb.DBCursor.count(DBCursor.java:586)
+	at com.webcontext.framework.appserver.repository.MongoDbRepository.count(MongoDbRepository.java:103)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.count(DataManager.java:216)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.countEntities(DataManager.java:234)
+	at com.webcontext.apps.grs.application.services.ServerBootstrap.initialized(ServerBootstrap.java:43)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.boostrapServer(GenericServer.java:356)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.start(GenericServer.java:318)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:48)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.call(DBPort.java:92)
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:244)
+	... 14 more
+2014-09-02 00:15:20 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - Ask server to Stop
+2014-09-02 00:15:20 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-02 00:15:47 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:15:48 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:15:49 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-02 00:15:49 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:15:49 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.PlatformRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Platform.
+2014-09-02 00:15:49 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.GameRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Game.
+2014-09-02 00:15:49 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - TestServer has just been initialized on port 8888, with ThreadPool of [core: 10, max: 20, queue: 50, heartBeat: 1000]
+2014-09-02 00:15:52 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: Read operation to server /127.0.0.1:27017 failed on database restgames
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:253)
+	at com.mongodb.DBTCPConnector.call(DBTCPConnector.java:216)
+	at com.mongodb.DBApiLayer$MyCollection.__find(DBApiLayer.java:288)
+	at com.mongodb.DB.command(DB.java:262)
+	at com.mongodb.DB.command(DB.java:244)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:985)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:943)
+	at com.mongodb.DBCursor.count(DBCursor.java:586)
+	at com.webcontext.framework.appserver.repository.MongoDbRepository.count(MongoDbRepository.java:103)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.count(DataManager.java:216)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.countEntities(DataManager.java:234)
+	at com.webcontext.apps.grs.application.services.ServerBootstrap.initialized(ServerBootstrap.java:43)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.boostrapServer(GenericServer.java:356)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.start(GenericServer.java:318)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:48)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.call(DBPort.java:92)
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:244)
+	... 14 more
+2014-09-02 00:15:52 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - Ask server to Stop
+2014-09-02 00:15:53 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-02 00:17:19 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:17:20 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:17:21 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-02 00:17:21 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:17:21 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.GameRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Game.
+2014-09-02 00:17:21 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.PlatformRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Platform.
+2014-09-02 00:17:21 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - TestServer has just been initialized on port 8888, with ThreadPool of [core: 10, max: 20, queue: 50, heartBeat: 1000]
+2014-09-02 00:18:19 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: Read operation to server /127.0.0.1:27017 failed on database restgames
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:253)
+	at com.mongodb.DBTCPConnector.call(DBTCPConnector.java:216)
+	at com.mongodb.DBApiLayer$MyCollection.__find(DBApiLayer.java:288)
+	at com.mongodb.DB.command(DB.java:262)
+	at com.mongodb.DB.command(DB.java:244)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:985)
+	at com.mongodb.DBCollection.getCount(DBCollection.java:943)
+	at com.mongodb.DBCursor.count(DBCursor.java:586)
+	at com.webcontext.framework.appserver.repository.MongoDbRepository.count(MongoDbRepository.java:103)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.count(DataManager.java:216)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.countEntities(DataManager.java:234)
+	at com.webcontext.apps.grs.application.services.ServerBootstrap.initialized(ServerBootstrap.java:43)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.boostrapServer(GenericServer.java:356)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.start(GenericServer.java:318)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:48)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.call(DBPort.java:92)
+	at com.mongodb.DBTCPConnector.innerCall(DBTCPConnector.java:244)
+	... 14 more
+2014-09-02 00:18:25 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - Ask server to Stop
+2014-09-02 00:18:25 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-02 00:20:01 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:20:03 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:20:12 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-02 00:20:49 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:22:07 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:22:18 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:22:43 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:22:44 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:22:45 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-02 00:22:45 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:22:46 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.GameRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Game.
+2014-09-02 00:22:46 INFO  com.webcontext.framework.appserver.services.persistence.DataManager - Repository class com.webcontext.apps.grs.application.repositories.PlatformRepository autoregistered for entity class com.webcontext.apps.grs.application.models.Platform.
+2014-09-02 00:22:46 INFO  com.webcontext.framework.appserver.services.web.server.GenericServer - TestServer has just been initialized on port 8888, with ThreadPool of [core: 10, max: 20, queue: 50, heartBeat: 1000]
+2014-09-02 00:24:39 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:24:40 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:24:41 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+java.io.IOException: Could not start process: failed errno:10048 Une seule utilisation de chaque adresse de socket (protocole/adresse réseau/port) est habituellement autorisée. for socket: 0.0.0.0:21017
+2014-09-02T00:24:40.521+0200 [FileAllocator] allocating new datafile C:\Use
+	at de.flapdoodle.embed.mongo.AbstractMongoProcess.onAfterProcessStart(AbstractMongoProcess.java:75)
+	at de.flapdoodle.embed.process.runtime.AbstractProcess.<init>(AbstractProcess.java:110)
+	at de.flapdoodle.embed.mongo.AbstractMongoProcess.<init>(AbstractMongoProcess.java:52)
+	at de.flapdoodle.embed.mongo.MongodProcess.<init>(MongodProcess.java:50)
+	at de.flapdoodle.embed.mongo.MongodExecutable.start(MongodExecutable.java:44)
+	at de.flapdoodle.embed.mongo.MongodExecutable.start(MongodExecutable.java:34)
+	at de.flapdoodle.embed.process.runtime.Executable.start(Executable.java:99)
+	at com.webcontext.framework.appserver.services.mongodb.MongoDBServer.start(MongoDBServer.java:231)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:40)
+2014-09-02 00:24:41 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-02 00:24:48 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:24:49 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:24:50 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-02 00:24:50 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:24:53 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: IOException authenticating the connection
+	at com.mongodb.DBPort$NativeAuthenticator.authenticate(DBPort.java:552)
+	at com.mongodb.DBPort.authenticate(DBPort.java:322)
+	at com.mongodb.DBTCPConnector.authenticate(DBTCPConnector.java:635)
+	at com.mongodb.DBApiLayer.doAuthenticate(DBApiLayer.java:180)
+	at com.mongodb.DB.authenticateCommandHelper(DB.java:631)
+	at com.mongodb.DB.authenticate(DB.java:589)
+	at com.webcontext.framework.appserver.repository.MongoDBConnection.<init>(MongoDBConnection.java:72)
+	at com.webcontext.framework.appserver.repository.MongoDBConnection.<init>(MongoDBConnection.java:51)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.<init>(DataManager.java:50)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.getInstance(DataManager.java:60)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.initServer(GenericServer.java:287)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.<init>(GenericServer.java:255)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:45)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.go(DBPort.java:106)
+	at com.mongodb.DBPort.findOne(DBPort.java:162)
+	at com.mongodb.DBPort.runCommand(DBPort.java:170)
+	at com.mongodb.DBPort$NativeAuthenticator.authenticate(DBPort.java:544)
+	... 12 more
+2014-09-02 00:24:53 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-02 00:27:36 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-02 00:27:36 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-02 00:27:37 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-02 00:27:38 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-02 00:27:40 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: IOException authenticating the connection
+	at com.mongodb.DBPort$NativeAuthenticator.authenticate(DBPort.java:552)
+	at com.mongodb.DBPort.authenticate(DBPort.java:322)
+	at com.mongodb.DBTCPConnector.authenticate(DBTCPConnector.java:635)
+	at com.mongodb.DBApiLayer.doAuthenticate(DBApiLayer.java:180)
+	at com.mongodb.DB.authenticateCommandHelper(DB.java:631)
+	at com.mongodb.DB.authenticate(DB.java:589)
+	at com.webcontext.framework.appserver.repository.MongoDBConnection.<init>(MongoDBConnection.java:72)
+	at com.webcontext.framework.appserver.repository.MongoDBConnection.<init>(MongoDBConnection.java:51)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.<init>(DataManager.java:50)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.getInstance(DataManager.java:60)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.initServer(GenericServer.java:287)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.<init>(GenericServer.java:255)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:45)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.go(DBPort.java:106)
+	at com.mongodb.DBPort.findOne(DBPort.java:162)
+	at com.mongodb.DBPort.runCommand(DBPort.java:170)
+	at com.mongodb.DBPort$NativeAuthenticator.authenticate(DBPort.java:544)
+	... 12 more
+2014-09-02 00:27:40 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer

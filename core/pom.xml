@@ -3,7 +3,12 @@
 	<groupId>com.webcontext.apps</groupId>
 	<artifactId>webserver.core</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>Games REST Server</name>
+	<name>WebServer Core</name>
+	<packaging>jar</packaging>
+	<description>This is an embedded  restServer connected to a MongoDB database to manage VideoGames files.</description>
+
+	<inceptionYear>2014</inceptionYear>
+
 
 	<properties>
 		<jdk.version>1.7</jdk.version>
@@ -15,10 +20,6 @@
 		<name>web-context</name>
 		<url>http://www.web-context.com/</url>
 	</organization>
-
-	<description>This is an embedded  restServer connected to a MongoDB database to manage VideoGames files.</description>
-
-	<inceptionYear>2014</inceptionYear>
 
 	<scm>
 		<url>http://github.com/web-context/webserver</url>
@@ -110,7 +111,7 @@
 
 
 	<build>
-		<finalName>GameRestServer</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
 			<!-- Compile project -->
 			<plugin>
@@ -191,48 +192,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Package the distribution -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<finalName>${project.artifactId}-${project.version}-full</finalName>
-					<descriptors>
-						<descriptor>src/main/assembly/assembly.xml</descriptor>
-					</descriptors>
-					<filters>
-						<filter>src/main/assembly/filter.properties</filter>
-					</filters>
-					<appendAssemblyId>true</appendAssemblyId>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-				<executions>
-					<execution>
-						<id>${project.artifactId}-${project.version}-full</id>
-						<phase>package</phase>
-
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<finalName>${project.artifactId}-${project.version}-full</finalName>
-							<archive>
-								<manifest>
-									<addClasspath>true</addClasspath>
-									<classpathPrefix>lib/</classpathPrefix>
-									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-									<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-									<mainClass>${mainClass}</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5</version>
@@ -245,8 +204,6 @@
 
 		</plugins>
 	</build>
-
-
 
 	<!-- Reporting -->
 	<reporting>
@@ -306,46 +263,4 @@
 
 		</plugins>
 	</reporting>
-
-	<profiles>
-		<profile>
-			<!-- Prepare the angular apps to distribution -->
-			<id>grunt</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>pl.allegro</groupId>
-						<artifactId>grunt-maven-plugin</artifactId>
-						<version>1.4.1</version>
-
-						<configuration>
-							<jsSourceDirectory>scripts</jsSourceDirectory>
-							<gruntOptions>
-								<gruntOption>--verbose</gruntOption>
-							</gruntOptions>
-							<npmEnvironmentVar>
-								<PHANTOMJS_CDNURL>http://cnpmjs.org/downloads</PHANTOMJS_CDNURL>
-							</npmEnvironmentVar>
-							<filteredResources>
-								<filteredResource>maven-properties.json</filteredResource>
-							</filteredResources>
-						</configuration>
-
-						<executions>
-							<execution>
-								<goals>
-									<goal>create-resources</goal>
-									<goal>npm</goal>
-									<goal>bower</goal>
-									<goal>grunt</goal>
-								</goals>
-							</execution>
-						</executions>
-
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 </project>

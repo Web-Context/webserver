@@ -2,10 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.webcontext.apps</groupId>
 	<artifactId>webserver.gamelibrary</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
-	<name>Games REST Server</name>
+	<name>GamesLibrary WebServer App</name>
 	<description>This is an embedded  restServer connected to a MongoDB database to manage VideoGames files.</description>
 	<inceptionYear>2014</inceptionYear>
 
@@ -81,14 +79,13 @@
 			<version>1.46.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.webcontext.apps</groupId>
+			<artifactId>webserver.core</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
 
 		<!-- MongoDB Java driver -->
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>2.11.4</version>
-			<scope>compile</scope>
-		</dependency>
 		<!-- Java introspection/Reflection library -->
 		<dependency>
 			<groupId>org.reflections</groupId>
@@ -109,15 +106,11 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.webcontext.apps</groupId>
-			<artifactId>webserver.core</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
-		<finalName>GameRestServer</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
 			<!-- Compile project -->
 			<plugin>

@@ -126,7 +126,7 @@ public class MongoDBServer {
 			MongodStarter starter = MongodStarter.getInstance(runtimeConfig);
 			mongodExecutable = starter.prepare(mongodConfig);
 			LOGGER.info(String.format("MongoDB configuration:",
-					mongodConfig.toString()));
+					mongodConfig));
 
 		} catch (UnknownHostException e) {
 			LOGGER.error(

@@ -3,7 +3,7 @@
 	<groupId>com.webcontext.apps</groupId>
 	<artifactId>webserver</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>Games REST Server</name>
+	<name>WebServer distribution</name>
 	<packaging>pom</packaging>
 
 	<organization>
