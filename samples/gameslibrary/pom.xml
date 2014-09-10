@@ -222,11 +222,11 @@
 				<configuration>
 					<finalName>${project.artifactId}-${project.version}-full</finalName>
 					<descriptors>
-						<descriptor>src/main/assembly/assembly.xml</descriptor>
+						<descriptor>./src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
-					<filters>
-						<filter>src/main/assembly/filter.properties</filter>
-					</filters>
+					<!-- filters>
+						<filter>./src/main/assembly/filter.properties</filter>
+					</filters -->
 					<appendAssemblyId>true</appendAssemblyId>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>

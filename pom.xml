@@ -21,4 +21,18 @@
 	</modules>
 
 
+	<scm>
+		<connection>scm:git:git@bitbucket.org:McGivrer/webserver.git</connection>
+		<url>http://bitbucket.org/McGivrer/webserver/</url>
+		<developerConnection>scm:git:git@bitbucket.org:McGivrer/webserver.git</developerConnection>
+		<tag>snapshot</tag>
+	</scm>
+	<issueManagement>
+		<system>bitbucket</system>
+		<url>http://bitbucket.org/McGivrer/webserver/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>travis-ci.org</system>
+		<url>https://travis-ci.org/Web-Context/webserver</url>
+	</ciManagement>
 </project>
