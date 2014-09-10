@@ -292,3 +292,39 @@ Caused by: java.net.ConnectException: Connection refused: connect
 	at com.mongodb.DBPort$NativeAuthenticator.authenticate(DBPort.java:544)
 	... 12 more
 2014-09-02 00:27:40 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
+2014-09-05 17:50:25 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - Start MongoDB internal server on port 21017
+2014-09-05 17:50:26 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB configuration:
+2014-09-05 17:50:30 INFO  com.webcontext.framework.appserver.services.mongodb.MongoDBServer - MongoDB deamon :running
+2014-09-05 17:50:30 INFO  com.webcontext.framework.appserver.repository.MongoDBConnection - Load data configuration from /config/data.xml
+2014-09-05 17:50:32 ERROR com.webcontext.apps.grs.application.services.Server - Unable to start the internal Rest HTTP TestServer component.
+com.mongodb.MongoException$Network: IOException authenticating the connection
+	at com.mongodb.DBPort$NativeAuthenticator.authenticate(DBPort.java:552)
+	at com.mongodb.DBPort.authenticate(DBPort.java:322)
+	at com.mongodb.DBTCPConnector.authenticate(DBTCPConnector.java:635)
+	at com.mongodb.DBApiLayer.doAuthenticate(DBApiLayer.java:180)
+	at com.mongodb.DB.authenticateCommandHelper(DB.java:631)
+	at com.mongodb.DB.authenticate(DB.java:589)
+	at com.webcontext.framework.appserver.repository.MongoDBConnection.<init>(MongoDBConnection.java:72)
+	at com.webcontext.framework.appserver.repository.MongoDBConnection.<init>(MongoDBConnection.java:51)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.<init>(DataManager.java:50)
+	at com.webcontext.framework.appserver.services.persistence.DataManager.getInstance(DataManager.java:60)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.initServer(GenericServer.java:287)
+	at com.webcontext.framework.appserver.services.web.server.GenericServer.<init>(GenericServer.java:255)
+	at com.webcontext.apps.grs.application.services.Server.main(Server.java:45)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at com.mongodb.DBPort._open(DBPort.java:223)
+	at com.mongodb.DBPort.go(DBPort.java:125)
+	at com.mongodb.DBPort.go(DBPort.java:106)
+	at com.mongodb.DBPort.findOne(DBPort.java:162)
+	at com.mongodb.DBPort.runCommand(DBPort.java:170)
+	at com.mongodb.DBPort$NativeAuthenticator.authenticate(DBPort.java:544)
+	... 12 more
+2014-09-05 17:50:32 INFO  com.webcontext.apps.grs.application.services.Server - End of processing request in TestServer
