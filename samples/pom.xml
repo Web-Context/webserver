@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>webserver.samples</artifactId>
+	<name>WebServer samples</name>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>com.webcontext.apps</groupId>
+		<artifactId>webserver</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+	</parent>
+
+	<organization>
+		<name>web-context</name>
+		<url>http://www.web-context.com/</url>
+	</organization>
+
+	<description>Here are the samples implementation for webserver core</description>
+
+	<inceptionYear>2014</inceptionYear>
+
+	<modules>
+		<module>gameslibrary</module>
+	</modules>
+
+</project>
