@@ -10,7 +10,7 @@
 	<properties>
 		<jdk.version>1.7</jdk.version>
 		<source.encoding>UTF-8</source.encoding>
-		<mainClass>com.webcontext.apps.grs.application.services.Server</mainClass>
+		<mainClass>com.webcontext.apps.gameslibrary.application.services.GamesLibraryServer</mainClass>
 	</properties>
 
 	<parent>

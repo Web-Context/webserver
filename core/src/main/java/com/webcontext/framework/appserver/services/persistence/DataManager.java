@@ -13,9 +13,10 @@ import org.reflections.Reflections;
 
 import com.webcontext.framework.appserver.model.MDBEntity;
 import com.webcontext.framework.appserver.repository.IMongoDbRepository;
+import com.webcontext.framework.appserver.repository.IRepository;
 import com.webcontext.framework.appserver.repository.MongoDBConnection;
-import com.webcontext.framework.appserver.repository.exception.NullMongoDBConnection;
 import com.webcontext.framework.appserver.repository.exception.RepositoryDoesNotExistsException;
+import com.webcontext.framework.appserver.repository.exception.RepositoryException;
 
 /**
  * Data manager is a MongoDB Repository Service, providing easy access to data.
@@ -36,7 +37,7 @@ public class DataManager {
 	 * Map of MongoDB repositories.
 	 */
 	@SuppressWarnings("rawtypes")
-	private Map<Class<? extends MDBEntity>, IMongoDbRepository> repositories = new HashMap<Class<? extends MDBEntity>, IMongoDbRepository>();
+	private Map<Class<? extends MDBEntity>, IRepository> repositories = new HashMap<Class<? extends MDBEntity>, IRepository>();
 
 	/**
 	 * Database Connection.
@@ -71,11 +72,13 @@ public class DataManager {
 	 * @param repository
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
+	 * @throws RepositoryException
 	 */
 	@SuppressWarnings("rawtypes")
 	public void register(Class<? extends MDBEntity> entity,
 			Class<? extends IMongoDbRepository> repository)
-			throws InstantiationException, IllegalAccessException {
+			throws InstantiationException, IllegalAccessException,
+			RepositoryException {
 		IMongoDbRepository<?> repo = repository.newInstance();
 		repo.setConnection(connection);
 		repositories.put(entity, repo);
@@ -83,9 +86,11 @@ public class DataManager {
 
 	/**
 	 * Auto register classes annotated by <code>@Repository</code>.
+	 * 
+	 * @throws RepositoryException
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void autoRegister() {
+	public void autoRegister() throws RepositoryException {
 		Reflections reflections = new Reflections("com.webcontext.apps");
 		Set<Class<?>> classes = reflections
 				.getTypesAnnotatedWith(Repository.class);
@@ -100,8 +105,8 @@ public class DataManager {
 						entityClass));
 			} catch (InstantiationException e) {
 				LOGGER.error(String.format(
-						"Unable to instantiate Repository %s for entity %s", classe,
-						entityClass), e);
+						"Unable to instantiate Repository %s for entity %s",
+						classe, entityClass), e);
 			} catch (IllegalAccessException e) {
 				LOGGER.error(
 						String.format(
@@ -131,12 +136,12 @@ public class DataManager {
 	public List<MDBEntity> find(Class<? extends MDBEntity> entity,
 			String filter, int offset, int pageSize) {
 
-		IMongoDbRepository<MDBEntity> repository = repositories.get(entity);
+		IRepository<MDBEntity> repository = repositories.get(entity);
 
 		List<MDBEntity> list = null;
 		try {
 			list = repository.find(filter, offset, pageSize);
-		} catch (NullMongoDBConnection e) {
+		} catch (RepositoryException e) {
 			LOGGER.error(
 					"Unalble to retrieve data for " + entity.getCanonicalName(),
 					e);
@@ -156,12 +161,12 @@ public class DataManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<MDBEntity> findById(Class<? extends MDBEntity> entity, String id) {
-		IMongoDbRepository<MDBEntity> repository = repositories.get(entity);
+		IRepository<MDBEntity> repository = repositories.get(entity);
 
 		List<MDBEntity> entities = null;
 		try {
 			entities = repository.find(String.format("{ \"id\":\"%s\"}", id));
-		} catch (NullMongoDBConnection e) {
+		} catch (RepositoryException e) {
 			LOGGER.error(
 					"Unalble to retrieve data for " + entity.getCanonicalName(),
 					e);
@@ -210,11 +215,12 @@ public class DataManager {
 	// @SuppressWarnings("unchecked")
 	public long count(Class<? extends MDBEntity> entity)
 			throws RepositoryDoesNotExistsException {
-		IMongoDbRepository<Class<? extends MDBEntity>> repository = getRepository(entity);
+		@SuppressWarnings("rawtypes")
+		IRepository repository = getRepository(entity);
 		long count = -1;
 		try {
 			count = repository.count();
-		} catch (NullMongoDBConnection e) {
+		} catch (RepositoryException e) {
 			LOGGER.error(
 					"Unalble to retrieve data for " + entity.getCanonicalName(),
 					e);
@@ -242,11 +248,10 @@ public class DataManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public void save(MDBEntity entity) {
-		IMongoDbRepository<MDBEntity> repository = repositories.get(entity
-				.getClass());
+		IRepository<MDBEntity> repository = repositories.get(entity.getClass());
 		try {
 			repository.save(entity);
-		} catch (NullMongoDBConnection e) {
+		} catch (RepositoryException e) {
 			LOGGER.error("Unalble to retrieve data for "
 					+ entity.getClass().getCanonicalName(), e);
 		}
@@ -261,11 +266,11 @@ public class DataManager {
 	 * @return the IMongoDBRepository corresponding to entityClass .
 	 * @throws RepositoryDoesNotExistsException
 	 */
-	@SuppressWarnings("unchecked")
-	public static IMongoDbRepository<Class<? extends MDBEntity>> getRepository(
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static IRepository getRepository(
 			Class<? extends MDBEntity> entityClass)
 			throws RepositoryDoesNotExistsException {
-		IMongoDbRepository<Class<? extends MDBEntity>> repository;
+		IRepository<Class<? extends MDBEntity>> repository;
 		if (getInstance().repositories.containsKey(entityClass)) {
 			repository = getInstance().repositories.get(entityClass);
 			return repository;

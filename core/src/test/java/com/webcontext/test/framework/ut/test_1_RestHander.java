@@ -3,16 +3,23 @@
  */
 package com.webcontext.test.framework.ut;
 
+import static com.jayway.restassured.RestAssured.get;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import com.jayway.restassured.RestAssured;
 
 /**
  * @author 212391884
  * 
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class test_1_RestHander {
 
 	private TestServer ts;
@@ -43,8 +50,8 @@ public class test_1_RestHander {
 	 * .
 	 */
 	@Test
-	public void testStatistics() {
-		fail("Not yet implemented");
+	public void test_1_Statistics() {
+		assertTrue("Statistics are not available",get("http://localhost:8787/rest/admin?command=info").statusCode()==200);
 	}
 
 	/**

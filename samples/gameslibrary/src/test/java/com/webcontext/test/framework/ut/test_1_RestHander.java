@@ -18,7 +18,7 @@ public class test_1_RestHander {
 	private TestServer ts;
 
 	/**
-	 * Start the Server on port 8787 and tyhe mongoDB server on 27117.
+	 * Start the GamesLibraryServer on port 8787 and tyhe mongoDB server on 27117.
 	 * 
 	 * @throws java.lang.Exception
 	 */

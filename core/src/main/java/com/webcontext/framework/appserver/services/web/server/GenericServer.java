@@ -18,6 +18,7 @@ import org.reflections.Reflections;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import com.webcontext.framework.appserver.repository.exception.RepositoryException;
 import com.webcontext.framework.appserver.services.persistence.DataManager;
 import com.webcontext.framework.appserver.services.persistence.Repository;
 import com.webcontext.framework.appserver.services.web.response.handler.ContextHandler;
@@ -247,11 +248,9 @@ public class GenericServer {
 		this.port = argsParser.getIntArg(
 				ArgsParser.ArgType.SERVER_PORT.getKeyword(),
 				ArgsParser.ArgType.SERVER_PORT.getDefaultValue());
-		this.stopkey = argsParser
-				.getStringArg(ArgsParser.ArgType.SERVER_STOPKEY
-						.getKeyword(),
-						ArgsParser.ArgType.SERVER_STOPKEY
-								.getDefaultValue());
+		this.stopkey = argsParser.getStringArg(
+				ArgsParser.ArgType.SERVER_STOPKEY.getKeyword(),
+				ArgsParser.ArgType.SERVER_STOPKEY.getDefaultValue());
 		initServer(this.port);
 	}
 
@@ -266,37 +265,39 @@ public class GenericServer {
 		// Create the server
 		server = HttpServer.create(new InetSocketAddress(port), 0);
 
-		int corePoolSize =argsParser.getIntArg(ArgsParser.ArgType.CORE_POOL_SIZE.getKeyword(), ArgsParser.ArgType.CORE_POOL_SIZE.getDefaultValue()),
-			maxCorePoolSize = argsParser.getIntArg(ArgsParser.ArgType.MAX_CORE_POOL_SIZE.getKeyword(), ArgsParser.ArgType.MAX_CORE_POOL_SIZE.getDefaultValue()),
-			heartBeatFreq = argsParser.getIntArg(ArgsParser.ArgType.HEARBEAT_FREQUENCY.getKeyword(), ArgsParser.ArgType.HEARBEAT_FREQUENCY.getDefaultValue()),
-			poolQueueSize = argsParser.getIntArg(ArgsParser.ArgType.POOL_QUEUE_SIZE.getKeyword(), ArgsParser.ArgType.POOL_QUEUE_SIZE.getDefaultValue());
-		
+		int corePoolSize = argsParser.getIntArg(
+				ArgsParser.ArgType.CORE_POOL_SIZE.getKeyword(),
+				ArgsParser.ArgType.CORE_POOL_SIZE.getDefaultValue()), 
+			maxCorePoolSize = argsParser.getIntArg(
+				ArgsParser.ArgType.MAX_CORE_POOL_SIZE.getKeyword(),
+				ArgsParser.ArgType.MAX_CORE_POOL_SIZE.getDefaultValue()), 
+			heartBeatFreq = argsParser.getIntArg(
+				ArgsParser.ArgType.HEARBEAT_FREQUENCY.getKeyword(),
+				ArgsParser.ArgType.HEARBEAT_FREQUENCY.getDefaultValue()), 
+			poolQueueSize = argsParser.getIntArg(
+				ArgsParser.ArgType.POOL_QUEUE_SIZE.getKeyword(),
+				ArgsParser.ArgType.POOL_QUEUE_SIZE.getDefaultValue());
+
 		// initialize its ThreadPool to serve RestHandler
-		server.setExecutor(
-			new ThreadPoolExecutor(
-				corePoolSize,
-				maxCorePoolSize,
-				heartBeatFreq,
-				TimeUnit.MILLISECONDS,
-				new ArrayBlockingQueue<Runnable>(poolQueueSize)
-			)
-		);
-		// Add the internal Administrative Handler.
-
-		// initialize repositories.
-		DataManager.getInstance().autoRegister();
-
+		server.setExecutor(new ThreadPoolExecutor(corePoolSize,
+				maxCorePoolSize, heartBeatFreq, TimeUnit.MILLISECONDS,
+				new ArrayBlockingQueue<Runnable>(poolQueueSize)));
 		try {
+			// initialize repositories.
+			DataManager.getInstance().autoRegister();
+			// Add Specific Handler annotated with @ContextHandler.
 			registerHandlers(this);
 		} catch (InstantiationException | IllegalAccessException
 				| NoSuchMethodException | SecurityException
-				| IllegalArgumentException | InvocationTargetException e) {
+				| IllegalArgumentException | InvocationTargetException
+				| RepositoryException e) {
 			LOGGER.error("Unable to initialize ContextHandler", e);
 		}
 
 		LOGGER.info(String
 				.format("TestServer has just been initialized on port %d, with ThreadPool of [core: %d, max: %d, queue: %d, heartBeat: %d]",
-						port, corePoolSize, maxCorePoolSize,poolQueueSize, heartBeatFreq));
+						port, corePoolSize, maxCorePoolSize, poolQueueSize,
+						heartBeatFreq));
 	}
 
 	/**
@@ -321,13 +322,15 @@ public class GenericServer {
 			LOGGER.info(String.format("TestServer '%s' on port %d started",
 					getServerName(), port));
 
-			int heartBeatFreq = argsParser.getIntArg(ArgsParser.ArgType.HEARBEAT_FREQUENCY.getKeyword(), ArgsParser.ArgType.HEARBEAT_FREQUENCY.getDefaultValue());
+			int heartBeatFreq = argsParser.getIntArg(
+					ArgsParser.ArgType.HEARBEAT_FREQUENCY.getKeyword(),
+					ArgsParser.ArgType.HEARBEAT_FREQUENCY.getDefaultValue());
 
 			while (heartBeat != -1) {
 				Thread.sleep(heartBeatFreq);
 				/*
-				 * LOGGER.debug(String.format("Rest TestServer heart beat is alive",
-				 * heartBeat));
+				 * LOGGER.debug(String.format("Rest TestServer heart beat is alive"
+				 * , heartBeat));
 				 */
 				if (heartBeat != -1) {
 					heartBeat = 0;
@@ -391,8 +394,8 @@ public class GenericServer {
 	}
 
 	/**
-	 * Retrieve the TestServer name from different ways, according to the post from
-	 * "Thomas W" on stackoverflow.com .
+	 * Retrieve the TestServer name from different ways, according to the post
+	 * from "Thomas W" on stackoverflow.com .
 	 * 
 	 * @see http://stackoverflow.com/questions/7348711/20793241#20793241
 	 * 

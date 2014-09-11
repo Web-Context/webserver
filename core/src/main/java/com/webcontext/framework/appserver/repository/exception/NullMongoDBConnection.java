@@ -10,7 +10,7 @@ package com.webcontext.framework.appserver.repository.exception;
  * @author Frédéric Delorme<frederic.delorme@web-context.com>
  * 
  */
-public class NullMongoDBConnection extends Exception {
+public class NullMongoDBConnection extends RepositoryException {
 
 	/**
 	 * 
