@@ -1,4 +1,4 @@
-![WebServer Logo](https://raw.githubusercontent.com/Web-Context/webserver/master/src/main/webapp/app/images/web-context-webserver.png)
+![WebServer Logo](https://raw.githubusercontent.com/Web-Context/webserver/master/samples/gameslibrary/src/main/webapp/app/images/web-context-webserver.png)
 
 # WebServer
 
