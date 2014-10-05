@@ -5,6 +5,6 @@
 	<entry key="uri">/onca/xml</entry>
 	<entry key="request_method">GET</entry>
 	<entry key="endpoint">webservice.amazon.com</entry>
-	<entry key="awsAccessKey">AKIAIEMXK6RAHRA3VXDQ</entry>
-	<entry key="awsSecretKey">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</entry>	
+	<entry key="awsAccessKey">XXXXXXXYYYYYY</entry>
+	<entry key="awsSecretKey">XXXXXXXXYYYYY</entry>	
 </properties>
