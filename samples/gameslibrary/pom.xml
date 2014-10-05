@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>gameslibrary</artifactId>
@@ -16,7 +15,7 @@
 	<parent>
 		<groupId>com.webcontext.apps</groupId>
 		<artifactId>webserver.samples</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 
 	<organization>
@@ -28,7 +27,7 @@
 		<url>http://github.com/web-context/webserver</url>
 		<connection>scm:git:git@github.com:web-context/webserver.git</connection>
 		<developerConnection>scm:git:git@bitbucket.org:McGivrer/webserver.git</developerConnection>
-		<tag>${project.artifactId}-${project.version}</tag>
+		<tag>webserver-0.0.2</tag>
 	</scm>
 
 	<issueManagement>
@@ -82,7 +81,7 @@
 		<dependency>
 			<groupId>com.webcontext.apps</groupId>
 			<artifactId>webserver.core</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.0.2</version>
 		</dependency>
 
 		<!-- MongoDB Java driver -->

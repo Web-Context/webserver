@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.webcontext.apps</groupId>
 	<artifactId>webserver</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 
 	<packaging>pom</packaging>
 
@@ -33,7 +33,7 @@
 		<connection>scm:git:git@bitbucket.org:McGivrer/webserver.git</connection>
 		<url>http://bitbucket.org/McGivrer/webserver/</url>
 		<developerConnection>scm:git:git@bitbucket.org:McGivrer/webserver.git</developerConnection>
-		<tag>snapshot</tag>
+		<tag>webserver-0.0.2</tag>
 	</scm>
 
 	<issueManagement>
