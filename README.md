@@ -64,20 +64,16 @@ To start the server you can create a main function (if needed) instantiating the
 ```java
 public static void main(String[] args) {
 	try {
-
 		/**
 		* Initialize and start the MongoDBserver.
 		*/
 		dbServer = new MongoDBServer(args);
 		dbServer.start();
 		dbServer.waitUntilStarted();
-
 		// initialize server.
 		appServer = new GenericServer(args);
-
 		// and start server.
 		appServer.start();
-
 	} catch (IOException | InterruptedException | InstantiationException
 		| IllegalAccessException e) {
 		LOGGER.error("Unable to start the internal Rest HTTP Server component. Reason : "
@@ -91,7 +87,6 @@ public static void main(String[] args) {
 			}
 		}
 		LOGGER.info("End of processing request in Server");
-
 		// Exit from server.
 		System.exit(0);
 	}
@@ -104,10 +99,8 @@ You also can use some Annotation in your code to auto register Data ``Reposity``
 ```java
 	@Bootstrap
 	public class ServerBootstrap implements IBootstrap {
-
 		private final static Logger LOGGER = Logger
 		.getLogger(ServerBootstrap.class);
-
 		public void initialized() {
 			...
 		}
@@ -120,14 +113,12 @@ You also can use some Annotation in your code to auto register Data ``Reposity``
 ```java
 	@Repository(entity = Game.class)
 	public class GameRepository extends MongoDbRepository<Game> {
-
 		/**
 		* Default constructor for default connection.
 		*/
 		public GameRepository() {
 			super("games");
 		}
-		
 		...
 	}
 ```
@@ -143,7 +134,6 @@ See bellow a sample implementation for a specific REST handler on "/rest/games" 
 	public class GamesRestHandler extends RestHandler {
 		private static final Logger LOGGER = Logger
 		.getLogger(GamesRestHandler.class);
-
 		/**
 		* Default constructor initializing the parent Server attribute.
 		* 
@@ -152,7 +142,6 @@ See bellow a sample implementation for a specific REST handler on "/rest/games" 
 		public GamesRestHandler(GenericServer server) {
 			super(server);
 		}
-		
 		...
 	}
 ```
@@ -185,6 +174,14 @@ To perform processing of one of the HTTP method on a specific URL, you must impl
 server.addContext("/rest/foo", new GamesRestHandler(server));
 ```
 
+Or simply through a new ``@ContextHandler`` annotation :
+
+```java
+	@ContextHandler(path = "/rest/games")
+	public class GamesRestHandler extends RestHandler {
+```
+
+
 Then, implements the corresponding method into the RestHandler. See bellow for a sample implementation serving
 
 
@@ -193,23 +190,17 @@ Then, implements the corresponding method into the RestHandler. See bellow for a
 public HttpStatus get(HttpRequest request, RestResponse response) {
 	String title = null, platform = null;
 	Integer pageSize = 0, offset = 0;
-
 	try {
 		title = (String) request.getParameter("title", String.class, "");
-
 		platform = (String) request.getParameter("platform", String.class,
 		"");
-
 		pageSize = (Integer) request.getParameter("pageSize",
 		Integer.class, "10");
 		offset = (Integer) request.getParameter("offset", Integer.class,
 		"0");
-
 		// TODO : Process your data !
 		...
-
 		return HttpStatus.OK;
-
 		} catch (InstantiationException e) {
 			return HttpStatus.INTERNAL_ERROR;
 			} catch (IllegalAccessException e) {
