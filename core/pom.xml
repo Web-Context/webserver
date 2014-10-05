@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.webcontext.apps</groupId>
 	<artifactId>webserver.core</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>WebServer Core</name>
 	<packaging>jar</packaging>
 	<description>This is an embedded  restServer connected to a MongoDB database to manage VideoGames files.</description>
@@ -25,7 +25,7 @@
 		<url>http://github.com/web-context/webserver</url>
 		<connection>scm:git:git@github.com:web-context/webserver.git</connection>
 		<developerConnection>scm:git:git@bitbucket.org:McGivrer/webserver.git</developerConnection>
-		<tag>webserver-0.0.2</tag>
+		<tag>${project.artifactId}-${project.version}</tag>
 	</scm>
 
 	<issueManagement>
