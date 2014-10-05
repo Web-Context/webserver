@@ -80,8 +80,8 @@ public class FileIO {
 	 * @throws IOException
 	 */
 	public static String fastRead(String file) throws IOException {
-		Path filePath = new File(file).toPath();
-		LOGGER.debug(String.format("read file %s, decoded as %s", file, getResource(file)));
+		String fullPath = FileIO.class.getResource("/").getPath()+file;
+		Path filePath = new File(fullPath).toPath();
 		return new String(Files.readAllBytes(filePath));
 	}
 }

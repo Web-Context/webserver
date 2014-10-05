@@ -54,11 +54,13 @@ public class GamesRestHandler extends RestHandler {
 	 */
 	@Override
 	public HttpStatus get(HttpRequest request, RestResponse response) {
-		String title = null, platform = null;
+		String title = null, platform = null, id=null;
 		Integer pageSize = 0, offset = 0;
 
 		try {
 			title = (String) request.getParameter("title", String.class, "");
+			
+			id = (String) request.getParameter("id", String.class, "");
 
 			platform = (String) request.getParameter("platform", String.class,
 					"");
@@ -69,12 +71,12 @@ public class GamesRestHandler extends RestHandler {
 					"0");
 
 			LOGGER.debug(String.format(
-					"Parameters title=%s, version=%s, pageSize=%d", title,
+					"Parameters:( id='%s', title='%s', platform='%s', pageSize='%d'", id, title,
 					platform, pageSize));
 
 			if (pageSize > 0 && title != null && platform != null) {
 
-				String filter = buildfilter(title, platform);
+				String filter = buildfilter(id, title, platform);
 
 				List<Class<? extends MDBEntity>> games = DataManager
 						.getRepository(Game.class).find(filter, offset,
@@ -116,8 +118,11 @@ public class GamesRestHandler extends RestHandler {
 	 *            game platform to search in.
 	 * @return
 	 */
-	private String buildfilter(String title, String platform) {
+	private String buildfilter(String id, String title, String platform) {
 		StringBuilder sb = new StringBuilder("{");
+		if (id != null && !id.equals("")) {
+			sb.append("\"id\": {$in : [\"").append(id).append("\"]}");
+		}
 		if (title != null && !title.equals("")) {
 			sb.append("\"title\": {$in : [\"").append(title).append("\"]}");
 		}

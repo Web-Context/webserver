@@ -3,14 +3,18 @@
  */
 package com.webcontext.framework.appserver.services.web.response.handler.impl.rest;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 import com.webcontext.framework.appserver.services.web.response.handler.ResponseHandler;
+import com.webcontext.framework.appserver.services.web.response.io.HttpRequest;
 import com.webcontext.framework.appserver.services.web.server.GenericServer;
 import com.webcontext.framework.appserver.services.web.server.GenericServer.HttpMethod;
+import com.webcontext.framework.appserver.services.web.server.GenericServer.HttpStatus;
 
 /**
  * The RestHandler class is a specific Handler to perform processing of HTTP
@@ -41,6 +45,8 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 	private static final Logger LOGGER = Logger.getLogger(RestHandler.class);
 
 	private static final String apiKey = "123456789ABCDEF";
+
+	private Gson gson = new Gson();
 
 	/**
 	 * Initialize RestHandler with the managing server.
@@ -76,4 +82,15 @@ public class RestHandler extends ResponseHandler<RestResponse> {
 		return new RestResponse(outputStream);
 	}
 
+	@Override
+	public HttpStatus post(HttpRequest request, RestResponse response)
+			throws IOException {
+
+		LOGGER.debug(String.format("POST => parameters=[%s]",
+				gson.toJson(request.getParameters()).toString()));
+		LOGGER.debug(String.format("POST => headers=[%s]",
+				gson.toJson(request.getHeaders()).toString()));
+
+		return super.post(request, response);
+	}
 }

@@ -54,9 +54,6 @@ public class PlatformRepository extends MongoDbRepository<Platform> {
 	 */
 	public List<Platform> loadObjectFromJSONFile(String filePath)
 			throws IOException {
-		filePath = this.getClass().getResource("/").getPath().toString()
-				+ File.separator + filePath;
-
 		String json = FileIO.fastRead(filePath);
 
 		TypeToken<List<Platform>> token = new TypeToken<List<Platform>>() {

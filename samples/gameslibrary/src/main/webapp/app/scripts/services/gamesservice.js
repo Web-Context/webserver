@@ -16,7 +16,7 @@ angular.module('gamesrestrserverUiApp')
 		},
 		find : function(gameId){
 			var deferred = $q.defer();
-			$http.get('http://localhost:8888/rest/games/'+gameId)
+			$http.get('http://localhost:8888/rest/games/?id='+gameId)
 				.success(function (data, status, headers, config) {				
 					deferred.resolve({data:data, headers: headers });
 				})

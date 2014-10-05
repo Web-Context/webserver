@@ -36,7 +36,7 @@ public class GamesLibraryBootstrap implements IBootstrap {
 			GameRepository gr = (GameRepository) DataManager
 					.getRepository(Game.class);
 			if (DataManager.countEntities(Game.class) == 0) {
-				List<Game> games = gr.loadObjectFromJSONFile("data/games.json");
+				List<Game> games = gr.loadObjectFromJSONFile("/data/games.json");
 				for (Game game : games) {
 					gr.save((Game) game);
 				}
@@ -46,7 +46,7 @@ public class GamesLibraryBootstrap implements IBootstrap {
 					.getRepository(Platform.class);
 			if (DataManager.countEntities(Platform.class) == 0) {
 				List<Platform> platforms = pr
-						.loadObjectFromJSONFile("data/platforms.json");
+						.loadObjectFromJSONFile("/data/platforms.json");
 				for (Platform platform : platforms) {
 					pr.save((Platform) platform);
 				}

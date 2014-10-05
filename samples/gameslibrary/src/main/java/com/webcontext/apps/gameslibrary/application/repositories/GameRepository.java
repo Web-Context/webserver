@@ -59,9 +59,6 @@ public class GameRepository extends MongoDbRepository<Game> implements
 	 */
 	public List<Game> loadObjectFromJSONFile(String filePath)
 			throws IOException {
-		filePath = this.getClass().getResource("/").getPath().toString()
-				+ File.separator + filePath;
-
 		String json = FileIO.fastRead(filePath);
 		TypeToken<List<Game>> token = new TypeToken<List<Game>>() {
 		};

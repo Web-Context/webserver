@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>gameslibrary</artifactId>
-	<name>GamesLibrary WebServer App</name>
+	<name>Games Library</name>
 	<description>This is an embedded  restServer connected to a MongoDB database to manage VideoGames files.</description>
 	<inceptionYear>2014</inceptionYear>
 

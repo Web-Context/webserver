@@ -76,25 +76,27 @@ public class WebHandler extends ResponseHandler<WebResponse> {
 			throws IOException {
 
 		String resourcePath = request.getHttpExchange().getRequestURI()
-				.toString();
+				.toString(),
+				fullPath="";
 
 		resourcePath = (resourcePath.replace("/web", "").equals("/") ? "index.html"
 				: resourcePath.replace("/web", ""));
 
 		LOGGER.info(String.format("Web Resource %s from path = [%s]", resourcePath, this.getClass().getResource("/").getFile()));
 
-		resourcePath = this.getClass().getResource("/").getPath().toString()
+		fullPath = this.getClass().getResource("/").getPath().toString()
 				+ resourcePath.substring(0);
 
 		// extract resource extension
-		String mimeType = extractMimeType(resourcePath);
+		String mimeType = extractMimeType(fullPath);
 
 		if (mimeType != null) {
 			response.setMimeType(mimeType);
 		}
 
 		// Send file content to response stream.
-		File resourceFile = new File(resourcePath);
+		
+		File resourceFile = new File(fullPath);
 		if (resourceFile.exists()) {
 			try {
 				String content = FileIO.fastRead(resourcePath);

@@ -113,18 +113,15 @@ public class HttpRequest {
 			String defaultValue) throws InstantiationException,
 			IllegalAccessException {
 		Object value = null;
+
 		switch (castClass.getName()) {
 		case "java.lang.Integer":
 			value = new Integer((String) getParameter(name, defaultValue)
 					.toArray()[0]);
 			break;
+
 		case "java.lang.Float":
 			value = new Float((String) getParameter(name, defaultValue)
-					.toArray()[0]);
-			break;
-
-		case "java.lang.Boolean":
-			value = new Boolean((String) getParameter(name, defaultValue)
 					.toArray()[0]);
 			break;
 
@@ -133,11 +130,20 @@ public class HttpRequest {
 					.toArray()[0]);
 			break;
 
+		case "java.lang.Long":
+			value = new Long(
+					(String) getParameter(name, defaultValue).toArray()[0]);
+			break;
+
 		case "java.lang.String":
 			value = castClass
 					.cast(getParameter(name, defaultValue).toArray()[0]);
 			break;
 
+		case "java.lang.Boolean":
+			value = new Boolean((String) getParameter(name, defaultValue)
+					.toArray()[0]);
+			break;
 		}
 
 		return value;

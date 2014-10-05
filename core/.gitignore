@@ -1,11 +1,9 @@
 /target
 /log
 /.settings
-/.classpath
-/.project
 /.idea
 .classpath
 .project
 *.iml
-
 /target-grunt
+/target

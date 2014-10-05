@@ -7,10 +7,10 @@ angular.module('gamesrestrserverUiApp',
 				templateUrl : 'views/games.html',
 				controller : 'GamesCtrl'
 			}).when('/game/:gameId', {
-				templateUrl : 'views/games.html',
+				templateUrl : 'views/game.html',
 				controller : 'GamesCtrl'
 			}).when('/game/:gameId/platform/:platform', {
-				templateUrl : 'views/games.html',
+				templateUrl : 'views/game.html',
 				controller : 'GamesCtrl'
 			}).otherwise({
 				redirectTo : '/'

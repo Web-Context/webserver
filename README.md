@@ -15,9 +15,9 @@ The ``Server`` class propose an implementation of both services with some argume
 
 ```bash
 
-	$> java -jar gamerestserver-0.0.1-SNAPSHOT-full-jar-with-dependencies.jar \
-		com.webcontext.apps.grs.application.services.Server \
-			port=8888 dbembedded=true dbport=27017 
+$> java -jar gamerestserver-0.0.1-SNAPSHOT-full-jar-with-dependencies.jar \
+com.webcontext.apps.gameslibrary.application.services.GamesLibraryServer \
+port=8888 dbembedded=true dbport=27017 
 ```
 
 where arguments are :
@@ -62,33 +62,26 @@ To start the server you can create a main function (if needed) instantiating the
 
 
 ```java
-	public static void main(String[] args) {
-		try {
+public static void main(String[] args) {
+	try {
 
-			/**
-			 * Initialize and start the MongoDBserver.
-			 */
-			dbServer = new MongoDBServer(args);
-			dbServer.start();
-			dbServer.waitUntilStarted();
+		/**
+		* Initialize and start the MongoDBserver.
+		*/
+		dbServer = new MongoDBServer(args);
+		dbServer.start();
+		dbServer.waitUntilStarted();
 
-			// initialize server.
-			appServer = new GenericServer(args);
+		// initialize server.
+		appServer = new GenericServer(args);
 
-			// Add a new repository.
-			DataManager.getInstance()
-					.register(Game.class, GameRepository.class);
+		// and start server.
+		appServer.start();
 
-			// add a new Handler to the Rest Server.
-			appServer.addContext("/rest/games", new GamesRestHandler(appServer));
-
-			// and start server.
-			appServer.start();
-
-		} catch (IOException | InterruptedException | InstantiationException
-				| IllegalAccessException e) {
-			LOGGER.error("Unable to start the internal Rest HTTP Server component. Reason : "
-					+ e.getLocalizedMessage());
+	} catch (IOException | InterruptedException | InstantiationException
+		| IllegalAccessException e) {
+		LOGGER.error("Unable to start the internal Rest HTTP Server component. Reason : "
+			+ e.getLocalizedMessage());
 		}finally{
 			if(appServer != null){
 				appServer.stop();
@@ -104,68 +97,40 @@ To start the server you can create a main function (if needed) instantiating the
 	}
 ```
 
-first implements a RestHandler and add its instance to the GenericServer:
-
-``` java
-	public class GamesRestHandler extends RestHandler {
-
-		@Override
-		public HttpStatus get(HttpRequest request, RestResponse response){
-			return HttpStatus.OK;
-		}
-
-		@Override
-		public HttpStatus post(HttpRequest request, RestResponse response){
-			return HttpStatus.OK;
-		}
-	
-		@Override
-		public HttpStatus put(HttpRequest request, RestResponse response){
-			return HttpStatus.OK;
-		}
-	
-		@Override
-		public HttpStatus delete(HttpRequest request, RestResponse response){
-			return HttpStatus.OK;
-		}
-	
-	} 
-```
-
-But you also can use some Annotation in your code to auto register Data ``Reposity``, ``Bootstrap`` and ```ContextHandler`` on the right classes.
+You also can use some Annotation in your code to auto register Data ``Reposity``, ``Bootstrap`` and ```ContextHandler`` on the right classes.
 
 * ``Bootstrap`` will allow to setup some default values in files or anyway in a data source,
 
-	```java
+```java
 	@Bootstrap
 	public class ServerBootstrap implements IBootstrap {
-	
+
 		private final static Logger LOGGER = Logger
-				.getLogger(ServerBootstrap.class);
-	
+		.getLogger(ServerBootstrap.class);
+
 		public void initialized() {
 			...
 		}
 	}
-	```
+```
 
 
 * ``Repository(entity)`` declare a repository mapped to an entity, this one must inherit from ``MDBEntity``,
 
-	```java
+```java
 	@Repository(entity = Game.class)
 	public class GameRepository extends MongoDbRepository<Game> {
-	
+
 		/**
-		 * Default constructor for default connection.
-		 */
+		* Default constructor for default connection.
+		*/
 		public GameRepository() {
 			super("games");
 		}
 		
 		...
 	}
-	```
+```
 
 
 * ``ContextHandler(path)`` is a specific handler addressing a particular url path.
@@ -173,24 +138,24 @@ But you also can use some Annotation in your code to auto register Data ``Reposi
 
 See bellow a sample implementation for a specific REST handler on "/rest/games" path : 
 
-	```java
+```java
 	@ContextHandler(path = "/rest/games")
 	public class GamesRestHandler extends RestHandler {
-		    private static final Logger LOGGER = Logger
-			.getLogger(GamesRestHandler.class);
-			
+		private static final Logger LOGGER = Logger
+		.getLogger(GamesRestHandler.class);
+
 		/**
-		 * Default constructor initializing the parent Server attribute.
-		 * 
-		 * @param server
-		 */
+		* Default constructor initializing the parent Server attribute.
+		* 
+		* @param server
+		*/
 		public GamesRestHandler(GenericServer server) {
 			super(server);
 		}
 		
 		...
 	}
-	```
+```
 
 
 
@@ -200,8 +165,8 @@ See bellow a sample implementation for a specific REST handler on "/rest/games" 
 
 ### HttpRequest
 
- ``Object getParamater(String name, T defaultValue)`` will extract the ``name`` parameter from the Http request, or if this one does not exist, the ``defaultValue``.
- 
+``Object getParamater(String name, T defaultValue)`` will extract the ``name`` parameter from the Http request, or if this one does not exist, the ``defaultValue``.
+
 ### RestResponse 
 
 ``RestResponse`` class encapsulates the mechanism to generate JSon from data push to this object. ``HttpResponse`` embeds a ``Map<String,Object>`` containing all object to be return as JSON accordingly to the ``HttpRequest``.
@@ -217,49 +182,49 @@ The ``get()``, ``post()``, ``put()``, ``delete()``, ``options()``, and ``head()`
 To perform processing of one of the HTTP method on a specific URL, you must implements a RestHandler linked to the "URL" and declare this into the server:
 
 ```java
-	server.addContext("/rest/foo", new GamesRestHandler(server));
+server.addContext("/rest/foo", new GamesRestHandler(server));
 ```
 
 Then, implements the corresponding method into the RestHandler. See bellow for a sample implementation serving
 
 
-	```java
-	@Override
-		public HttpStatus get(HttpRequest request, RestResponse response) {
-			String title = null, platform = null;
-			Integer pageSize = 0, offset = 0;
-	
-			try {
-				title = (String) request.getParameter("title", String.class, "");
-	
-				platform = (String) request.getParameter("platform", String.class,
-						"");
-	
-				pageSize = (Integer) request.getParameter("pageSize",
-						Integer.class, "10");
-				offset = (Integer) request.getParameter("offset", Integer.class,
-						"0");
-				
-				// TODO : Process your data !
-				...
-						
-				return HttpStatus.OK;
-				
-			} catch (InstantiationException e) {
-				return HttpStatus.INTERNAL_ERROR;
+```java
+@Override
+public HttpStatus get(HttpRequest request, RestResponse response) {
+	String title = null, platform = null;
+	Integer pageSize = 0, offset = 0;
+
+	try {
+		title = (String) request.getParameter("title", String.class, "");
+
+		platform = (String) request.getParameter("platform", String.class,
+		"");
+
+		pageSize = (Integer) request.getParameter("pageSize",
+		Integer.class, "10");
+		offset = (Integer) request.getParameter("offset", Integer.class,
+		"0");
+
+		// TODO : Process your data !
+		...
+
+		return HttpStatus.OK;
+
+		} catch (InstantiationException e) {
+			return HttpStatus.INTERNAL_ERROR;
 			} catch (IllegalAccessException e) {
 				return HttpStatus.INTERNAL_ERROR;
-			} catch (Exception e) {
-				LOGGER.error("Unable to retrieve data", e);
-				return HttpStatus.INTERNAL_ERROR;
+				} catch (Exception e) {
+					LOGGER.error("Unable to retrieve data", e);
+					return HttpStatus.INTERNAL_ERROR;
+				}
 			}
-	}
-	```
-	
+```
+
 This small piece of code will serve the ```localhost:8888/rest/foo```  with a json document : 
 
 ```javascript
-	{ "title": "[title from URL]" }
+			{ "title": "[title from URL]" }
 ```   	
 
 ## Web Page Service
@@ -280,17 +245,17 @@ The server can be called on the localhost:[port]/rest/admin to perform some admi
 * ``localhost:[port]/rest/admin?command=info``  return a json structure containing some basic usage statistics and information
 
 ```javascript
-	{
-	  "info": {
-	    "StartDate": "Aug 11, 2014 11:38:25 AM",
-	    "LastRequest": "Aug 11, 2014 11:38:31 AM",
-	    "RequestCounter": 1,
-	    "SuccessfulRequestCounter": 1,
-	    "ErrorRequestCounter": 0,
-	    "LastURI": "/rest/instruments?title\u003dtest\u0026nb\u003d6",
-	    "LastErrorURI": null
-	  }
-	} 
+			{
+				"info": {
+					"StartDate": "Aug 11, 2014 11:38:25 AM",
+					"LastRequest": "Aug 11, 2014 11:38:31 AM",
+					"RequestCounter": 1,
+					"SuccessfulRequestCounter": 1,
+					"ErrorRequestCounter": 0,
+					"LastURI": "/rest/instruments?title\u003dtest\u0026nb\u003d6",
+					"LastErrorURI": null
+				}
+			} 
 ```  
 
 where :
